@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wine/view/chat.dart';
-import 'package:wine/view/map.dart';
+import 'package:wine/view/winemap.dart';
 import 'package:wine/view/search.dart';
 import 'package:wine/view/settings.dart';
 
@@ -89,9 +89,10 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   var _views = [
-    Home(),
-    Add(),
-    My_Page(),
+    Search(),
+    WineMap(),
+    Chat(),
+    Settings(),
   ];
 
   @override
@@ -108,15 +109,12 @@ class _MyHomePageState extends State<MyHomePage> {
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).accentColor,
         onTap: _onBottomItemTapped,
+        showUnselectedLabels: true,
+        unselectedItemColor: Colors.blue,
 
       ),
       // body: Center(),
-      body: _views[_selectedIndex],
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: _views[_selectedIndex]
     );
   }
 }
