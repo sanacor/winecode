@@ -80,6 +80,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             // color: Colors.lightBlue,
             child: ListTile(
+              leading: Image.network(wine_item.wine_image_url),
               title: Text(wine_item.wine_name),
               isThreeLine: false,
               subtitle: Text(wine_item.wine_name),
