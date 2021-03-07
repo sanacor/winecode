@@ -85,7 +85,7 @@ class _SearchScreenState extends State<SearchScreen> {
               isThreeLine: false,
               subtitle: Text(wine_item.wine_name),
               onTap: () {
-                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => Detail()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Detail()));
               },
             ),
           );
@@ -97,8 +97,24 @@ class _SearchScreenState extends State<SearchScreen> {
 
   }
 
-
-
-
 }
 
+
+class Detail extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            Text("Detail"),
+          ],
+        ),
+      ),
+    );
+  }
+}
