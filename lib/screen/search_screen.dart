@@ -18,27 +18,39 @@ class _SearchScreenState extends State<SearchScreen> {
   final SearchBarController<Wine> _searchBarController = SearchBarController();
   bool isReplay = false;
 
-  Future<List<Wine>> _searchWineByKeyword(String text) async {
+  Future<List<Wine>> _searchWineByKeyword(String search_text) async {
     List<Wine> wines = [];
-
-    var response = await http.get(
-          Uri.encodeFull("https://9l885hmyfg.execute-api.ap-northeast-2.amazonaws.com/dev/wine"),
+    print('START');
+    var url =  "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/product/search/$search_text";
+    print(url);
+    var response;
+    try {
+      response = await http.get(
+      // Uri.encodeFull("https://9l885hmyfg.execute-api.ap-northeast-2.amazonaws.com/dev/wine"),
+          Uri.encodeFull(url),
           headers: {
-            "Accept": "application/json",
-            "x-api-key-word": text
+            "Accept": "application/json"
           }
       );
+    }catch(e){
+        print(e);
+    }
+
+
+    print(response);
 
     if (response.statusCode == 200) {
       print('http 200');
       var jsonResponse = convert.jsonDecode(response.body);
-      var wine_list = jsonResponse['wine_list'];
+      // var wine_list = jsonResponse['wine_list'];
+      var wine_list = jsonResponse;
       print(wine_list);
       print(wine_list is List);
 
       for (Map wine in wine_list) {
         print('shit');
-        wines.add(Wine(wine['wine'], wine['image_url']));
+        wines.add(Wine(wine['wineName'], wine['wineImage']));
+        // wines.add(Wine(wine['wine'], wine['image_url']));
       };
       print('wines');
       // print(wines);
@@ -46,6 +58,7 @@ class _SearchScreenState extends State<SearchScreen> {
     }
     else {
       print('http 500');
+      print(response);
     }
     return wines;
 
