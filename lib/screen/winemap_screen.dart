@@ -2,11 +2,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 
-class Settings extends StatelessWidget {
+class WineMapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Settings'));
+    return Center(child: Text('WineMap'));
   }
 
 }

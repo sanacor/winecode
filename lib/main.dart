@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:wine/view/chat.dart';
-import 'package:wine/view/winemap.dart';
-import 'package:wine/view/search.dart';
-import 'package:wine/view/settings.dart';
+import 'package:wine/screen/chat_screen.dart';
+import 'package:wine/screen/winemap_screen.dart';
+import 'package:wine/screen/search_screen.dart';
+import 'package:wine/screen/settings_screen.dart';
 
 
 void main() => runApp(WineApp());
@@ -89,10 +89,10 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   var _views = [
-    Search(),
-    WineMap(),
-    Chat(),
-    Settings(),
+    SearchScreen(),
+    WineMapScreen(),
+    ChatScreen(),
+    SettingsScreen(),
   ];
 
   @override
@@ -113,7 +113,6 @@ class _MyHomePageState extends State<MyHomePage> {
         unselectedItemColor: Colors.blue,
 
       ),
-      // body: Center(),
       body: _views[_selectedIndex]
     );
   }
