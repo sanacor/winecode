@@ -113,7 +113,15 @@ class _MyHomePageState extends State<MyHomePage> {
         unselectedItemColor: Colors.blue,
 
       ),
-      body: _views[_selectedIndex]
+      body:IndexedStack(
+        children: <Widget>[
+          SearchScreen(),
+          WineMapScreen(),
+          ChatScreen(),
+          SettingsScreen()
+        ],
+        index: _selectedIndex,
+      ),
     );
   }
 }
