@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wine/screen/chat_screen.dart';
-import 'package:wine/map/winemap_screen.dart';
 import 'package:wine/screen/search_screen.dart';
 import 'package:wine/screen/settings_screen.dart';
-
+import 'package:wine/map/model/wine_shop.dart';
+import 'package:wine/map/winemap_screen.dart';
 
 void main() => runApp(WineApp());
 
@@ -94,10 +94,6 @@ class _MyHomePageState extends State<MyHomePage> {
           showUnselectedLabels: true,
           unselectedItemColor: Colors.blue,
 
-<<<<<<< HEAD
-        ),
-        body: _views[_selectedIndex]
-=======
       ),
       body:IndexedStack(
         children: <Widget>[
@@ -108,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         index: _selectedIndex,
       ),
->>>>>>> f67ec3f7b8efeecc6fa2d6fb90f551500cf85e0d
+
     );
   }
 }
