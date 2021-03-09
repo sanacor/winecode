@@ -48,19 +48,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   static int _selectedIndex = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   void _onBottomItemTapped(int index) {
     setState(() {
@@ -88,12 +76,6 @@ class _MyHomePageState extends State<MyHomePage> {
     )
   ];
 
-  var _views = [
-    SearchScreen(),
-    WineMapScreen(),
-    ChatScreen(),
-    SettingsScreen(),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -112,8 +94,21 @@ class _MyHomePageState extends State<MyHomePage> {
           showUnselectedLabels: true,
           unselectedItemColor: Colors.blue,
 
+<<<<<<< HEAD
         ),
         body: _views[_selectedIndex]
+=======
+      ),
+      body:IndexedStack(
+        children: <Widget>[
+          SearchScreen(),
+          WineMapScreen(),
+          ChatScreen(),
+          SettingsScreen()
+        ],
+        index: _selectedIndex,
+      ),
+>>>>>>> f67ec3f7b8efeecc6fa2d6fb90f551500cf85e0d
     );
   }
 }

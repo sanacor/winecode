@@ -18,6 +18,7 @@ class _SearchScreenState extends State<SearchScreen> {
   final SearchBarController<Wine> _searchBarController = SearchBarController();
   bool isReplay = false;
 
+
   Future<List<Wine>> _searchWineByKeyword(String search_text) async {
     List<Wine> wines = [];
     print('START');
@@ -42,18 +43,15 @@ class _SearchScreenState extends State<SearchScreen> {
     if (response.statusCode == 200) {
       print('http 200');
       var jsonResponse = convert.jsonDecode(response.body);
-      // var wine_list = jsonResponse['wine_list'];
-      var wine_list = jsonResponse;
-      print(wine_list);
-      print(wine_list is List);
+      var wineList = jsonResponse;
+      print(wineList);
+      print(wineList is List);
 
-      for (Map wine in wine_list) {
+      for (Map wine in wineList) {
         print('shit');
         wines.add(Wine(wine['wineName'], wine['wineImage']));
-        // wines.add(Wine(wine['wine'], wine['image_url']));
       };
       print('wines');
-      // print(wines);
       return wines;
     }
     else {
