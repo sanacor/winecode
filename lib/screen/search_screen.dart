@@ -75,7 +75,7 @@ class _SearchScreenState extends State<SearchScreen> {
         onSearch: _searchWineByKeyword,
         searchBarController: _searchBarController,
         // placeHolder: Text("placeholder"),
-        cancellationWidget: Text("Cancel"),
+        cancellationWidget: Text("취소"),
         emptyWidget: Text("empty"),
         // indexedScaledTileBuilder: (int index) => ScaledTile.count(1, index.isEven ? 2 : 1),
         onCancelled: () {
@@ -98,7 +98,7 @@ class _SearchScreenState extends State<SearchScreen> {
               isThreeLine: false,
               subtitle: Text(wine_item.wine_name),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => Detail()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WineDetail()));
               },
             ),
           );
@@ -113,7 +113,7 @@ class _SearchScreenState extends State<SearchScreen> {
 }
 
 
-class Detail extends StatelessWidget {
+class WineDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
