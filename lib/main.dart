@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wine/screen/chat_screen.dart';
-import 'package:wine/screen/winemap_screen.dart';
+import 'package:wine/map/winemap_screen.dart';
 import 'package:wine/screen/search_screen.dart';
 import 'package:wine/screen/settings_screen.dart';
 
@@ -104,16 +104,16 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        items: _bnbItems,
-        currentIndex: _selectedIndex,
-        selectedItemColor: Theme.of(context).accentColor,
-        onTap: _onBottomItemTapped,
-        showUnselectedLabels: true,
-        unselectedItemColor: Colors.blue,
+        bottomNavigationBar: BottomNavigationBar(
+          items: _bnbItems,
+          currentIndex: _selectedIndex,
+          selectedItemColor: Theme.of(context).accentColor,
+          onTap: _onBottomItemTapped,
+          showUnselectedLabels: true,
+          unselectedItemColor: Colors.blue,
 
-      ),
-      body: _views[_selectedIndex]
+        ),
+        body: _views[_selectedIndex]
     );
   }
 }
