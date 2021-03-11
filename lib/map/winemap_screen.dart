@@ -52,6 +52,8 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
 
   bool _isDrage = false;
 
+  List<WineShop> wineShopList = [];
+
   void _onMapCreated(KakaoMapController controller) {
     this.controller = controller;
   }
@@ -65,21 +67,31 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
     print('_onMarkerTapped' + markerId.toString());
     final Marker tappedMarker = markers[markerId];
     if (tappedMarker != null) {
-      setState(() {
-        if (markers.containsKey(selectedMarker)) {
-          final Marker resetOld = markers[selectedMarker]
-              .copyWith(iconParam: BitmapDescriptor.defaultMarker);
-          markers[selectedMarker] = resetOld;
-        }
-        selectedMarker = markerId;
-        final Marker newMarker = tappedMarker.copyWith(
-          iconParam: BitmapDescriptor.defaultMarkerWithHue(
-            BitmapDescriptor.hueGreen,
-          ),
-        );
-        markers[markerId] = newMarker;
-      });
+      if(selectedMarker == markerId){
+        //이미 터치한 마커를 한번 더 터치한 경우 상세화면으로 이동
+        print(wineShopList[int.parse(markerId.value)]);//코드 개선 시급
+      }
+      else {
+        setState(() {
+          if (markers.containsKey(selectedMarker)) {
+            final Marker resetOld = markers[selectedMarker]
+                .copyWith(iconParam: BitmapDescriptor.defaultMarker);
+            markers[selectedMarker] = resetOld;
+          }
+          selectedMarker = markerId;
+          final Marker newMarker = tappedMarker.copyWith(
+            iconParam: BitmapDescriptor.defaultMarkerWithHue(
+              BitmapDescriptor.hueGreen,
+            ),
+          );
+          markers[markerId] = newMarker;
+        });
+      }
     }
+  }
+
+  void _onInfoWindowTapped(MarkerId markerId) {
+    print('_onInfoWindowTapped' + markerId.toString());
   }
 
   void _onMarkerDragEnd(MarkerId markerId, MapPoint newPosition) async {
@@ -118,7 +130,9 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
       //position: MapPoint(retailLocationX, retailLocationY),
       position: MapPoint(retailLocationY, retailLocationX),
       draggable: _isDrage,
-      infoWindow: InfoWindow(title: retailName, snippet: 'TestTest'),
+      infoWindow: InfoWindow(title: retailName, snippet: 'TestTest', onTap: (){
+        _onInfoWindowTapped(markerId);
+      }),
       markerType: MarkerType.markerTypeBluePin,
       markerSelectedType: MarkerSelectedType.markerSelectedTypeRedPin,
       showAnimationType: ShowAnimationType.showAnimationTypeDropFromHeaven,
@@ -196,7 +210,6 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   }
 
   Future<void> _getWineShopList() async {
-    List<WineShop> wines = [];
     print('START');
     var url =  "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/retail/infoall";
     print(url);
@@ -215,17 +228,22 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
     print(response);
 
     if (response.statusCode == 200) {
-      print('http 200');
       //var jsonResponse = convert.jsonDecode(response.body);
       var jsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));//한글깨짐 수정
       // var wine_list = jsonResponse['wine_list'];
       var wine_shop_list = jsonResponse;
-      print(wine_shop_list);
-      print(wine_shop_list is List);
+      //print(wine_shop_list);
+      //print(wine_shop_list is List);
 
       for (Map wine_shop in wine_shop_list) {
-        print('shit');
         _add_marker(wine_shop['retailId'].toString(),wine_shop['retailName'],wine_shop['retailLocationX'],wine_shop['retailLocationY']);
+        print("a");
+        wineShopList.add(
+            WineShop(wine_shop['retailId'].toString(),wine_shop['retailName'],wine_shop['retailPhone'],
+                //wine_shop['retailAddress'],wine_shop['retailBhours'],wine_shop['retailExp'])
+                wine_shop['retailAddress'],"Test","Test")//retailBhours, reatailExp가 null이면 코드는 진행되나 마커가 표시안됨
+        );
+        print("b");
       }
     }
     else {
@@ -241,6 +259,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
   }
 
   void _onMarkerSelect(MarkerTag markerId) {
+    print("Test");
   }
 
   @override
