@@ -58,6 +58,32 @@ class CarouselWithIndicatorDemo extends StatefulWidget {
   }
 }
 
+class FullscreenSliderDemo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Builder(
+        builder: (context) {
+          final double height = MediaQuery.of(context).size.height;
+          return CarouselSlider(
+            options: CarouselOptions(
+              height: height,
+              viewportFraction: 1.0,
+              enlargeCenterPage: false,
+              // autoPlay: false,
+            ),
+            items: imgList.map((item) => Container(
+              child: Center(
+                  child: Image.network(item, fit: BoxFit.cover, height: height,)
+              ),
+            )).toList(),
+          );
+        },
+      ),
+    );
+  }
+}
+
 
 class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
   int _current = 0;
@@ -65,7 +91,6 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Carousel with indicator demo')),
       body: Column(
           children: [
             CarouselSlider(
@@ -114,7 +139,7 @@ class _WineDetailState extends State<WineDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: CarouselWithIndicatorDemo()
+        child: FullscreenSliderDemo()
       ),
     );
   }
