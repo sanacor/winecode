@@ -64,7 +64,7 @@ class FullscreenSliderDemo extends StatelessWidget {
     return Scaffold(
       body: Builder(
         builder: (context) {
-          final double height = MediaQuery.of(context).size.height;
+          final double height = (MediaQuery.of(context).size.height/10)*4;
           return CarouselSlider(
             options: CarouselOptions(
               height: height,
@@ -138,9 +138,7 @@ class _WineDetailState extends State<WineDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: FullscreenSliderDemo()
-      ),
+      body: FullscreenSliderDemo()
     );
   }
 }
