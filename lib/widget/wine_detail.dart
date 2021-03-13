@@ -65,6 +65,29 @@ class FullscreenSliderDemo extends StatelessWidget {
       body: Builder(
         builder: (context) {
           final double height = (MediaQuery.of(context).size.height/10)*4;
+          return Stack(
+            children: <Widget>[
+              CarouselSlider(
+                options: CarouselOptions(
+                  height: height,
+                  viewportFraction: 1.0,
+                  enlargeCenterPage: false,
+                  // autoPlay: false,
+                ),
+                items: imgList.map((item) => Container(
+                  child: Center(
+                      child: Image.network(item, fit: BoxFit.cover, height: height,)
+                  ),
+                )).toList(),
+              ),
+              SafeArea(child: IconButton(
+                icon: Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () => Navigator.of(context).pop(),
+              )),
+
+            ],
+          );
+
           return CarouselSlider(
             options: CarouselOptions(
               height: height,
