@@ -7,7 +7,7 @@ import 'package:wine/model/wine.dart';
 import 'package:flutter/material.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flappy_search_bar/scaled_tile.dart';
-
+import 'package:wine/widget/wine_detail.dart';
 
 
 class SearchScreen extends StatefulWidget {
@@ -110,22 +110,22 @@ class _SearchScreenState extends State<SearchScreen> {
 
 }
 
-
-class WineDetail extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            Text("Detail"),
-          ],
-        ),
-      ),
-    );
-  }
-}
+//
+// class WineDetail extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: SafeArea(
+//         child: Column(
+//           children: <Widget>[
+//             IconButton(
+//               icon: Icon(Icons.arrow_back),
+//               onPressed: () => Navigator.of(context).pop(),
+//             ),
+//             Text("Detail"),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
