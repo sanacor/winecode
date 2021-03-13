@@ -5,6 +5,11 @@ import 'package:wine/screen/search_screen.dart';
 import 'package:wine/screen/settings_screen.dart';
 import 'package:wine/map/model/wine_shop.dart';
 import 'package:wine/map/winemap_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+
+
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 void main() => runApp(WineApp());
 
@@ -49,6 +54,43 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   static int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    firebaseCloudMessaging_Listeners();
+  }
+
+  void firebaseCloudMessaging_Listeners() {
+    // if (Platform.isIOS) iOS_Permission();
+
+    _firebaseMessaging.getToken().then((token){
+      print('token:'+token);
+    });
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
+    );
+  }
+
+  void iOS_Permission() {
+    _firebaseMessaging.requestNotificationPermissions(
+        IosNotificationSettings(sound: true, badge: true, alert: true)
+    );
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings)
+    {
+      print("Settings registered: $settings");
+    });
+  }
 
   void _onBottomItemTapped(int index) {
     setState(() {
