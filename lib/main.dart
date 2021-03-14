@@ -5,12 +5,18 @@ import 'package:wine/screen/search_screen.dart';
 import 'package:wine/screen/settings_screen.dart';
 import 'package:wine/map/winemap_screen.dart';
 
-void main() => runApp(WineApp());
+
+void main() => runApp(WineApp(from_search: false));
 
 class WineApp extends StatelessWidget {
+  final bool from_search;
+
+  const WineApp({ Key key, this.from_search }) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    print('sana: $from_search');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Wine',
@@ -23,14 +29,15 @@ class WineApp extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
       ),
-      home: MyHomePage(),
+      home: MyHomePage(from_search: from_search),
     );
   }
 }
 
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  bool from_search;
+  MyHomePage({Key key, this.from_search=false}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -41,7 +48,7 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
+
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -52,6 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _onBottomItemTapped(int index) {
     setState(() {
+      print(index);
+      widget.from_search = false;
       _selectedIndex = index;
     });
   }
@@ -79,6 +88,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print('sana2 $widget.from_search');
+    if (widget.from_search) {
+      _selectedIndex = 1;
+    }
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -108,3 +122,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+GlobalKey globalKey = new GlobalKey(debugLabel: 'btm_app_bar');
+final BottomNavigationBar navigationBar = globalKey.currentWidget;
