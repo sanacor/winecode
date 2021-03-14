@@ -96,7 +96,7 @@ class _SearchScreenState extends State<SearchScreen> {
               isThreeLine: false,
               subtitle: Text(wine_item.wine_name),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WineDetail()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WineDetail(wine_item: wine_item)));
               },
             ),
           );
