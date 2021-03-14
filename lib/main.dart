@@ -12,6 +12,7 @@ class WineApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Wine',
       theme: ThemeData(
         primarySwatch: Colors.blue,

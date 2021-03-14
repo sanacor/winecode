@@ -156,7 +156,16 @@ class _WineDetailState extends State<WineDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FullscreenSliderDemo(wine_item: widget.wine_item)
+        body: Container(
+        child: Column(
+          children: <Widget> [
+            Container(
+                height: MediaQuery.of(context).size.height/10*4,
+                child:FullscreenSliderDemo(wine_item: widget.wine_item)),
+            Text('wineName', textAlign: TextAlign.left)
+          ],
+        ),
+      )
     );
   }
 }
