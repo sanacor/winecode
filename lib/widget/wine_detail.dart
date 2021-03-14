@@ -3,6 +3,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:wine/model/wine.dart';
+import 'package:wine/screen/winemap_screen.dart';
+import 'package:wine/main.dart';
 
 
 final List<String> imgList = [];
@@ -178,11 +180,17 @@ class _WineDetailState extends State<WineDetail> {
           )
         ],
         footer: new Footer(
-          child: Center(
-              child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
-                  child: Text('와인샵에 문의하기', style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 15))
-              )
+          child: InkWell(
+            onTap: () {
+              // navigationBar.onTap(1);
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => WineApp(from_search: true)));
+            },
+            child: Center(
+                child: Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                    child: Text('와인샵에 문의하기', style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 15))
+                )
+            ),
           ),
         ),
         flex: 1, //default flex is 2
