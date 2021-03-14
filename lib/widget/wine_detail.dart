@@ -157,16 +157,18 @@ class _WineDetailState extends State<WineDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-        child: Column(
+        child: Wrap(
           children: <Widget> [
             Container(
                 height: MediaQuery.of(context).size.height/10*4,
                 child:FullscreenSliderDemo(wine_item: widget.wine_item)),
-            Text('wineName', textAlign: TextAlign.left)
+            Padding(
+                padding: EdgeInsets.fromLTRB(15, 30, 0, 0),
+                child: Text(widget.wine_item.wine_name, style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 20))
+            )
           ],
         ),
       )
     );
   }
 }
-
