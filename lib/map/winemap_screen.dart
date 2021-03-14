@@ -7,6 +7,7 @@ import 'package:wine/map/marker_map_page.dart';
 import 'package:wine/map/path_map.dart';
 import 'package:wine/map/polygon_map.dart';
 import 'package:wine/map/text_field_page.dart';
+import 'package:wine/map/winemap_marker_screen.dart';
 
 class WineMapScreen extends StatefulWidget {
   @override
@@ -36,6 +37,7 @@ class _MainPageState extends State<MainPage> {
     '컨트롤러 테스트',
     '폴리곤 예제',
     'GLSurface Thread collision test',
+    '와인맵 지도 테스트',
   ];
 
   @override
@@ -124,6 +126,13 @@ class _MainPageState extends State<MainPage> {
           MaterialPageRoute(
             builder: (_) => TextFieldPage(),
           ));
+        break;
+      case 7:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => WineMapPage(),
+            ));
     }
   }
 }
