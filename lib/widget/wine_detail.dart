@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:wine/model/wine.dart';
 
 
@@ -156,19 +157,37 @@ class _WineDetailState extends State<WineDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-        child: Wrap(
-          children: <Widget> [
-            Container(
-                height: MediaQuery.of(context).size.height/10*4,
-                child:FullscreenSliderDemo(wine_item: widget.wine_item)),
-            Padding(
-                padding: EdgeInsets.fromLTRB(15, 30, 0, 0),
-                child: Text(widget.wine_item.wine_name, style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 20))
-            )
-          ],
+      body: new FooterView(
+        children:<Widget>[
+        Container(
+          height: MediaQuery.of(context).size.height/10*2,
+          child: Wrap(
+            children: <Widget> [
+              Container(
+                  height: MediaQuery.of(context).size.height/10*4,
+                  child: FullscreenSliderDemo(wine_item: widget.wine_item)),
+              Container(
+                  height: MediaQuery.of(context).size.height/10*4,
+                child: Padding(
+                    padding: EdgeInsets.fromLTRB(15, 30, 0, 0),
+                    child: Text(widget.wine_item.wine_name, style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 20))
+                )
+              )
+            ],
+          )
+          )
+        ],
+        footer: new Footer(
+          child: Center(
+              child: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                  child: Text('와인샵에 문의하기', style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 15))
+              )
+          ),
         ),
-      )
+        flex: 1, //default flex is 2
+      ),
     );
+
   }
 }
