@@ -20,19 +20,18 @@ class _MarkerMapPageState extends State<WineMapPage> {
   Completer<NaverMapController> _controller = Completer();
   List<Marker> _markers = [];
 
+  OverlayImage wine_shop_marker;
+
   Future<void> _getWineShopList() async {
     print('START');
-    var url =  "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/retail/infoall";
+    var url =
+        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/retail/infoall";
     print(url);
     var response;
     try {
-      response = await http.get(
-          Uri.encodeFull(url),
-          headers: {
-            "Accept": "application/json"
-          }
-      );
-    }catch(e){
+      response = await http
+          .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+    } catch (e) {
       print(e);
     }
 
@@ -40,14 +39,16 @@ class _MarkerMapPageState extends State<WineMapPage> {
 
     if (response.statusCode == 200) {
       //var jsonResponse = convert.jsonDecode(response.body);
-      var jsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));//한글깨짐 수정
+      var jsonResponse =
+          convert.jsonDecode(utf8.decode(response.bodyBytes)); //한글깨짐 수정
       // var wine_list = jsonResponse['wine_list'];
       var wine_shop_list = jsonResponse;
       //print(wine_shop_list);
       //print(wine_shop_list is List);
 
       for (Map wine_shop in wine_shop_list) {
-        _add_marker(wine_shop['retailId'].toString(),wine_shop['retailName'],wine_shop['retailLocationX'],wine_shop['retailLocationY']);
+        _add_marker(wine_shop['retailId'].toString(), wine_shop['retailName'],
+            wine_shop['retailLocationX'], wine_shop['retailLocationY']);
         print("a");
         /*
         wineShopList.add(
@@ -58,25 +59,26 @@ class _MarkerMapPageState extends State<WineMapPage> {
          */
         print("b");
       }
-    }
-    else {
+    } else {
       print('http 500');
       print(response);
     }
   }
 
-  void _add_marker(String retailId, String retailName, double retailLocationX, double retailLocationY) {
+  void _add_marker(String retailId, String retailName, double retailLocationX,
+      double retailLocationY) {
     setState(() {
       _markers.add(Marker(
           markerId: retailId,
           position: LatLng(retailLocationY, retailLocationX),
           captionText: retailName,
           captionColor: Colors.red,
-          captionTextSize: 15.0,
-          alpha: 0.8,
-          //icon: image,
+          captionHaloColor: Colors.black,
+          captionTextSize: 12.0,
+          alpha: 1,
+          icon: wine_shop_marker,
           anchor: AnchorPoint(0.5, 1),
-          width: 40,
+          width: 30,
           height: 40,
           infoWindow: '인포 윈도우',
           onMarkerTab: _onMarkerTap));
@@ -87,9 +89,11 @@ class _MarkerMapPageState extends State<WineMapPage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       OverlayImage.fromAssetImage(
-        assetName: 'icon/marker.png',
+        assetName: 'images/wine.png',
         context: context,
       ).then((image) {
+        wine_shop_marker = image;
+        /*
         setState(() {
           _markers.add(Marker(
               markerId: 'id',
@@ -105,6 +109,7 @@ class _MarkerMapPageState extends State<WineMapPage> {
               infoWindow: '인포 윈도우',
               onMarkerTab: _onMarkerTap));
         });
+         */
       });
     });
     _getWineShopList();
