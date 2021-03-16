@@ -59,14 +59,14 @@ class CarouselWithIndicatorDemo extends StatefulWidget {
 }
 
 class FullscreenSliderDemo extends StatelessWidget {
-  final Wine wine_item;
+  final Wine wineItem;
 
-  const FullscreenSliderDemo ({ Key key, this.wine_item }): super(key: key);
+  const FullscreenSliderDemo ({ Key key, this.wineItem }): super(key: key);
 
   @override
   Widget build(BuildContext context) {
     imgList.clear();
-    imgList.add(wine_item.wine_image_url);
+    imgList.add(wineItem.wineImageURL);
 
     return Scaffold(
       body: Builder(
@@ -147,9 +147,9 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
 }
 
 class WineDetail extends StatefulWidget {
-  final Wine wine_item;
+  final Wine wineItem;
 
-  const WineDetail ({ Key key, this.wine_item }): super(key: key);
+  const WineDetail ({ Key key, this.wineItem }): super(key: key);
 
   @override
   _WineDetailState createState() => _WineDetailState();
@@ -167,12 +167,12 @@ class _WineDetailState extends State<WineDetail> {
             children: <Widget> [
               Container(
                   height: MediaQuery.of(context).size.height/10*4,
-                  child: FullscreenSliderDemo(wine_item: widget.wine_item)),
+                  child: FullscreenSliderDemo(wineItem: widget.wineItem)),
               Container(
                   height: MediaQuery.of(context).size.height/10*4,
                 child: Padding(
                     padding: EdgeInsets.fromLTRB(15, 30, 0, 0),
-                    child: Text(widget.wine_item.wine_name, style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 20))
+                    child: Text(widget.wineItem.wine_name, style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 20))
                 )
               )
             ],

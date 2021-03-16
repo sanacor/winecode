@@ -82,7 +82,7 @@ class _SearchScreenState extends State<SearchScreen> {
         mainAxisSpacing: 3,
         crossAxisSpacing: 3,
         crossAxisCount: 1,
-        onItemFound: (Wine wine_item, int index) {
+        onItemFound: (Wine wineItem, int index) {
           return Container(
             // margin: const EdgeInsets.all(30.0),
             padding: const EdgeInsets.all(10.0),
@@ -91,12 +91,12 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             // color: Colors.lightBlue,
             child: ListTile(
-              leading: Image.network(wine_item.wine_image_url),
-              title: Text(wine_item.wine_name),
+              leading: Image.network(wineItem.wineImageURL),
+              title: Text(wineItem.wineName),
               isThreeLine: false,
-              subtitle: Text(wine_item.wine_name),
+              subtitle: Text(wineItem.wineName),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WineDetail(wine_item: wine_item)));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WineDetail(wineItem: wineItem)));
               },
             ),
           );
