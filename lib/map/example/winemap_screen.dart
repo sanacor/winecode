@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 
-import 'package:wine/map/base_map.dart';
-import 'package:wine/map/circle_map.dart';
-import 'package:wine/map/padding_test.dart';
-import 'package:wine/map/marker_map_page.dart';
-import 'package:wine/map/path_map.dart';
-import 'package:wine/map/polygon_map.dart';
-import 'package:wine/map/text_field_page.dart';
-import 'package:wine/map/winemap_marker_screen.dart';
+import 'package:wine/map/example/base_map.dart';
+import 'package:wine/map/example/circle_map.dart';
+import 'package:wine/map/example/padding_test.dart';
+import 'package:wine/map/example/marker_map_page.dart';
+import 'package:wine/map/example/path_map.dart';
+import 'package:wine/map/example/polygon_map.dart';
+import 'package:wine/map/example/text_field_page.dart';
 
-class WineMapScreen extends StatefulWidget {
+class MapExample extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<WineMapScreen> {
+class _MyAppState extends State<MapExample> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,7 +36,6 @@ class _MainPageState extends State<MainPage> {
     '컨트롤러 테스트',
     '폴리곤 예제',
     'GLSurface Thread collision test',
-    '와인맵 지도 테스트',
   ];
 
   @override
@@ -127,12 +125,6 @@ class _MainPageState extends State<MainPage> {
             builder: (_) => TextFieldPage(),
           ));
         break;
-      case 7:
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => WineMapPage(),
-            ));
     }
   }
 }
