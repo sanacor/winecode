@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_kakao_map/flutter_kakao_map.dart';
 import 'package:flutter_kakao_map/kakao_maps_flutter_platform_interface.dart';
 
-import 'package:wine/map/page.dart';
+import 'package:wine/map/example/page.dart';
 import 'package:wine/map/model/wine_shop.dart';
 
 class WineMapScreenKakao extends KakaoMapExampleAppPage {

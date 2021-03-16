@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:wine/screen/chat_screen.dart';
 import 'package:wine/screen/search_screen.dart';
 import 'package:wine/screen/settings_screen.dart';
-import 'package:wine/map/winemap_screen.dart';
+import 'package:wine/map/wine_shop_map.dart';
 
 void main() => runApp(WineApp());
 
