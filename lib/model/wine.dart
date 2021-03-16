@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 
 
 class Wine {
-  String wine_name;
-  String wine_image_url;
+  String wineName;
+  String wineImageURL;
 
-  Wine(this.wine_name, this.wine_image_url);
+  Wine(this.wineName, this.wineImageURL);
 
 }
 

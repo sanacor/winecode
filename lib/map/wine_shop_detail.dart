@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
-import 'package:wine/model/wine.dart';
-import 'package:wine/screen/winemap_screen.dart';
+import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'package:wine/main.dart';
+import 'package:wine/map/model/wine_shop.dart';
 
 
 final List<String> imgList = [];
@@ -59,43 +59,43 @@ class CarouselWithIndicatorDemo extends StatefulWidget {
 }
 
 class FullscreenSliderDemo extends StatelessWidget {
-  final Wine wineItem;
+  final WineShop wineShop;
 
-  const FullscreenSliderDemo ({ Key key, this.wineItem }): super(key: key);
+  const FullscreenSliderDemo ({ Key key, this.wineShop }): super(key: key);
 
   @override
   Widget build(BuildContext context) {
     imgList.clear();
-    imgList.add(wineItem.wineImageURL);
+    imgList.add('https://assets.bonappetit.com/photos/5dcb33135a172900098302a0/master/w_2560%2Cc_limit/HLY-Wine-Shop-Thirties.jpg');
 
     return Scaffold(
       body: Builder(
-        builder: (context) {
-          final double height = (MediaQuery.of(context).size.height/10)*4;
-          return Stack(
-            children: <Widget>[
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: height,
-                  viewportFraction: 1.0,
-                  enlargeCenterPage: false,
-                  // autoPlay: false,
-                ),
-                items: imgList.map((item) => SafeArea(
-                    child:Container(
-                      child: Center(
-                        child: Image.network(item, fit: BoxFit.cover, height: height)
+          builder: (context) {
+            final double height = (MediaQuery.of(context).size.height/10)*4;
+            return Stack(
+              children: <Widget>[
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: height,
+                    viewportFraction: 1.0,
+                    enlargeCenterPage: false,
+                    // autoPlay: false,
                   ),
-                ))).toList(),
-              ),
-              SafeArea(child: IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.grey),
-                onPressed: () => Navigator.of(context).pop(),
-              )),
+                  items: imgList.map((item) => SafeArea(
+                      child:Container(
+                        child: Center(
+                            child: Image.network(item, fit: BoxFit.cover, height: height)
+                        ),
+                      ))).toList(),
+                ),
+                SafeArea(child: IconButton(
+                  icon: Icon(Icons.arrow_back, color: Colors.grey),
+                  onPressed: () => Navigator.of(context).pop(),
+                )),
 
-            ],
-          );
-        }
+              ],
+            );
+          }
       ),
     );
   }
@@ -146,49 +146,55 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
   }
 }
 
-class WineDetail extends StatefulWidget {
-  final Wine wineItem;
+class WineShopDetail extends StatefulWidget {
+  final WineShop wineShopItem;
 
-  const WineDetail ({ Key key, this.wineItem }): super(key: key);
+  const WineShopDetail ({ Key key, this.wineShopItem }): super(key: key);
 
   @override
-  _WineDetailState createState() => _WineDetailState();
+  _WineShopDetailState createState() => _WineShopDetailState();
 }
 
-class _WineDetailState extends State<WineDetail> {
+class _WineShopDetailState extends State<WineShopDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: new FooterView(
         children:<Widget>[
-        Container(
-          height: MediaQuery.of(context).size.height/10*2,
-          child: Wrap(
-            children: <Widget> [
-              Container(
-                  height: MediaQuery.of(context).size.height/10*4,
-                  child: FullscreenSliderDemo(wineItem: widget.wineItem)),
-              Container(
-                  height: MediaQuery.of(context).size.height/10*4,
-                child: Padding(
-                    padding: EdgeInsets.fromLTRB(15, 30, 0, 0),
-                    child: Text(widget.wineItem.wine_name, style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 20))
-                )
+          Container(
+              height: MediaQuery.of(context).size.height/10*2,
+              child: Wrap(
+                children: <Widget> [
+                  Container(
+                      height: MediaQuery.of(context).size.height/10*4,
+                      child: FullscreenSliderDemo(wineShop: widget.wineShopItem)),
+                  Container(
+                      height: MediaQuery.of(context).size.height/10*4,
+                      child: Padding(
+                          padding: EdgeInsets.fromLTRB(15, 30, 0, 0),
+                          child: Wrap(
+                            children: <Widget> [
+                              Text(widget.wineShopItem.retail_name, style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 20)),
+                              Text(widget.wineShopItem.retail_phone, style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 20)),
+                              Text(widget.wineShopItem.retail_address, style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 20)),
+                            ]
+                          )
+                      )
+                  )
+                ],
               )
-            ],
-          )
           )
         ],
         footer: new Footer(
           child: InkWell(
             onTap: () {
               // navigationBar.onTap(1);
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => WineApp(from_search: true)));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => WineApp()));
             },
             child: Center(
                 child: Padding(
                     padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
-                    child: Text('와인샵에 문의하기', style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 15))
+                    child: Text('와인샵에 전화하기', style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 15))
                 )
             ),
           ),

@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_kakao_map/flutter_kakao_map.dart';
 import 'package:flutter_kakao_map/kakao_maps_flutter_platform_interface.dart';
 
-import 'package:wine/map/page.dart';
+import 'package:wine/map/example/page.dart';
 import 'package:wine/map/model/wine_shop.dart';
 
 class WineMapScreenKakao extends KakaoMapExampleAppPage {
@@ -237,6 +237,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
 
       for (Map wine_shop in wine_shop_list) {
         _add_marker(wine_shop['retailId'].toString(),wine_shop['retailName'],wine_shop['retailLocationX'],wine_shop['retailLocationY']);
+        /*
         print("a");
         wineShopList.add(
             WineShop(wine_shop['retailId'].toString(),wine_shop['retailName'],wine_shop['retailPhone'],
@@ -244,6 +245,7 @@ class PlaceMarkerBodyState extends State<PlaceMarkerBody> {
                 wine_shop['retailAddress'],"Test","Test")//retailBhours, reatailExp가 null이면 코드는 진행되나 마커가 표시안됨
         );
         print("b");
+         */
       }
     }
     else {
