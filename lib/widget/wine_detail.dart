@@ -3,8 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:wine/model/wine.dart';
-import 'package:wine/screen/winemap_screen.dart';
-import 'package:wine/main.dart';
+import 'package:wine/map/inquery_map.dart';
 
 
 final List<String> imgList = [];
@@ -183,7 +182,7 @@ class _WineDetailState extends State<WineDetail> {
           child: InkWell(
             onTap: () {
               // navigationBar.onTap(1);
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => WineApp(from_search: true)));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => InqueryMapScreen()));
             },
             child: Center(
                 child: Padding(

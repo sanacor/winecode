@@ -5,22 +5,22 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
-import 'package:wine/map/model/wine_shop.dart';
-import 'package:wine/map/wine_shop_detail.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class WineMapScreen extends StatefulWidget {
+class InqueryMapScreen extends StatefulWidget {
   @override
   _MarkerMapPageState createState() => _MarkerMapPageState();
 }
 
-class _MarkerMapPageState extends State<WineMapScreen> {
+class _MarkerMapPageState extends State<InqueryMapScreen> {
   Completer<NaverMapController> _controller = Completer();
   List<Marker> _markers = [];
 
   OverlayImage wineShopMarker;
 
+  int _selectCnt = 0;
+
   Future<void> _getWineShopList() async {
-    print('START');
     var url =
         "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/retail/infoall";
     print(url);
@@ -46,15 +46,6 @@ class _MarkerMapPageState extends State<WineMapScreen> {
       for (Map wine_shop in wineShopList) {
         _addMarker(wine_shop['retailId'].toString(), wine_shop['retailName'],
             wine_shop['retailLocationX'], wine_shop['retailLocationY']);
-        //print("a");
-        /*
-        wineShopList.add(
-            WineShop(wine_shop['retailId'].toString(),wine_shop['retailName'],wine_shop['retailPhone'],
-                //wine_shop['retailAddress'],wine_shop['retailBhours'],wine_shop['retailExp'])
-                wine_shop['retailAddress'],"Test","Test")//retailBhours, reatailExp가 null이면 코드는 진행되나 마커가 표시안됨
-        );
-         */
-        //print("b");
       }
     } else {
       print('http 500');
@@ -77,7 +68,6 @@ class _MarkerMapPageState extends State<WineMapScreen> {
           anchor: AnchorPoint(0.5, 1),
           width: 30,
           height: 40,
-          //infoWindow: '인포 윈도우',
           onMarkerTab: _onMarkerTap));
     });
   }
@@ -98,27 +88,40 @@ class _MarkerMapPageState extends State<WineMapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          //_controlPanel(),
-          _naverMap(),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("문의를 보낼 와인샵 선택"),
+        ),
+        body: Column(
+          children: <Widget>[
+            _naverMap(),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Text("문의"),
+          onPressed: () {
+            print("Inquery Button touched");
+            Fluttertoast.showToast(
+                msg: "문의보내기 완료!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
+          },
+        ),
+        bottomNavigationBar: BottomAppBar(
+          child: Container(
+            height: 40.0,
+            child: Text("선택된 와인샵 : " + _selectCnt.toString()),
+          )
+        ),
       ),
     );
   }
-
-  //   return SafeArea(
-  //     child: Scaffold(
-  //       body: Column(
-  //         children: <Widget>[
-  //           //_controlPanel(),
-  //           _naverMap(),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 
   _naverMap() {
     return Expanded(
@@ -158,37 +161,13 @@ class _MarkerMapPageState extends State<WineMapScreen> {
   void _onMarkerTap(Marker marker, Map<String, int> iconSize) async {
     int pos = _markers.indexWhere((m) => m.markerId == marker.markerId);
     setState(() {
-      //_markers[pos].captionText = '선택됨';
-      _markers[pos].captionColor = Colors.blue;
+      if(_markers[pos].captionColor == Colors.red) {
+        _markers[pos].captionColor = Colors.blue;
+        _selectCnt += 1;
+      } else {
+        _markers[pos].captionColor = Colors.red;
+        _selectCnt -= 1;
+      }
     });
-    var url =
-        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/retail/" + _markers[pos].markerId;
-    var response;
-    try {
-      response = await http
-          .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-    } catch (e) {
-      print(e);
-    }
-    print(response);
-    if (response.statusCode == 200) {
-      var jsonResponse =
-      convert.jsonDecode(utf8.decode(response.bodyBytes)); //한글깨짐 수정
-      Map wineShopInfo = jsonResponse;
-      WineShop selectedWineShop =
-      WineShop(
-        retail_id : wineShopInfo['retailId'].toString(),
-        retail_address: wineShopInfo['retailAddress'].toString(),
-        retail_name: wineShopInfo['retailName'].toString(),
-        //retail_bhours: wineShopInfo['retailBhours'].toString(),
-        retail_phone: wineShopInfo['retailPhone'].toString(),
-        //retail_exp: wineShopInfo['retailExp'].toString(),
-      );
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => WineShopDetail(wineShopItem: selectedWineShop)));
-      _markers[pos].captionColor = Colors.red;
-    } else {
-      print('http 500');
-      print(response);
-    }
   }
 }
