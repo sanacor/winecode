@@ -98,17 +98,27 @@ class _MarkerMapPageState extends State<WineMapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: <Widget>[
-            //_controlPanel(),
-            _naverMap(),
-          ],
-        ),
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          //_controlPanel(),
+          _naverMap(),
+        ],
       ),
     );
   }
+
+  //   return SafeArea(
+  //     child: Scaffold(
+  //       body: Column(
+  //         children: <Widget>[
+  //           //_controlPanel(),
+  //           _naverMap(),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   _naverMap() {
     return Expanded(
