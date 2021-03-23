@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "155184351759",
+    "project_id": "winecode-10a78",
+    "storage_bucket": "winecode-10a78.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:155184351759:android:91faeb7eed029486f5f17a",
+        "android_client_info": {
+          "package_name": "com.example.winecode"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "155184351759-s4fbkua2d4g43b95guf8itfvuggegajm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8QLkR9rAuqwbESWGtdLpKs4efwpeD5rU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "155184351759-s4fbkua2d4g43b95guf8itfvuggegajm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "155184351759-6mt6j3074lhll87163q270l6p3ivbma1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "nclab.taehee.winecode"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

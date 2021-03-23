@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wine/screen/chat_screen.dart';
@@ -68,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void firebaseCloudMessaging_Listeners() {
-    // if (Platform.isIOS) iOS_Permission();
+    if (Platform.isIOS) iOS_Permission();
 
     _firebaseMessaging.getToken().then((token){
       print('token:'+token);
