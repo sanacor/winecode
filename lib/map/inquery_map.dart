@@ -109,31 +109,25 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
                 timeInSecForIosWeb: 1,
                 backgroundColor: Colors.red,
                 textColor: Colors.white,
-                fontSize: 16.0
-            );
+                fontSize: 16.0);
           },
         ),
         bottomNavigationBar: BottomAppBar(
-          child: Container(
-            height: 40.0,
-            child: Text("선택된 와인샵 : " + _selectCnt.toString()),
-          )
-        ),
+            child: Container(
+          height: 40.0,
+          child: Text("선택된 와인샵 : " + _selectCnt.toString()),
+        )),
       ),
     );
   }
 
   _naverMap() {
     return Expanded(
-      child: Stack(
-        children: <Widget>[
-          NaverMap(
-            onMapCreated: _onMapCreated,
-            onMapTap: _onMapTap,
-            markers: _markers,
-            initLocationTrackingMode: LocationTrackingMode.Follow,
-          ),
-        ],
+      child: NaverMap(
+        onMapCreated: _onMapCreated,
+        onMapTap: _onMapTap,
+        markers: _markers,
+        initLocationTrackingMode: LocationTrackingMode.Follow,
       ),
     );
   }
@@ -161,7 +155,7 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
   void _onMarkerTap(Marker marker, Map<String, int> iconSize) async {
     int pos = _markers.indexWhere((m) => m.markerId == marker.markerId);
     setState(() {
-      if(_markers[pos].captionColor == Colors.red) {
+      if (_markers[pos].captionColor == Colors.red) {
         _markers[pos].captionColor = Colors.blue;
         _selectCnt += 1;
       } else {
