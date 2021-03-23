@@ -36,6 +36,14 @@ dependencies:
   footer: ^0.0.3
   naver_map_plugin: ^0.9.6
 
+  #KaKao
+  kakao_flutter_sdk: ^0.5.4
+  dio:
+  json_annotation:
+  shared_preferences:
+  platform:
+  package_info:
+
 
 dev_dependencies:
   flutter_test:

@@ -4,6 +4,7 @@ import 'package:wine/screen/chat_screen.dart';
 import 'package:wine/screen/search_screen.dart';
 import 'package:wine/screen/settings_screen.dart';
 import 'package:wine/map/wine_shop_map.dart';
+import 'package:wine/socialLogin/kakaoLogin.dart';
 
 
 void main() => runApp(WineApp(from_search: false));
@@ -114,7 +115,8 @@ class _MyHomePageState extends State<MyHomePage> {
           SearchScreen(),
           WineMapScreen(),
           ChatScreen(),
-          SettingsScreen()
+          //SettingsScreen()
+          KakaoLogin()
         ],
         index: _selectedIndex,
       ),
