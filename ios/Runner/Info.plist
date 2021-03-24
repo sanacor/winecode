@@ -23,9 +23,14 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NMFClientId</key>
-	<string>cyzrxrbd8r</string>
+	<string>lzkrfez9bg</string>
 	<key>NSAllowsArbitraryLoads</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>[USAGE PERPOSE]</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -53,11 +58,5 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
-	<key>NSAppTransportSecurity</key>
-    	<dict>
-    		<key>NSAllowsArbitraryLoads</key>
-    		<true/>
-    	</dict>
-
 </dict>
 </plist>
