@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flappy_search_bar/scaled_tile.dart';
 import 'package:wine/widget/wine_detail.dart';
+import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+
 
 
 class SearchScreen extends StatefulWidget {
@@ -66,48 +68,61 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     // return Center(child: Text('Search'));
     return SafeArea(
-      child: SearchBar<Wine>(
-        searchBarPadding: EdgeInsets.symmetric(horizontal: 10),
-        headerPadding: EdgeInsets.symmetric(horizontal: 10),
-        listPadding: EdgeInsets.symmetric(horizontal: 10),
-        onSearch: _searchWineByKeyword,
-        searchBarController: _searchBarController,
-        // placeHolder: Text("placeholder"),
-        cancellationWidget: Text("취소"),
-        emptyWidget: Text("empty"),
-        // indexedScaledTileBuilder: (int index) => ScaledTile.count(1, index.isEven ? 2 : 1),
-        onCancelled: () {
-          print("Cancelled triggered");
-        },
-        mainAxisSpacing: 3,
-        crossAxisSpacing: 3,
-        crossAxisCount: 1,
-        onItemFound: (Wine wineItem, int index) {
-          return Container(
-            // margin: const EdgeInsets.all(30.0),
-            padding: const EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-                // border: Border.all(color: Colors.blueAccent)
-            ),
-            // color: Colors.lightBlue,
-            child: ListTile(
-              leading: Image.network(wineItem.wineImageURL),
-              title: Text(wineItem.wineName),
-              isThreeLine: false,
-              subtitle: Text(wineItem.wineName),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => WineDetail(wineItem: wineItem)));
-              },
-            ),
-          );
-        },
-      ),
+      child: buildFloatingSearchBar(),
 
     );
 
 
   }
 
+  Widget buildFloatingSearchBar() {
+    final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+
+    return FloatingSearchBar(
+      hint: 'Search...',
+      scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
+      transitionDuration: const Duration(milliseconds: 800),
+      transitionCurve: Curves.easeInOut,
+      physics: const BouncingScrollPhysics(),
+      axisAlignment: isPortrait ? 0.0 : -1.0,
+      openAxisAlignment: 0.0,
+      width: isPortrait ? 600 : 500,
+      debounceDelay: const Duration(milliseconds: 500),
+      onQueryChanged: (query) {
+        // Call your model, bloc, controller here.
+      },
+      // Specify a custom transition to be used for
+      // animating between opened and closed stated.
+      transition: CircularFloatingSearchBarTransition(),
+      actions: [
+        FloatingSearchBarAction(
+          showIfOpened: false,
+          child: CircularButton(
+            icon: const Icon(Icons.place),
+            onPressed: () {},
+          ),
+        ),
+        FloatingSearchBarAction.searchToClear(
+          showIfClosed: false,
+        ),
+      ],
+      builder: (context, transition) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Material(
+            color: Colors.white,
+            elevation: 4.0,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: Colors.accents.map((color) {
+                return Container(height: 112, color: color);
+              }).toList(),
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 
 //
