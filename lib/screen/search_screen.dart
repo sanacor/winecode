@@ -10,20 +10,15 @@ import 'package:flappy_search_bar/scaled_tile.dart';
 import 'package:wine/widget/wine_detail.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
-
 class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
 
-
 class _SearchScreenState extends State<SearchScreen> {
-
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child:  Center(
-        child: Container(
-            child: ListWidget())));
+    return SafeArea(child: Center(child: Container(child: ListWidget())));
   }
 }
 
@@ -37,45 +32,51 @@ class ListWidget extends StatelessWidget {
       future: this.viewModel.searchByKeyword('amaranta'),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return SingleChildScrollView(
-            physics: ScrollPhysics(),
-            child: Column(
-              children: <Widget>[
-                Container(
-                    margin: EdgeInsets.all(15.0),
-                    child: Row(
-                      children: <Widget>[
-                        Flexible(
-                          child: TextField(
-                            controller: _textController,
-                            onSubmitted: _handleSubmitted,
-                            decoration: new InputDecoration.collapsed(
-                                hintText: "와인 이름으로 검색"),
-                          ),
+          return Column(
+            children: <Widget>[
+              Container(
+                  margin: EdgeInsets.all(15.0),
+                  child: Row(
+                    children: <Widget>[
+                      Flexible(
+                        child: TextField(
+                          controller: _textController,
+                          onSubmitted: _handleSubmitted,
+                          decoration: new InputDecoration.collapsed(
+                              hintText: "와인 이름으로 검색"),
                         ),
-                        Container(
-                          // margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                          child: IconButton(
-                              icon: Icon(Icons.search),
-                              onPressed: () => _handleSubmitted(_textController.text)), ), ],)),
-                ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: Image.network(snapshot.data[index].wineImageURL),
-                      title: Text('${snapshot.data[index].wineName}'),
-                      isThreeLine: false,
-                      subtitle: Text('${snapshot.data[index].wineName}'),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WineDetail(wineItem: snapshot.data[index])));
-                      },
-                    );
-                  },
-                )
-              ],
-            ),
+                      ),
+                      Container(
+                        // margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: IconButton(
+                            icon: Icon(Icons.search),
+                            onPressed: () =>
+                                _handleSubmitted(_textController.text)),
+                      ),
+                    ],
+                  )),
+              Expanded(child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  return SingleChildScrollView(
+                      physics: ScrollPhysics(),
+                      child: ListTile(
+                        leading:
+                        Image.network(snapshot.data[index].wineImageURL),
+                        title: Text('${snapshot.data[index].wineName}'),
+                        isThreeLine: false,
+                        subtitle: Text('${snapshot.data[index].wineName}'),
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  WineDetail(wineItem: snapshot.data[index])));
+                        },
+                      ));
+                },
+              ))
+            ],
           );
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
@@ -85,7 +86,8 @@ class ListWidget extends StatelessWidget {
       },
     );
   }
-  void _handleSubmitted(String text) { _textController.clear(); }
 
-
+  void _handleSubmitted(String text) {
+    _textController.clear();
+  }
 }
