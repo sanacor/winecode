@@ -37,42 +37,45 @@ class ListWidget extends StatelessWidget {
       future: this.viewModel.searchByKeyword('amaranta'),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Column(
-            children: [
-              Container(
-                  margin: EdgeInsets.all(15.0),
-                  child: Row(
-                children: <Widget>[
-                  Flexible(
-                    child: TextField(
-                      controller: _textController,
-                      onSubmitted: _handleSubmitted,
-                      decoration: new InputDecoration.collapsed(
-                          hintText: "와인 이름으로 검색"),
-                    ),
-                  ),
-                  Container(
-                    // margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: IconButton(
-                        icon: Icon(Icons.search),
-                        onPressed: () => _handleSubmitted(_textController.text)), ), ],)),
-              ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: Image.network(snapshot.data[index].wineImageURL),
-                    title: Text('${snapshot.data[index].wineName}'),
-                    isThreeLine: false,
-                    subtitle: Text('${snapshot.data[index].wineName}'),
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => WineDetail(wineItem: snapshot.data[index])));
-                    },
-                  );
-                },
-              )
-            ],
+          return SingleChildScrollView(
+            physics: ScrollPhysics(),
+            child: Column(
+              children: <Widget>[
+                Container(
+                    margin: EdgeInsets.all(15.0),
+                    child: Row(
+                      children: <Widget>[
+                        Flexible(
+                          child: TextField(
+                            controller: _textController,
+                            onSubmitted: _handleSubmitted,
+                            decoration: new InputDecoration.collapsed(
+                                hintText: "와인 이름으로 검색"),
+                          ),
+                        ),
+                        Container(
+                          // margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                          child: IconButton(
+                              icon: Icon(Icons.search),
+                              onPressed: () => _handleSubmitted(_textController.text)), ), ],)),
+                ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: Image.network(snapshot.data[index].wineImageURL),
+                      title: Text('${snapshot.data[index].wineName}'),
+                      isThreeLine: false,
+                      subtitle: Text('${snapshot.data[index].wineName}'),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => WineDetail(wineItem: snapshot.data[index])));
+                      },
+                    );
+                  },
+                )
+              ],
+            ),
           );
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");

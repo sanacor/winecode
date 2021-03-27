@@ -150,6 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
           showUnselectedLabels: true,
           unselectedItemColor: Colors.blue,
 
+
       ),
       body:IndexedStack(
         children: <Widget>[
@@ -160,7 +161,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         index: _selectedIndex,
       ),
-
     );
   }
 }
