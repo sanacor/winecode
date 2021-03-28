@@ -17,7 +17,11 @@ class Wine {
 class PostViewModel {
   String url = "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/product/search/";
 
-  Future<List<Wine>> searchByKeyword(search_keyword) async {
+  Future<List<Wine>> searchByKeyword([String search_keyword = ""]) async {
+    if (search_keyword == "") {
+      return [];
+    }
+
     final response = await http.get(this.url + search_keyword);
     if (response.statusCode == 200) {
       List responseJson = json.decode(response.body);
