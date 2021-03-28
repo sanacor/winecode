@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wine/screen/chat_screen.dart';
 import 'package:wine/screen/search_screen.dart';
-import 'package:wine/screen/settings_screen.dart';
+import 'package:wine/settings/settings_screen.dart';
 import 'package:wine/map/model/wine_shop.dart';
 import 'package:wine/map/winemap_screen.dart';
+import 'package:wine/inquery/inquery_screen.dart';
 
 void main() => runApp(WineApp());
 
@@ -99,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           SearchScreen(),
           WineMapScreen(),
-          ChatScreen(),
+          Inquery_Screen(),
           SettingsScreen()
         ],
         index: _selectedIndex,
