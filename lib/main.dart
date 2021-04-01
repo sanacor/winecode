@@ -6,12 +6,41 @@ import 'package:wine/screen/search_screen.dart';
 import 'package:wine/screen/settings_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:wine/map/wine_shop_map.dart';
+import 'package:provider/provider.dart';
 
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
 
-void main() => runApp(WineApp(from_search: false));
+class Profile with ChangeNotifier {
+  bool _isAuthentificated = false;
+
+  bool get isAuthentificated {
+    return this._isAuthentificated;
+  }
+
+  set isAuthentificated(bool newVal) {
+    this._isAuthentificated = newVal;
+    this.notifyListeners();
+  }
+}
+
+
+// void main() => runApp(WineApp(from_search: false));
+void main() {
+  return runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<Profile>(
+          create: (final BuildContext context) {
+            return Profile();
+          },
+        )
+      ],
+      child: WineApp(from_search: false),
+    ),
+  );
+}
 
 class WineApp extends StatelessWidget {
   final bool from_search;
@@ -21,20 +50,44 @@ class WineApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print('sana: $from_search');
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Wine',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        accentColor: Colors.blueGrey,
-        secondaryHeaderColor: Colors.blueGrey[600],
-        backgroundColor: Colors.grey[200],
-        textTheme: GoogleFonts.latoTextTheme(
-          Theme.of(context).textTheme,
+    return Consumer<Profile>(
+      builder: (final BuildContext context, final Profile profile, final Widget child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Wine',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            accentColor: Colors.blueGrey,
+            secondaryHeaderColor: Colors.blueGrey[600],
+            backgroundColor: Colors.grey[200],
+            textTheme: GoogleFonts.latoTextTheme(
+              Theme.of(context).textTheme,
+            ),
+          ),
+          // home: MyHomePage(from_search: from_search),
+          home: profile.isAuthentificated ? MyHomePage(from_search: from_search) : MyLoginPage(),
+        );
+      },
+    );
+
+  }
+}
+
+
+class MyLoginPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Login")),
+      body: Center(
+        child: RaisedButton(
+          child: const Text("Login"),
+          onPressed: () {
+            final Profile profile = Provider.of<Profile>(context, listen: false);
+            profile.isAuthentificated = true;
+          },
         ),
       ),
-      home: MyHomePage(from_search: from_search),
     );
   }
 }
