@@ -11,17 +11,17 @@ class InqueryTile extends StatelessWidget {
       leading: Icon(Icons.person),
       title: Text(_inqueryInfo.comment),
       subtitle: Text("${_inqueryInfo.wine}"),
-      trailing: InQueryEnableIcon(_inqueryInfo.state),
+      trailing: Text(_inqueryInfo.state),
     );
   }
 }
 
 class InqueryInfo {
-  int id;
+  String id;
   String wine;
   String shop;
   String comment;
-  bool state;
+  String state;
   /*
    {
         "id": "987-326-436",
