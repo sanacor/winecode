@@ -1,12 +1,15 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:wine/screen/chat_screen.dart';
 import 'package:wine/screen/search_screen.dart';
-import 'package:wine/screen/settings_screen.dart';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:wine/map/wine_shop_map.dart';
 import 'package:provider/provider.dart';
+
+import 'package:wine/settings/settings_screen.dart';
+import 'package:wine/inquery/inquery_screen.dart';
+
 
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -209,7 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           SearchScreen(),
           WineMapScreen(),
-          ChatScreen(),
+          inquery_screen(),
           SettingsScreen()
         ],
         index: _selectedIndex,
