@@ -58,7 +58,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: snapshot.data.length,
+                // itemCount: snapshot.data.length,
+                itemCount: snapshot.data == null ? 0 : snapshot.data.length,
                 itemBuilder: (context, index) {
                   return SingleChildScrollView(
                       physics: ScrollPhysics(),
@@ -110,7 +111,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  itemCount: snapshot.data.length,
+                  // itemCount: snapshot.data.length,
+                  itemCount: snapshot.data == null ? 0 : snapshot.data.length,
                   itemBuilder: (context, index) {
                     return SingleChildScrollView(
                         physics: ScrollPhysics(),
