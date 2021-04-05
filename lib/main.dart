@@ -133,6 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     _firebaseMessaging.getToken().then((token){
       print('token:'+token);
+      print('SANA-001-001');
     });
 
     _firebaseMessaging.configure(
@@ -150,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void iOS_Permission() {
     _firebaseMessaging.requestNotificationPermissions(
-        IosNotificationSettings(sound: true, badge: true, alert: true)
+        IosNotificationSettings(sound: true, badge: true, alert: true, provisional: false)
     );
     _firebaseMessaging.onIosSettingsRegistered
         .listen((IosNotificationSettings settings)
