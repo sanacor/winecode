@@ -22,6 +22,8 @@ class PostViewModel {
       return [];
     }
 
+    
+    
     final response = await http.get(this.url + search_keyword);
     if (response.statusCode == 200) {
       List responseJson = json.decode(response.body);
