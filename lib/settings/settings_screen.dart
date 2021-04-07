@@ -15,7 +15,6 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _isKakaoTalkInstalled = false;
-  String userInfo = '';
 
   List<Widget> LoadSettingTile(BuildContext context) {
     List<ListTile> widgetList = [];
@@ -89,16 +88,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
       print("AccessToken : " + token.accessToken);
       await _registerUserInfoWithKakao(token.accessToken);
       await _loginWithKakao(token.accessToken);
-      /*
       try {
         User user = await UserApi.instance.me();
         print(user.toString());
-        setState(() {
-          userInfo = user.toString() + "\n\nAccessToken : "
-              + token.accessToken + "\n\nRefreshToken : " + token.refreshToken;
-        });
+        Fluttertoast.showToast(
+            msg: user.properties['nickname'] + "님 반갑습니다.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
       } on KakaoAuthException catch (e) {} catch (e) {}
-       */
     } catch (e) {
       print("error on issuing access token: $e");
     }
@@ -155,6 +156,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
       var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
       //TODO 발급받은 JWT를 Secure Storage에 저장해둬야 함
       print(JsonResponse);
+      /*
+      Fluttertoast.showToast(
+          msg: JsonResponse['data'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+       */
     } catch (e) {
       print(e);
     }
