@@ -14,6 +14,18 @@ import 'package:provider/provider.dart';
 import 'package:wine/settings/settings_screen.dart';
 import 'package:wine/inquery/inquery_screen.dart';
 
+import 'package:kakao_flutter_sdk/all.dart';
+import 'package:kakao_flutter_sdk/auth.dart';
+import 'package:kakao_flutter_sdk/common.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_plugin.dart';
+import 'package:kakao_flutter_sdk/link.dart';
+import 'package:kakao_flutter_sdk/local.dart';
+import 'package:kakao_flutter_sdk/push.dart';
+import 'package:kakao_flutter_sdk/search.dart';
+import 'package:kakao_flutter_sdk/story.dart';
+import 'package:kakao_flutter_sdk/talk.dart';
+import 'package:kakao_flutter_sdk/template.dart';
+import 'package:kakao_flutter_sdk/user.dart';
 
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -35,6 +47,9 @@ class Profile with ChangeNotifier {
 
 // void main() => runApp(WineApp(from_search: false));
 void main() {
+  KakaoContext.clientId = "ca40c6c8ce91488eb2134298e99bbdee";
+  KakaoContext.javascriptClientId = "b17c77211acfdb44a6e6d6a91310cd44";
+
   return runApp(
     MultiProvider(
       providers: [

@@ -41,11 +41,11 @@ dependencies:
 
   #KaKao
   kakao_flutter_sdk: ^0.5.4
-  dio:
-  json_annotation:
-  shared_preferences:
-  platform:
-  package_info:
+  dio: ^3.0.9
+  json_annotation: ^3.0.1
+  shared_preferences: ^0.5.7
+  platform: ^2.2.1
+  package_info: ^0.4.0+18
 
 
 dev_dependencies:
