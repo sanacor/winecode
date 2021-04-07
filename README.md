@@ -18,3 +18,7 @@ samples, guidance on mobile development, and a full API reference.
 
 ## pubspec
 - flutter pub get
+
+## iOS 프로젝트 지우고 다시 빌드하기
+- ios 디렉토리 삭제
+-  flutter create .

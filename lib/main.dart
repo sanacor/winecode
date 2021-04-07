@@ -1,13 +1,53 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:wine/screen/chat_screen.dart';
-import 'package:wine/screen/search_screen.dart';
-import 'package:wine/screen/settings_screen.dart';
+import 'package:wine/search/search_screen.dart';
+
+import 'package:wine/settings/settings_screen.dart';
+import 'package:wine/inquery/inquery_screen.dart';
+
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:wine/map/wine_shop_map.dart';
-import 'package:wine/socialLogin/kakaoLogin.dart';
+import 'package:provider/provider.dart';
+
+import 'package:wine/settings/settings_screen.dart';
+import 'package:wine/inquery/inquery_screen.dart';
 
 
-void main() => runApp(WineApp(from_search: false));
+
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
+
+class Profile with ChangeNotifier {
+  bool _isAuthentificated = false;
+
+  bool get isAuthentificated {
+    return this._isAuthentificated;
+  }
+
+  set isAuthentificated(bool newVal) {
+    this._isAuthentificated = newVal;
+    this.notifyListeners();
+  }
+}
+
+
+// void main() => runApp(WineApp(from_search: false));
+void main() {
+  return runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<Profile>(
+          create: (final BuildContext context) {
+            return Profile();
+          },
+        )
+      ],
+      child: WineApp(from_search: false),
+    ),
+  );
+}
 
 class WineApp extends StatelessWidget {
   final bool from_search;
@@ -17,20 +57,44 @@ class WineApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print('sana: $from_search');
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Wine',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        accentColor: Colors.blueGrey,
-        secondaryHeaderColor: Colors.blueGrey[600],
-        backgroundColor: Colors.grey[200],
-        textTheme: GoogleFonts.latoTextTheme(
-          Theme.of(context).textTheme,
+    return Consumer<Profile>(
+      builder: (final BuildContext context, final Profile profile, final Widget child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Wine',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            accentColor: Colors.blueGrey,
+            secondaryHeaderColor: Colors.blueGrey[600],
+            backgroundColor: Colors.grey[200],
+            textTheme: GoogleFonts.latoTextTheme(
+              Theme.of(context).textTheme,
+            ),
+          ),
+          // home: MyHomePage(from_search: from_search),
+          home: profile.isAuthentificated ? MyHomePage(from_search: from_search) : MyLoginPage(),
+        );
+      },
+    );
+
+  }
+}
+
+
+class MyLoginPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Login")),
+      body: Center(
+        child: RaisedButton(
+          child: const Text("Login"),
+          onPressed: () {
+            final Profile profile = Provider.of<Profile>(context, listen: false);
+            profile.isAuthentificated = true;
+          },
         ),
       ),
-      home: MyHomePage(from_search: from_search),
     );
   }
 }
@@ -57,6 +121,43 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   static int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    firebaseCloudMessaging_Listeners();
+  }
+
+  void firebaseCloudMessaging_Listeners() {
+    if (Platform.isIOS) iOS_Permission();
+
+    _firebaseMessaging.getToken().then((token){
+      print('token:'+token);
+    });
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
+    );
+  }
+
+  void iOS_Permission() {
+    _firebaseMessaging.requestNotificationPermissions(
+        IosNotificationSettings(sound: true, badge: true, alert: true)
+    );
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings)
+    {
+      print("Settings registered: $settings");
+    });
+  }
 
   void _onBottomItemTapped(int index) {
     setState(() {
@@ -109,18 +210,17 @@ class _MyHomePageState extends State<MyHomePage> {
           showUnselectedLabels: true,
           unselectedItemColor: Colors.blue,
 
+
       ),
       body:IndexedStack(
         children: <Widget>[
           SearchScreen(),
           WineMapScreen(),
-          ChatScreen(),
-          //SettingsScreen()
-          KakaoLogin()
+          inquery_screen(),
+          SettingsScreen()
         ],
         index: _selectedIndex,
       ),
-
     );
   }
 }
