@@ -39,6 +39,9 @@ android {
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        // Cannot fit requested classes in a single dex file 해결
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -56,6 +59,9 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Cannot fit requested classes in a single dex file 해결
+    implementation 'com.android.support:multidex:1.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'
