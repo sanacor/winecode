@@ -173,7 +173,7 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
     }
 
     var url =
-        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/inquery";
+        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/inquery/send";
     print(url);
     var response;
     try {
