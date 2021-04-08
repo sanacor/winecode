@@ -27,6 +27,15 @@ import 'package:kakao_flutter_sdk/talk.dart';
 import 'package:kakao_flutter_sdk/template.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+
+import 'dart:convert' as convert;
+import 'dart:convert' show utf8;
+import 'package:kakao_flutter_sdk/auth.dart';
+import 'package:kakao_flutter_sdk/user.dart';
+
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
@@ -64,12 +73,22 @@ void main() {
   );
 }
 
-class WineApp extends StatelessWidget {
-  final bool from_search;
+class WineApp extends StatefulWidget {
+  final bool from_search;//TODO from_search 걷어내야함
 
   const WineApp({ Key key, this.from_search }) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  _WineAppState createState() => _WineAppState();
+}
+
+class _WineAppState extends State<WineApp> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<Profile>(
@@ -86,8 +105,8 @@ class WineApp extends StatelessWidget {
               Theme.of(context).textTheme,
             ),
           ),
-          // home: MyHomePage(from_search: from_search),
-          home: profile.isAuthentificated ? MyHomePage(from_search: from_search) : MyLoginPage(),
+          home: MyHomePage(from_search: widget.from_search),
+          //home: profile.isAuthentificated ? MyHomePage(from_search: widget.from_search) : MyLoginPage(),
         );
       },
     );
@@ -96,7 +115,15 @@ class WineApp extends StatelessWidget {
 }
 
 
-class MyLoginPage extends StatelessWidget {
+class MyLoginPage extends StatefulWidget {
+  @override
+  _MyLoginPageState createState() => _MyLoginPageState();
+}
+
+class _MyLoginPageState extends State<MyLoginPage> {
+  bool _isKakaoTalkInstalled = false;
+  static final storage = FlutterSecureStorage();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,14 +131,120 @@ class MyLoginPage extends StatelessWidget {
       body: Center(
         child: RaisedButton(
           child: const Text("Login"),
-          onPressed: () {
-            final Profile profile = Provider.of<Profile>(context, listen: false);
-            profile.isAuthentificated = true;
-          },
+          onPressed: _loginWithTalk,
         ),
       ),
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    KakaoContext.clientId = 'ca40c6c8ce91488eb2134298e99bbdee';
+    _initKakaoTalkInstalled();
+  }
+
+  _initKakaoTalkInstalled() async {
+    final installed = await isKakaoTalkInstalled();
+    print('kakao Install : ' + installed.toString());
+
+    setState(() {
+      _isKakaoTalkInstalled = installed;
+    });
+  }
+
+
+  _issueAccessToken(String authCode) async {
+    try {
+      var token = await AuthApi.instance.issueAccessToken(authCode);
+      AccessTokenStore.instance.toStore(token);
+      print("AccessToken : " + token.accessToken);
+      await _registerUserInfoWithKakao(token.accessToken);
+      await _loginWithKakao(token.accessToken);
+      try {
+        User user = await UserApi.instance.me();
+        print(user.toString());
+        Fluttertoast.showToast(
+            msg: user.properties['nickname'] + "님 반갑습니다.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } on KakaoAuthException catch (e) {} catch (e) {}
+    } catch (e) {
+      print("error on issuing access token: $e");
+    }
+  }
+
+  _loginWithTalk() async {
+    if (_isKakaoTalkInstalled) {
+      try {
+        var code = await AuthCodeClient.instance.requestWithTalk();
+        await _issueAccessToken(code);
+      } catch (e) {
+        print(e);
+      }
+    } else {
+      //카톡이 깔려있지 않으면 웹으로 진행
+      Fluttertoast.showToast(
+          msg: "카카오톡이 설치되어있지 않습니다.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      try {
+        //Not Working
+        var code = await AuthCodeClient.instance.request();
+        await _issueAccessToken(code);
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
+  _registerUserInfoWithKakao(String accessToken) async {
+    var url =
+        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/v1/signup/kakao?accessToken=" + accessToken;
+    try {
+      var response = await http
+          .post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+      var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
+      //TODO 여기서 응답코드에 따라서 로그인으로 넘어갈지 회원가입으로 갈지 결정??
+      print(JsonResponse);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  _loginWithKakao(String accessToken) async {
+    var url =
+        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/v1/signin/kakao?accessToken=" + accessToken;
+    try {
+      var response = await http
+          .post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+      var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
+      //TODO 발급받은 JWT를 Secure Storage에 저장해둬야 함
+      print(JsonResponse);
+      await storage.write(
+          key: "jwt",
+          value: JsonResponse['data']);
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              MyHomePage()));
+    } catch (e) {
+      print(e);
+    }
+  }
+
 }
 
 
@@ -137,10 +270,46 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   static int _selectedIndex = 0;
 
+  static final storage = new FlutterSecureStorage(); //flutter_secure_storage 사용을 위한 초기화 작업
+
   @override
   void initState() {
     super.initState();
     firebaseCloudMessaging_Listeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkJWT();
+    });
+  }
+
+  _checkJWT() async {
+    //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
+    //(데이터가 없을때는 null을 반환을 합니다.)
+    String jwt = await storage.read(key: "jwt");
+    print(jwt);
+
+    //jwt가 없는 경우 로그인 페이지로 이동
+    if (jwt == null) {
+      Fluttertoast.showToast(
+          msg: "로그인 정보가 없어 로그인페이지로 이동합니다.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              MyLoginPage()));
+    } else {
+      Fluttertoast.showToast(
+          msg: "로그인 정보 있음",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
   }
 
   void firebaseCloudMessaging_Listeners() {

@@ -47,6 +47,9 @@ dependencies:
   platform: ^2.2.1
   package_info: ^0.4.0+18
 
+  #Secure Storage
+  flutter_secure_storage: ^4.1.0
+
 
 dev_dependencies:
   flutter_test:
