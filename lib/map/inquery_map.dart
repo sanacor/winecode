@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert' as convert;
-import 'dart:convert' show utf8;
+import 'dart:convert' show jsonEncode, utf8;
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -15,6 +15,7 @@ class InqueryMapScreen extends StatefulWidget {
 class _MarkerMapPageState extends State<InqueryMapScreen> {
   Completer<NaverMapController> _controller = Completer();
   List<Marker> _markers = [];
+  List<String> _selectedShops = [];
 
   OverlayImage wineShopMarker;
 
@@ -100,17 +101,7 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           child: Text("문의"),
-          onPressed: () {
-            print("Inquery Button touched");
-            Fluttertoast.showToast(
-                msg: "문의보내기 완료!",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.red,
-                textColor: Colors.white,
-                fontSize: 16.0);
-          },
+          onPressed: _onInqueryTap,
         ),
         bottomNavigationBar: BottomAppBar(
             child: Container(
@@ -158,10 +149,66 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
       if (_markers[pos].captionColor == Colors.red) {
         _markers[pos].captionColor = Colors.blue;
         _selectCnt += 1;
+        _selectedShops.add(_markers[pos].markerId);
       } else {
         _markers[pos].captionColor = Colors.red;
         _selectCnt -= 1;
+        _selectedShops.remove(_markers[pos].markerId);
       }
     });
+    print(_selectedShops);
+  }
+
+  Future<void> _onInqueryTap() async {
+    if(_selectedShops.length <= 0) {
+      Fluttertoast.showToast(
+          msg: "와인샵을 선택해주세요.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      return;
+    }
+
+    var url =
+        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/inquery";
+    print(url);
+    var response;
+    try {
+      response = await http.post(
+          Uri.encodeFull(url),
+          headers: {"Accept": "application/json"},
+          body: jsonEncode(<String, List<String>>{
+            'shops': _selectedShops,
+          }),
+      );
+    } catch (e) {
+      print(e);
+    }
+
+    var jsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes)); //한글깨짐 수정
+    print(jsonResponse.toString());
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+          msg: "문의보내기 완료!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "문의보내기 실패!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
   }
 }
