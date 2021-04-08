@@ -40,15 +40,25 @@ class _SearchScreenState extends State<SearchScreen> {
         return Column(
           children: <Widget>[
             Container(
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    // border: Border.all(
+                    //   color: Colors.red[500],
+                    // ),
+                    borderRadius: BorderRadius.all(Radius.circular(10))
+                ),
                 margin: EdgeInsets.all(15.0),
                 child: Row(
                   children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width / 25,
+                    ),
                     Flexible(
                       child: TextField(
                         controller: _textController,
                         onSubmitted: _handleSubmitted,
                         decoration: new InputDecoration.collapsed(
-                            hintText: "와인 이름으로 검색"),
+                            hintText: "  와인 이름으로 검색"),
                       ),
                     ),
                     Container(

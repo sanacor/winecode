@@ -1,7 +1,7 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:wine/search/search_screen.dart';
+import 'package:wine/search/searchScreen.dart';
 
 import 'package:wine/settings/settings_screen.dart';
 import 'package:wine/inquery/inquery_screen.dart';
