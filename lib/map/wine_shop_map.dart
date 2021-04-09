@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert' as convert;
 import 'dart:convert' show utf8;
 import 'package:http/http.dart' as http;
+import 'package:wine/util/http.dart';
 
 import 'package:flutter/material.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
@@ -21,45 +22,57 @@ class _MarkerMapPageState extends State<WineMapScreen> {
 
   Future<void> _getWineShopList() async {
     print('START');
-    var url =
-        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/retail/infoall";
-    print(url);
-    var response;
-    try {
-      response = await http
-          .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-    } catch (e) {
-      print(e);
-    }
+    // var url =
+    //     "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/retail/infoall";
+    // print(url);
+    // var response;
+    // try {
+    //   response = await http
+    //       .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+    // } catch (e) {
+    //   print(e);
+    // }
+
+
+    var response = await http_get(header: null, path: 'api/retail/infoall');
 
     print(response);
 
-    if (response.statusCode == 200) {
-      //var jsonResponse = convert.jsonDecode(response.body);
-      var jsonResponse =
-          convert.jsonDecode(utf8.decode(response.bodyBytes)); //한글깨짐 수정
-      // var wine_list = jsonResponse['wine_list'];
-      var wineShopList = jsonResponse;
-      //print(wine_shop_list);
-      //print(wine_shop_list is List);
+    List responseJson = response;
 
-      for (Map wine_shop in wineShopList) {
-        _addMarker(wine_shop['retailId'].toString(), wine_shop['retailName'],
-            wine_shop['retailLocationX'], wine_shop['retailLocationY']);
-        //print("a");
-        /*
-        wineShopList.add(
-            WineShop(wine_shop['retailId'].toString(),wine_shop['retailName'],wine_shop['retailPhone'],
-                //wine_shop['retailAddress'],wine_shop['retailBhours'],wine_shop['retailExp'])
-                wine_shop['retailAddress'],"Test","Test")//retailBhours, reatailExp가 null이면 코드는 진행되나 마커가 표시안됨
-        );
-         */
-        //print("b");
-      }
-    } else {
-      print('http 500');
-      print(response);
+    var wineShopList = responseJson;
+
+    for (Map wine_shop in wineShopList) {
+      _addMarker(wine_shop['retailId'].toString(), wine_shop['retailName'],
+          wine_shop['retailLocationX'], wine_shop['retailLocationY']);
+      print('shit-100');
     }
+    // if (response.statusCode == 200) {
+    //   //var jsonResponse = convert.jsonDecode(response.body);
+    //   var jsonResponse =
+    //       convert.jsonDecode(utf8.decode(response.bodyBytes)); //한글깨짐 수정
+    //   // var wine_list = jsonResponse['wine_list'];
+    //   var wineShopList = jsonResponse;
+    //   //print(wine_shop_list);
+    //   //print(wine_shop_list is List);
+    //
+    //   for (Map wine_shop in wineShopList) {
+    //     _addMarker(wine_shop['retailId'].toString(), wine_shop['retailName'],
+    //         wine_shop['retailLocationX'], wine_shop['retailLocationY']);
+    //     //print("a");
+    //     /*
+    //     wineShopList.add(
+    //         WineShop(wine_shop['retailId'].toString(),wine_shop['retailName'],wine_shop['retailPhone'],
+    //             //wine_shop['retailAddress'],wine_shop['retailBhours'],wine_shop['retailExp'])
+    //             wine_shop['retailAddress'],"Test","Test")//retailBhours, reatailExp가 null이면 코드는 진행되나 마커가 표시안됨
+    //     );
+    //      */
+    //     //print("b");
+    //   }
+    // } else {
+    //   print('http 500');
+    //   print(response);
+    // }
   }
 
   void _addMarker(String retailId, String retailName, double retailLocationX,
