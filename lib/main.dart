@@ -1,7 +1,7 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:wine/search/searchScreen.dart';
+import 'package:wine/search/search_screen.dart';
 
 import 'package:wine/settings/settings_screen.dart';
 import 'package:wine/inquery/inquery_screen.dart';
@@ -45,7 +45,6 @@ class Profile with ChangeNotifier {
 }
 
 
-// void main() => runApp(WineApp(from_search: false));
 void main() {
   KakaoContext.clientId = "ca40c6c8ce91488eb2134298e99bbdee";
   KakaoContext.javascriptClientId = "b17c77211acfdb44a6e6d6a91310cd44";
@@ -59,15 +58,14 @@ void main() {
           },
         )
       ],
-      child: WineApp(from_search: false),
+      child: WineApp(),
     ),
   );
 }
 
 class WineApp extends StatelessWidget {
-  final bool from_search;
 
-  const WineApp({ Key key, this.from_search }) : super(key: key);
+  const WineApp({ Key key }) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -86,8 +84,7 @@ class WineApp extends StatelessWidget {
               Theme.of(context).textTheme,
             ),
           ),
-          // home: MyHomePage(from_search: from_search),
-          home: profile.isAuthentificated ? MyHomePage(from_search: from_search) : MyLoginPage(),
+          home: profile.isAuthentificated ? MyHomePage() : MyLoginPage(),
         );
       },
     );
@@ -116,8 +113,7 @@ class MyLoginPage extends StatelessWidget {
 
 
 class MyHomePage extends StatefulWidget {
-  bool from_search;
-  MyHomePage({Key key, this.from_search=false}) : super(key: key);
+  MyHomePage({Key key }) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -177,7 +173,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onBottomItemTapped(int index) {
     setState(() {
       print(index);
-      widget.from_search = false;
       _selectedIndex = index;
     });
   }
@@ -205,11 +200,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print('sana2 $widget.from_search');
-    if (widget.from_search) {
-      _selectedIndex = 1;
-    }
-
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
