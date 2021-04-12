@@ -27,15 +27,6 @@ import 'package:kakao_flutter_sdk/talk.dart';
 import 'package:kakao_flutter_sdk/template.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
-
-import 'dart:convert' as convert;
-import 'dart:convert' show utf8;
-import 'package:kakao_flutter_sdk/auth.dart';
-import 'package:kakao_flutter_sdk/user.dart';
-
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
@@ -54,7 +45,6 @@ class Profile with ChangeNotifier {
 }
 
 
-// void main() => runApp(WineApp(from_search: false));
 void main() {
   KakaoContext.clientId = "ca40c6c8ce91488eb2134298e99bbdee";
   KakaoContext.javascriptClientId = "b17c77211acfdb44a6e6d6a91310cd44";
@@ -68,27 +58,16 @@ void main() {
           },
         )
       ],
-      child: WineApp(from_search: false),
+      child: WineApp(),
     ),
   );
 }
 
-class WineApp extends StatefulWidget {
-  final bool from_search;//TODO from_search 걷어내야함
+class WineApp extends StatelessWidget {
 
-  const WineApp({ Key key, this.from_search }) : super(key: key);
+  const WineApp({ Key key }) : super(key: key);
 
-  @override
-  _WineAppState createState() => _WineAppState();
-}
-
-class _WineAppState extends State<WineApp> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return Consumer<Profile>(
@@ -105,8 +84,7 @@ class _WineAppState extends State<WineApp> {
               Theme.of(context).textTheme,
             ),
           ),
-          home: MyHomePage(from_search: widget.from_search),
-          //home: profile.isAuthentificated ? MyHomePage(from_search: widget.from_search) : MyLoginPage(),
+          home: profile.isAuthentificated ? MyHomePage() : MyLoginPage(),
         );
       },
     );
@@ -115,15 +93,7 @@ class _WineAppState extends State<WineApp> {
 }
 
 
-class MyLoginPage extends StatefulWidget {
-  @override
-  _MyLoginPageState createState() => _MyLoginPageState();
-}
-
-class _MyLoginPageState extends State<MyLoginPage> {
-  bool _isKakaoTalkInstalled = false;
-  static final storage = FlutterSecureStorage();
-
+class MyLoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,11 +101,15 @@ class _MyLoginPageState extends State<MyLoginPage> {
       body: Center(
         child: RaisedButton(
           child: const Text("Login"),
-          onPressed: _loginWithTalk,
+          onPressed: () {
+            final Profile profile = Provider.of<Profile>(context, listen: false);
+            profile.isAuthentificated = true;
+          },
         ),
       ),
     );
   }
+<<<<<<< .merge_file_a29848
 
   @override
   void dispose() {
@@ -245,12 +219,13 @@ class _MyLoginPageState extends State<MyLoginPage> {
     }
   }
 
+=======
+>>>>>>> .merge_file_a29892
 }
 
 
 class MyHomePage extends StatefulWidget {
-  bool from_search;
-  MyHomePage({Key key, this.from_search=false}) : super(key: key);
+  MyHomePage({Key key }) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -270,46 +245,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   static int _selectedIndex = 0;
 
-  static final storage = new FlutterSecureStorage(); //flutter_secure_storage 사용을 위한 초기화 작업
-
   @override
   void initState() {
     super.initState();
     firebaseCloudMessaging_Listeners();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkJWT();
-    });
-  }
-
-  _checkJWT() async {
-    //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
-    //(데이터가 없을때는 null을 반환을 합니다.)
-    String jwt = await storage.read(key: "jwt");
-    print(jwt);
-
-    //jwt가 없는 경우 로그인 페이지로 이동
-    if (jwt == null) {
-      Fluttertoast.showToast(
-          msg: "로그인 정보가 없어 로그인페이지로 이동합니다.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              MyLoginPage()));
-    } else {
-      Fluttertoast.showToast(
-          msg: "로그인 정보 있음",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-    }
   }
 
   void firebaseCloudMessaging_Listeners() {
@@ -346,7 +285,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onBottomItemTapped(int index) {
     setState(() {
       print(index);
-      widget.from_search = false;
       _selectedIndex = index;
     });
   }
@@ -374,11 +312,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print('sana2 $widget.from_search');
-    if (widget.from_search) {
-      _selectedIndex = 1;
-    }
-
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
