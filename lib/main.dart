@@ -89,7 +89,7 @@ class WineApp extends StatelessWidget {
               Theme.of(context).textTheme,
             ),
           ),
-          home: profile.isAuthentificated ? MyHomePage() : MyLoginPage(),
+          home: MyHomePage(),
         );
       },
     );
@@ -251,11 +251,46 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   static int _selectedIndex = 0;
+  static final storage = new FlutterSecureStorage(); //flutter_secure_storage 사용을 위한 초기화 작업
 
   @override
   void initState() {
     super.initState();
     firebaseCloudMessaging_Listeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkJWT();
+    });
+  }
+
+  _checkJWT() async {
+    //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
+    //(데이터가 없을때는 null을 반환을 합니다.)
+    String jwt = await storage.read(key: "jwt");
+    print(jwt);
+
+    //jwt가 없는 경우 로그인 페이지로 이동
+    if (jwt == null) {
+      Fluttertoast.showToast(
+          msg: "로그인 정보가 없어 로그인페이지로 이동합니다.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              MyLoginPage()));
+    } else {
+      Fluttertoast.showToast(
+          msg: "로그인 정보 있음",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
   }
 
   void firebaseCloudMessaging_Listeners() {
