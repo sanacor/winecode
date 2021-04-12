@@ -1,5 +1,7 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wine/search/search_screen.dart';
 
@@ -27,6 +29,9 @@ import 'package:kakao_flutter_sdk/talk.dart';
 import 'package:kakao_flutter_sdk/template.dart';
 import 'package:kakao_flutter_sdk/user.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+import 'dart:convert' show utf8;
 
 final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
@@ -93,7 +98,15 @@ class WineApp extends StatelessWidget {
 }
 
 
-class MyLoginPage extends StatelessWidget {
+class MyLoginPage extends StatefulWidget {
+  @override
+  _MyLoginPageState createState() => _MyLoginPageState();
+}
+
+class _MyLoginPageState extends State<MyLoginPage> {
+  bool _isKakaoTalkInstalled = false;
+  static final storage = FlutterSecureStorage();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,15 +114,11 @@ class MyLoginPage extends StatelessWidget {
       body: Center(
         child: RaisedButton(
           child: const Text("Login"),
-          onPressed: () {
-            final Profile profile = Provider.of<Profile>(context, listen: false);
-            profile.isAuthentificated = true;
-          },
+          onPressed: _loginWithTalk,
         ),
       ),
     );
   }
-<<<<<<< .merge_file_a29848
 
   @override
   void dispose() {
@@ -119,7 +128,7 @@ class MyLoginPage extends StatelessWidget {
   @override
   void initState() {
     super.initState();
-    KakaoContext.clientId = 'ca40c6c8ce91488eb2134298e99bbdee'; 
+    KakaoContext.clientId = 'ca40c6c8ce91488eb2134298e99bbdee';
     _initKakaoTalkInstalled();
   }
 
@@ -219,8 +228,6 @@ class MyLoginPage extends StatelessWidget {
     }
   }
 
-=======
->>>>>>> .merge_file_a29892
 }
 
 
