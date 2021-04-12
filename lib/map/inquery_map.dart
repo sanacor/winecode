@@ -6,8 +6,14 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:wine/model/inquery_info.dart';
+import 'package:wine/model/wine.dart';
 
 class InqueryMapScreen extends StatefulWidget {
+  final Wine wineItem;
+
+  const InqueryMapScreen({this.wineItem}) : super();
+
   @override
   _MarkerMapPageState createState() => _MarkerMapPageState();
 }
@@ -172,6 +178,8 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
       return;
     }
 
+    var wineInquery = InqueryInfo(widget.wineItem.wineName, _selectedShops);
+
     var url =
         "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/inquery/send";
     print(url);
@@ -180,9 +188,7 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
       response = await http.post(
           Uri.encodeFull(url),
           headers: {"Accept": "application/json"},
-          body: jsonEncode(<String, List<String>>{
-            'shops': _selectedShops,
-          }),
+          body: convert.jsonEncode(wineInquery),
       );
     } catch (e) {
       print(e);

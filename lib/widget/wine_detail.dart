@@ -183,7 +183,7 @@ class _WineDetailState extends State<WineDetail> {
             onTap: () {
               // navigationBar.onTap(1);
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => InqueryMapScreen()));
+                  MaterialPageRoute(builder: (context) => InqueryMapScreen(wineItem: widget.wineItem)));
             },
             child: Center(
                 child: Padding(
