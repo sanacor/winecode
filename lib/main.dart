@@ -145,7 +145,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
   @override
   void initState() {
     super.initState();
-    KakaoContext.clientId = 'ca40c6c8ce91488eb2134298e99bbdee';
+    KakaoContext.clientId = 'ca40c6c8ce91488eb2134298e99bbdee'; 
     _initKakaoTalkInstalled();
   }
 
