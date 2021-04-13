@@ -28,8 +28,6 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   http: ^0.12.0
-  cupertino_icons: ^1.0.0
-  google_fonts: ^0.3.2
   provider: ^5.0.0
   flappy_search_bar: ^1.7.2
   firebase_messaging: 7.0.3
@@ -38,6 +36,11 @@ dependencies:
   naver_map_plugin: ^0.9.6
   fluttertoast: ^7.1.6
   material_floating_search_bar: ^0.3.3
+
+
+  # UI & UX
+  cupertino_icons: ^1.0.0
+  google_fonts: ^0.3.2
 
   #KaKao
   kakao_flutter_sdk: ^0.5.4
@@ -54,6 +57,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_launcher_icons: "^0.9.0"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
