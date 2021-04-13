@@ -338,15 +338,15 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text('검색', style: TextStyle(color: Colors.black))
     ),
     BottomNavigationBarItem(
-        icon: Icon(Icons.room, color: Colors.black),
+        icon: Icon(Icons.room_outlined, color: Colors.black),
         title: Text('지도', style: TextStyle(color: Colors.black))
     ),
     BottomNavigationBarItem(
-        icon: Icon(Icons.chat_bubble, color: Colors.black),
+        icon: Icon(Icons.chat_outlined, color: Colors.black),
         title: Text('문의', style: TextStyle(color: Colors.black))
     ),
     BottomNavigationBarItem(
-        icon: Icon(Icons.settings, color: Colors.black),
+        icon: Icon(Icons.settings_outlined, color: Colors.black),
         title: Text('설정', style: TextStyle(color: Colors.black))
     )
   ];
