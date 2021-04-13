@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'dart:io' show Platform;
 import 'package:wine/inquery/model/InqueryTile.dart';
 import 'package:http/http.dart' as http;
 
@@ -9,7 +10,9 @@ class inquery_screen extends StatelessWidget {
     return SafeArea(
         child: Center(
             child: Column(children: <Widget>[
-      Container(
+              Container(height: Platform.isAndroid ? 10 : 1 ),
+
+              Container(
         padding: const EdgeInsets.only(left: 20),
         alignment: Alignment.bottomLeft,
         child: RichText(

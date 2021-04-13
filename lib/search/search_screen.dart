@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'dart:math';
 import 'dart:async';
+import 'dart:io' show Platform;
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:wine/model/wine.dart';
@@ -37,6 +38,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
         return Column(
           children: <Widget>[
+            Container(height: Platform.isAndroid ? 10 : 1 ),
             Container(
               padding: const EdgeInsets.only(left: 20),
               alignment: Alignment.bottomLeft,
