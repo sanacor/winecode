@@ -45,7 +45,6 @@ class _MarkerMapPageState extends State<WineMapScreen> {
     for (Map wine_shop in wineShopList) {
       _addMarker(wine_shop['retailId'].toString(), wine_shop['retailName'],
           wine_shop['retailLocationX'], wine_shop['retailLocationY']);
-      print('shit-100');
     }
     // if (response.statusCode == 200) {
     //   //var jsonResponse = convert.jsonDecode(response.body);
@@ -82,8 +81,8 @@ class _MarkerMapPageState extends State<WineMapScreen> {
           markerId: retailId,
           position: LatLng(retailLocationY, retailLocationX),
           captionText: retailName,
-          captionColor: Colors.red,
-          captionHaloColor: Colors.black,
+          captionColor: Colors.red[500],
+          captionHaloColor: Colors.grey[300],
           captionTextSize: 12.0,
           alpha: 1,
           icon: wineShopMarker,

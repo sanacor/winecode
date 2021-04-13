@@ -51,7 +51,6 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
     for (Map wine_shop in wineShopList) {
       _addMarker(wine_shop['retailId'].toString(), wine_shop['retailName'],
           wine_shop['retailLocationX'], wine_shop['retailLocationY']);
-      print('shit-001');
     }
 
     // if (response.statusCode == 200) {
