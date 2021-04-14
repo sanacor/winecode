@@ -4,7 +4,7 @@ import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'package:wine/main.dart';
-import 'package:wine/map/inquery_map.dart';
+import 'package:wine/map/inquiry_map.dart';
 import 'package:wine/map/model/wine_shop.dart';
 import 'package:wine/util/http.dart';
 
