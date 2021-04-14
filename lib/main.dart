@@ -216,7 +216,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
           .post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
       var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
       //TODO 발급받은 JWT를 Secure Storage에 저장해둬야 함
-      print(JsonResponse);
       await storage.write(
           key: "jwt",
           value: JsonResponse['data']);

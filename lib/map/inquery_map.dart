@@ -40,7 +40,7 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
     //   print(e);
     // }
 
-    var response = await http_get(header: null, path: 'api/retail/infoall');
+    var response = await http_get(header: null, path: 'api/retail/allpartner');
 
     print(response);
 
