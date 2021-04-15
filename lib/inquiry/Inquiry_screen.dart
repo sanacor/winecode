@@ -78,6 +78,7 @@ class _InquiryPageState extends State<InquiryPage> {
       });
 
       if (response.statusCode == 200) {
+        print('shit-200');
         List responseJson = json.decode(utf8.decode(response.bodyBytes));
         return responseJson
             .map((inqueryInfo) => new InquiryInfo.fromJson(inqueryInfo))

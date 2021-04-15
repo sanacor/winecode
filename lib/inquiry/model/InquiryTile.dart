@@ -8,14 +8,20 @@ class InquiryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('shit-1001');
+    print(_inquiryInfo.reply.runtimeType);
+    print(_inquiryInfo.reply.toString());
     return ListTile(
-      leading: Icon(Icons.person),
-      title: Text(_inquiryInfo.comment),
-      subtitle: Text("${_inquiryInfo.wine}"),
-      trailing: Text(_inquiryInfo.state),
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(10.0),
+        child: Image.network(_inquiryInfo.wine_image, fit: BoxFit.fill),
+      ),
+      title: Text(_inquiryInfo.wine_name.toString()),
+      // subtitle: Text("${_inquiryInfo.reply.toString()}"),
+      // trailing: Text(_inquiryInfo.reply.toString()),
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => InquiryDetail(inquiryInfo: _inquiryInfo)));
+            builder: (context) => InquiryDetail(wine_name: _inquiryInfo.wine_name, inquiryInfo: _inquiryInfo.reply)));
       },
     );
   }
@@ -23,10 +29,11 @@ class InquiryTile extends StatelessWidget {
 
 class InquiryInfo {
   String id;
-  String wine;
-  String shop;
-  String comment;
-  String state;
+  String wine_name;
+  String wine_id;
+  // List<Map<String, String>> reply;
+  List<dynamic> reply;
+  String wine_image;
   /*
    {
         "id": "987-326-436",
@@ -37,29 +44,16 @@ class InquiryInfo {
     },
    */
 
-  InquiryInfo({this.id, this.shop, this.wine, this.comment, this.state});
+  InquiryInfo({this.id, this.reply, this.wine_id, this.wine_name, this.wine_image});
 
   factory InquiryInfo.fromJson(Map<String,dynamic> json){
+    print('nooo-001');
     return InquiryInfo(
-      id : json['id'],
-      shop: json['shop'],
-      wine: json['wine'],
-      comment: json['content'],
-      state: json['state'],
+      id : json['inquiry_id'],
+      reply: json['reply'],
+      wine_id: json['wine_id'],
+      wine_name: json['wine_name'],
+      wine_image: json['wine_image']
     );
-  }
-}
-
-class InQueryEnableIcon extends StatelessWidget {
-  InQueryEnableIcon(this._isDone);
-
-  final bool _isDone;
-
-  @override
-  Widget build(BuildContext context) {
-    if (_isDone)
-      return Icon(Icons.done_outline);
-    else
-      return Icon(Icons.help_outline);
   }
 }
