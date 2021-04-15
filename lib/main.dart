@@ -119,18 +119,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
     //jwt가 없는 경우 로그인 페이지로 이동
     if (jwt == null) {
-      Fluttertoast.showToast(
-          msg: "로그인 정보가 없어 로그인페이지로 이동합니다.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) =>
               LoginScreen()));
     } else {
+      /*
       Fluttertoast.showToast(
           msg: "로그인 정보 있음",
           toastLength: Toast.LENGTH_SHORT,
@@ -139,6 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
+       */
     }
   }
 

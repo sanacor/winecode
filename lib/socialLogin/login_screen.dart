@@ -21,70 +21,59 @@ class _MyLoginPageState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Center(
-            child: Container(
-              child: Column(
-                children: <Widget>[
-                  Container(height: Platform.isAndroid ? 10 : 1 ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 20),
-                    alignment: Alignment.bottomLeft,
-                    child: RichText(
-                      text: TextSpan(
-                        text: '로그인',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
-                      ),
-                    ),
-                    height: MediaQuery.of(context).size.height / 25,
-                  ),
-                  Padding(padding: const EdgeInsets.all(50)),
-                  Center(
-                    child: InkWell(
-                      onTap: _loginWithTalk,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width*0.6,
-                        height: MediaQuery.of(context).size.height*0.07,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.yellow
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: SafeArea(
+            child: Center(
+                child: Container(
+          child: Column(
+            children: <Widget>[
+              Container(height: Platform.isAndroid ? 10 : 1),
+              Expanded(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                        RichText(
+                          text: TextSpan(
+                            text: '로그인',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: 40),
+                          ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.chat_bubble, color: Colors.black54),
-                            SizedBox(width: 10),
-                            Text(
-                              '카카오톡으로 로그인',
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 20
-                              ),
-                            )
-                          ]
-                        )
-                      )
-                    )
-                  ),
-                ],
+                      ]),
+                      InkWell(
+                        onTap: () => _loginWithTalk(), // needed
+                        child: Image.asset(
+                          "images/kakao_login_medium_narrow.png",
+                          //width: 100,
+                          //fit: BoxFit.cover,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(15),
+                        child: RichText(
+                          text: TextSpan(
+                            text: '회원가입 없이 이용 가능하며 첫 로그인 시 이용약관 및 개인정보처리방침 동의로 간주됩니다.',
+                            style: TextStyle(
+                                //fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                                fontSize: 13),
+                          ),
+                        ),
+                      ),
+                    ]),
+                flex: 1,
               ),
-            )
-          )
+            ],
+          ),
+        ))),
       ),
     );
-    /*
-    return Scaffold(
-      appBar: AppBar(title: const Text("Login")),
-      body: Center(
-        child: RaisedButton(
-          child: const Text("Login"),
-          onPressed: _loginWithTalk,
-        ),
-      ),
-    );
-    */
   }
 
   @override
@@ -108,17 +97,15 @@ class _MyLoginPageState extends State<LoginScreen> {
     });
   }
 
-
   _issueAccessToken(String authCode) async {
     try {
       var token = await AuthApi.instance.issueAccessToken(authCode);
       AccessTokenStore.instance.toStore(token);
       //print("AccessToken : " + token.accessToken);
-      await _registerUserInfoWithKakao(token.accessToken);
-      await _loginWithKakao(token.accessToken);
       try {
         User user = await UserApi.instance.me();
         //print(user.toString());
+        /*
         Fluttertoast.showToast(
             msg: user.properties['nickname'] + "님 반갑습니다.",
             toastLength: Toast.LENGTH_SHORT,
@@ -127,6 +114,11 @@ class _MyLoginPageState extends State<LoginScreen> {
             backgroundColor: Colors.red,
             textColor: Colors.white,
             fontSize: 16.0);
+         */
+        final snackBar = SnackBar(content: Text(user.properties['nickname'] + "님 반갑습니다."));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        await _registerUserInfoWithKakao(token.accessToken);
+        await _issueJWTandLogin(token.accessToken);
       } on KakaoAuthException catch (e) {} catch (e) {}
     } catch (e) {
       print("error on issuing access token: $e");
@@ -163,7 +155,8 @@ class _MyLoginPageState extends State<LoginScreen> {
 
   _registerUserInfoWithKakao(String accessToken) async {
     var url =
-        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/v1/signup/kakao?accessToken=" + accessToken;
+        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/v1/signup/kakao?accessToken=" +
+            accessToken;
     try {
       var response = await http
           .post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
@@ -175,23 +168,20 @@ class _MyLoginPageState extends State<LoginScreen> {
     }
   }
 
-  _loginWithKakao(String accessToken) async {
+  _issueJWTandLogin(String accessToken) async {
     var url =
-        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/v1/signin/kakao?accessToken=" + accessToken;
+        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/v1/signin/kakao?accessToken=" +
+            accessToken;
     try {
       var response = await http
           .post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
       var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
       //TODO 발급받은 JWT를 Secure Storage에 저장해둬야 함
-      await storage.write(
-          key: "jwt",
-          value: JsonResponse['data']);
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              MyHomePage()));
+      await storage.write(key: "jwt", value: JsonResponse['data']);
+      //Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
+      Navigator.of(context).pop();
     } catch (e) {
       print(e);
     }
   }
-
 }

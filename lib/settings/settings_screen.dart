@@ -60,14 +60,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _tapLogout(BuildContext context) async{
     await storage.delete(key: "jwt");
-    Fluttertoast.showToast(
-        msg: "로그아웃되어 홈화면으로 이동합니다.",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) =>
             MyHomePage()));
