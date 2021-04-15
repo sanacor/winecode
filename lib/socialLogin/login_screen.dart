@@ -135,14 +135,8 @@ class _MyLoginPageState extends State<LoginScreen> {
       }
     } else {
       //카톡이 깔려있지 않으면 웹으로 진행
-      Fluttertoast.showToast(
-          msg: "카카오톡이 설치되어있지 않습니다.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      final snackBar = SnackBar(content: Text("카카오톡이 설치되어있지 않습니다."));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       try {
         //Not Working
         var code = await AuthCodeClient.instance.request();

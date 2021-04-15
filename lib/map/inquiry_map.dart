@@ -3,10 +3,10 @@ import 'dart:convert' as convert;
 import 'dart:convert' show jsonEncode, utf8;
 import 'package:http/http.dart' as http;
 import 'package:wine/util/http.dart';
+import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wine/model/inquery_info.dart';
 import 'package:wine/model/wine.dart';
 
@@ -29,16 +29,10 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
   int _selectCnt = 0;
 
   Future<void> _getWineShopList() async {
-    // var url =
-    //     "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/retail/infoall";
-    // print(url);
-    // var response;
-    // try {
-    //   response = await http
-    //       .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-    // } catch (e) {
-    //   print(e);
-    // }
+    wineShopMarker = await OverlayImage.fromAssetImage(
+      assetName: 'images/wine.png',
+      context: context,
+    );
 
     var response = await http_get(header: null, path: 'api/retail/allpartner');
 
@@ -52,24 +46,6 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
       _addMarker(wine_shop['retailId'].toString(), wine_shop['retailName'],
           wine_shop['retailLocationX'], wine_shop['retailLocationY']);
     }
-
-    // if (response.statusCode == 200) {
-    //   //var jsonResponse = convert.jsonDecode(response.body);
-    //   var jsonResponse =
-    //       convert.jsonDecode(utf8.decode(response.bodyBytes)); //한글깨짐 수정
-    //   // var wine_list = jsonResponse['wine_list'];
-    //   var wineShopList = jsonResponse;
-    //   //print(wine_shop_list);
-    //   //print(wine_shop_list is List);
-    //
-    //   for (Map wine_shop in wineShopList) {
-    //     _addMarker(wine_shop['retailId'].toString(), wine_shop['retailName'],
-    //         wine_shop['retailLocationX'], wine_shop['retailLocationY']);
-    //   }
-    // } else {
-    //   print('http 500');
-    //   print(response);
-    // }
   }
 
   void _addMarker(String retailId, String retailName, double retailLocationX,
@@ -93,28 +69,44 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      OverlayImage.fromAssetImage(
-        assetName: 'images/wine.png',
-        context: context,
-      ).then((image) {
-        wineShopMarker = image;
-      });
-    });
-    _getWineShopList();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getWineShopList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("문의를 보낼 와인샵 선택"),
-        ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            _naverMap(),
+            Container(height: Platform.isAndroid ? 10 : 1),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.only(left: 20),
+                alignment: Alignment.bottomLeft,
+                child: RichText(
+                  text: TextSpan(
+                    text: '문의 보낼 와인샵 선택',
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+                  ),
+                ),
+                height: MediaQuery.of(context).size.height / 25,
+              ),
+              flex: 1,
+            ),
+            SizedBox(height: 15),
+            Expanded(
+              child: NaverMap(
+                onMapCreated: _onMapCreated,
+                onMapTap: _onMapTap,
+                markers: _markers,
+                initLocationTrackingMode: LocationTrackingMode.Follow,
+              ),
+              flex: 21,
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -129,18 +121,6 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
       ),
     );
   }
-
-  _naverMap() {
-    return Expanded(
-      child: NaverMap(
-        onMapCreated: _onMapCreated,
-        onMapTap: _onMapTap,
-        markers: _markers,
-        initLocationTrackingMode: LocationTrackingMode.Follow,
-      ),
-    );
-  }
-
   // ================== method ==========================
 
   void _onMapCreated(NaverMapController controller) {
@@ -179,14 +159,13 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
 
   Future<void> _onInqueryTap() async {
     if(_selectedShops.length <= 0) {
-      Fluttertoast.showToast(
-          msg: "와인샵을 선택해주세요.",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      final snackBar = SnackBar(content: Text("와인샵을 선택해주세요."));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
+    if(_selectedShops.length > 10) {
+      final snackBar = SnackBar(content: Text("10개까지 선택 가능합니다."));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return;
     }
 
@@ -210,23 +189,11 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
     print(jsonResponse.toString());
 
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-          msg: "문의보내기 완료!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      final snackBar = SnackBar(content: Text("문의보내기 완료!"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      Fluttertoast.showToast(
-          msg: "문의보내기 실패!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      final snackBar = SnackBar(content: Text("문의보내기 실패!"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 }
