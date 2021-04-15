@@ -3,6 +3,7 @@ import 'dart:convert' as convert;
 import 'dart:convert' show utf8;
 import 'package:http/http.dart' as http;
 import 'package:wine/util/http.dart';
+import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
@@ -21,7 +22,6 @@ class _MarkerMapPageState extends State<WineMapScreen> {
   OverlayImage wineShopMarker;
 
   Future<void> _getWineShopList() async {
-    print('START');
     // var url =
     //     "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/retail/infoall";
     // print(url);
@@ -33,6 +33,10 @@ class _MarkerMapPageState extends State<WineMapScreen> {
     //   print(e);
     // }
 
+    wineShopMarker = await OverlayImage.fromAssetImage(
+      assetName: 'images/wine.png',
+      context: context,
+    );
 
     var response = await http_get(header: null, path: 'api/retail/infoall');
 
@@ -96,42 +100,51 @@ class _MarkerMapPageState extends State<WineMapScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      OverlayImage.fromAssetImage(
-        assetName: 'images/wine.png',
-        context: context,
-      ).then((image) {
-        wineShopMarker = image;
-      });
-    });
-    _getWineShopList();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getWineShopList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          //_controlPanel(),
-          _naverMap(),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(height: Platform.isAndroid ? 10 : 1),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.only(left: 20),
+                alignment: Alignment.bottomLeft,
+                child: RichText(
+                  text: TextSpan(
+                    text: '내 주변 와인샵',
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+                  ),
+                ),
+                height: MediaQuery.of(context).size.height / 25,
+              ),
+              flex: 1,
+            ),
+            SizedBox(height: 15),
+            Expanded(
+                child: NaverMap(
+                  onMapCreated: _onMapCreated,
+                  onMapTap: _onMapTap,
+                  markers: _markers,
+                  initLocationTrackingMode: LocationTrackingMode.Follow,
+                ),
+                flex: 21,
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  //   return SafeArea(
-  //     child: Scaffold(
-  //       body: Column(
-  //         children: <Widget>[
-  //           //_controlPanel(),
-  //           _naverMap(),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
+  /*
   _naverMap() {
     return Expanded(
       child: Stack(
@@ -146,7 +159,7 @@ class _MarkerMapPageState extends State<WineMapScreen> {
       ),
     );
   }
-
+   */
   // ================== method ==========================
 
   void _onMapCreated(NaverMapController controller) {
