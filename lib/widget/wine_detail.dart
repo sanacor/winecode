@@ -3,7 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:wine/model/wine.dart';
-import 'package:wine/map/inquery_map.dart';
+import 'package:wine/map/inquiry_map.dart';
 
 final List<String> imgList = [];
 

@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io' show Platform;
-import 'package:wine/inquery/model/InqueryTile.dart';
+import 'package:flutter/material.dart';
+import 'package:wine/inquiry/model/InquiryTile.dart';
 import 'package:http/http.dart' as http;
 
-class inquery_screen extends StatelessWidget {
+class InquiryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,30 +25,30 @@ class inquery_screen extends StatelessWidget {
         height: MediaQuery.of(context).size.height / 25,
       ),
         SizedBox(height: MediaQuery.of(context).size.height / 25),
-        Expanded(child: InqueryPage())
+        Expanded(child: InquiryPage())
     ])));
     throw UnimplementedError();
   }
 }
 
-class InqueryPage extends StatefulWidget {
+class InquiryPage extends StatefulWidget {
   @override
-  _InqueryPageState createState() => _InqueryPageState();
+  _InquiryPageState createState() => _InquiryPageState();
 }
 
-class _InqueryPageState extends State<InqueryPage> {
+class _InquiryPageState extends State<InquiryPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         initialData: [],
-        future: _fetchInqueryData(),
+        future: _fetchInquiryData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData) {
             return ListView.separated(
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
-                return InqueryTile(snapshot.data[index]);
+                return InquiryTile(snapshot.data[index]);
               },
               separatorBuilder: (context, index) {
                 return const Divider(
@@ -64,12 +64,12 @@ class _InqueryPageState extends State<InqueryPage> {
         });
   }
 
-  Future<List<InqueryInfo>> _fetchInqueryData() async {
-    List<InqueryInfo> inqueryList = [];
+  Future<List<InquiryInfo>> _fetchInquiryData() async {
+    List<InquiryInfo> InquiryList = [];
     var url =
         'https://9l885hmyfg.execute-api.ap-northeast-2.amazonaws.com/dev/inquiry';
 
-    print("[fetchInqueryData] started fetch inquery data http request");
+    print("[fetchInquiryData] started fetch Inquiry data http request");
 
     try {
       var response = await http.get(Uri.encodeFull(url), headers: {
@@ -80,10 +80,10 @@ class _InqueryPageState extends State<InqueryPage> {
       if (response.statusCode == 200) {
         List responseJson = json.decode(utf8.decode(response.bodyBytes));
         return responseJson
-            .map((inqueryInfo) => new InqueryInfo.fromJson(inqueryInfo))
+            .map((inqueryInfo) => new InquiryInfo.fromJson(inqueryInfo))
             .toList();
       } else {
-        throw Exception('Failed to load InqueryInfo Data');
+        throw Exception('Failed to load InquiryInfo Data');
       }
     } catch (ex) {
       print(ex);

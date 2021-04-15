@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:wine/inquiry/model/InquiryDetail.dart';
 
-class InqueryTile extends StatelessWidget {
-  InqueryTile(this._inqueryInfo);
+class InquiryTile extends StatelessWidget {
+  InquiryTile(this._inquiryInfo);
 
-  final InqueryInfo _inqueryInfo;
+  final InquiryInfo _inquiryInfo;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(Icons.person),
-      title: Text(_inqueryInfo.comment),
-      subtitle: Text("${_inqueryInfo.wine}"),
-      trailing: Text(_inqueryInfo.state),
+      title: Text(_inquiryInfo.comment),
+      subtitle: Text("${_inquiryInfo.wine}"),
+      trailing: Text(_inquiryInfo.state),
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => InquiryDetail(inquiryInfo: _inquiryInfo)));
+      },
     );
   }
 }
 
-class InqueryInfo {
+class InquiryInfo {
   String id;
   String wine;
   String shop;
@@ -32,10 +37,10 @@ class InqueryInfo {
     },
    */
 
-  InqueryInfo({this.id, this.shop, this.wine, this.comment, this.state});
+  InquiryInfo({this.id, this.shop, this.wine, this.comment, this.state});
 
-  factory InqueryInfo.fromJson(Map<String,dynamic> json){
-    return InqueryInfo(
+  factory InquiryInfo.fromJson(Map<String,dynamic> json){
+    return InquiryInfo(
       id : json['id'],
       shop: json['shop'],
       wine: json['wine'],

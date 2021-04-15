@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:wine/search/search_screen.dart';
 
 import 'package:wine/settings/settings_screen.dart';
-import 'package:wine/inquery/inquery_screen.dart';
+import 'package:wine/inquiry/Inquiry_screen.dart';
 
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -224,7 +224,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           SearchScreen(),
           WineMapScreen(),
-          inquery_screen(),
+          InquiryScreen(),
           SettingsScreen()
         ],
         index: _selectedIndex,
