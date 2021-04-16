@@ -51,9 +51,7 @@ class _InquiryPageState extends State<InquiryPage> {
                 return InquiryTile(snapshot.data[index]);
               },
               separatorBuilder: (context, index) {
-                return const Divider(
-                  thickness: 2,
-                );
+                return const Divider(thickness: 1);
               },
             );
           } else {

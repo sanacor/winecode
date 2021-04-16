@@ -36,6 +36,7 @@ class _InqueryDetailState extends State<InquiryDetail> {
             Container(
               child: Text(widget.wine_name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
             ),
+            SizedBox(height: 20),
             Expanded(
               child: ListView.separated(
                 itemCount: widget.inquiryInfo.length,
@@ -43,8 +44,7 @@ class _InqueryDetailState extends State<InquiryDetail> {
                   return ReplyTile(widget.inquiryInfo[index]);
                 },
                 separatorBuilder: (context, index) {
-                  if (index == 0) return SizedBox.shrink();
-                  return const Divider();
+                  return const Divider(thickness: 1);
                 },
               ),
             )
