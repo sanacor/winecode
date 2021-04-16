@@ -35,6 +35,18 @@ class _InqueryDetailState extends State<InquiryDetail> {
             ),
             Container(
               child: Text(widget.wine_name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            ),
+            Expanded(
+              child: ListView.separated(
+                itemCount: widget.inquiryInfo.length,
+                itemBuilder: (context, index) {
+                  return ReplyTile(widget.inquiryInfo[index]);
+                },
+                separatorBuilder: (context, index) {
+                  if (index == 0) return SizedBox.shrink();
+                  return const Divider();
+                },
+              ),
             )
 
           ],
@@ -42,4 +54,28 @@ class _InqueryDetailState extends State<InquiryDetail> {
       ),
     );
   }
+}
+
+class ReplyTile extends StatelessWidget {
+  ReplyTile(this._reply);
+
+  final Map<String, dynamic> _reply;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(Icons.person),
+      title: Text(_reply['shop_name']),
+      subtitle: Text(_reply['contents']),
+    );
+  }
+}
+
+class Reply {
+  String shop_id;
+  String shop_name;
+  String status;
+  String contents;
+
+  Reply(this.shop_id, this.shop_name, this.status, this.contents);
 }
