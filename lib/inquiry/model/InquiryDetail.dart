@@ -64,9 +64,9 @@ class ReplyTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(Icons.person),
+      leading: Icon(Icons.storefront_outlined),
       title: Text(_reply['shop_name']),
-      subtitle: Text(_reply['contents']),
+      subtitle: Text(_reply['status'] == 'waiting' ?  '답변을 기다리는 중' : _reply['contents']),
     );
   }
 }
