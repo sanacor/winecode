@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flappy_search_bar/scaled_tile.dart';
 import 'package:wine/widget/wine_detail.dart';
+import 'package:wine/inquiry/manual_inquiry.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -114,7 +115,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   Text('${snapshot.data[index].wineName}'),
                                   onTap: () {
                                     Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => WineDetail(
+                                        builder: (context) => index == snapshot.data.length - 1 ?  ManualInquiry() : WineDetail(
                                             wineItem: snapshot.data[index])));
                                   },
                                 ),)
