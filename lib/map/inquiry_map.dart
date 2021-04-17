@@ -173,8 +173,10 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
     }
 
     String jwt = await storage.read(key: 'jwt');
+    print(jwt);
 
     var wineInquery = InqueryInfo(widget.wineItem.wineName, "", _selectedShops);
+    print(convert.jsonEncode(wineInquery));
 
     var url =
         "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/inquery/send";
