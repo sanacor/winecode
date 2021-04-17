@@ -24,6 +24,14 @@ class PostViewModel {
     var response = await http_get(header: null, path: 'api/product/search/'+search_keyword);
     List responseJson = response;
 
+    Map<String, dynamic> find_manaully = {
+      'wineName': '결과에 와인이 없는 경우 여기를 터치해주세요',
+      'wineImage': 'http://images.vivino.com/thumbs/default_label_150x200.jpg'
+    };
+    // responseJson.insert(0, find_manaully);
+    responseJson.add(find_manaully);
+
+
     return responseJson.map((post) => new Wine.fromJson(post)).toList();
   }
 }
