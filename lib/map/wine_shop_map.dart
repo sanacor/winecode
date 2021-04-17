@@ -121,7 +121,10 @@ class _MarkerMapPageState extends State<WineMapScreen> {
                 child: RichText(
                   text: TextSpan(
                     text: '내 주변 와인샵',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 20),
                   ),
                 ),
                 height: MediaQuery.of(context).size.height / 25,
@@ -130,37 +133,19 @@ class _MarkerMapPageState extends State<WineMapScreen> {
             ),
             SizedBox(height: 15),
             Expanded(
-                child: NaverMap(
-                  onMapCreated: _onMapCreated,
-                  onMapTap: _onMapTap,
-                  markers: _markers,
-                  initLocationTrackingMode: LocationTrackingMode.Follow,
-                ),
-                flex: 21,
+              child: NaverMap(
+                onMapCreated: _onMapCreated,
+                onMapTap: _onMapTap,
+                markers: _markers,
+                initLocationTrackingMode: LocationTrackingMode.Follow,
+              ),
+              flex: 21,
             ),
           ],
         ),
       ),
     );
   }
-
-  /*
-  _naverMap() {
-    return Expanded(
-      child: Stack(
-        children: <Widget>[
-          NaverMap(
-            onMapCreated: _onMapCreated,
-            onMapTap: _onMapTap,
-            markers: _markers,
-            initLocationTrackingMode: LocationTrackingMode.Follow,
-          ),
-        ],
-      ),
-    );
-  }
-   */
-  // ================== method ==========================
 
   void _onMapCreated(NaverMapController controller) {
     _controller.complete(controller);
@@ -186,6 +171,26 @@ class _MarkerMapPageState extends State<WineMapScreen> {
       //_markers[pos].captionText = '선택됨';
       _markers[pos].captionColor = Colors.blue;
     });
+
+    var response = await http_get(
+        header: null, path: 'api/retail/' + _markers[pos].markerId);
+
+    print(response);
+
+    Map wineShopInfo = response;
+    WineShop selectedWineShop = WineShop(
+      retail_id: wineShopInfo['retailId'].toString(),
+      retail_address: wineShopInfo['retailAddress'].toString(),
+      retail_name: wineShopInfo['retailName'].toString(),
+      //retail_bhours: wineShopInfo['retailBhours'].toString(),
+      retail_phone: wineShopInfo['retailPhone'].toString(),
+      //retail_exp: wineShopInfo['retailExp'].toString(),
+    );
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => WineShopDetail(wineShopItem: selectedWineShop)));
+    _markers[pos].captionColor = Colors.red;
+
+    /*
     var url =
         "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/retail/" + _markers[pos].markerId;
     var response;
@@ -215,5 +220,6 @@ class _MarkerMapPageState extends State<WineMapScreen> {
       print('http 500');
       print(response);
     }
+     */
   }
 }
