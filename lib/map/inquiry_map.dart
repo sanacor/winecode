@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'package:wine/model/inquery_info.dart';
 import 'package:wine/model/wine.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class InqueryMapScreen extends StatefulWidget {
   final Wine wineItem;
@@ -27,6 +28,8 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
   OverlayImage wineShopMarker;
 
   int _selectCnt = 0;
+
+  static final storage = FlutterSecureStorage();
 
   Future<void> _getWineShopList() async {
     wineShopMarker = await OverlayImage.fromAssetImage(
@@ -169,6 +172,8 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
       return;
     }
 
+    String jwt = await storage.read(key: 'jwt');
+
     var wineInquery = InqueryInfo(widget.wineItem.wineName, "", _selectedShops);
 
     var url =
@@ -178,7 +183,7 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
     try {
       response = await http.post(
           Uri.encodeFull(url),
-          headers: {"Accept": "application/json"},
+          headers: {"Accept": "application/json", "X-AUTH-TOKEN":jwt},
           body: convert.jsonEncode(wineInquery),
       );
     } catch (e) {
