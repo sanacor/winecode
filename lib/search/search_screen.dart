@@ -115,7 +115,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   Text('${snapshot.data[index].wineName}'),
                                   onTap: () {
                                     Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => index == snapshot.data.length - 1 ?  ManualInquiry() : WineDetail(
+                                        builder: (context) => (index == snapshot.data.length - 1) || (index == 0) ?  ManualInquiry() : WineDetail(
                                             wineItem: snapshot.data[index])));
                                   },
                                 ),)

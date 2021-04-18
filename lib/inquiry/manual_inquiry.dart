@@ -31,8 +31,8 @@ class ManualInquiry extends StatelessWidget {
                     alignment: Alignment.bottomRight,
                     child: Text(
                       '완료',
-                      style:
-                      TextStyle(fontSize: 17),
+                      style: TextStyle(fontSize: 17),
+
                     )),
               ],
             ),
