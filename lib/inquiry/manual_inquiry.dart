@@ -1,7 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wine/map/inquiry_map.dart';
+import 'package:wine/model/wine.dart';
+
 
 class ManualInquiry extends StatelessWidget {
+  final inquiryController = TextEditingController();
+  Wine wine_item = Wine('', '');
+
+
   @override
   Widget build(BuildContext context) {
     // return Container(color: Colors.red,);
@@ -26,14 +33,22 @@ class ManualInquiry extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     )),
-                Container(
+            GestureDetector(
+                onTap: (){
+                  wine_item.wineName = inquiryController.text;
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => InqueryMapScreen(wineItem: wine_item)));
+
+                },
+                child: new Container(
                     padding: EdgeInsets.only(top: 15, right: 15),
                     alignment: Alignment.bottomRight,
                     child: Text(
-                      '완료',
+                      '다음',
                       style: TextStyle(fontSize: 17),
 
-                    )),
+                    ))
+            )
               ],
             ),
             const Divider(
@@ -45,6 +60,7 @@ class ManualInquiry extends StatelessWidget {
             Container(
               padding: EdgeInsets.only(left: 15, right: 15),
               child: TextField(
+                controller: inquiryController,
                 obscureText: false,
                 decoration: InputDecoration(
                     // border: OutlineInputBorder(),
@@ -81,4 +97,5 @@ class ManualInquiry extends StatelessWidget {
       )),
     );
   }
+
 }
