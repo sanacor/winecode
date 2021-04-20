@@ -22,3 +22,8 @@ samples, guidance on mobile development, and a full API reference.
 ## iOS 프로젝트 지우고 다시 빌드하기
 - ios 디렉토리 삭제
 -  flutter create .
+
+
+## 시작화면 변경
+pub run flutter_native_splash:create
+pub run flutter_native_splash:remove
