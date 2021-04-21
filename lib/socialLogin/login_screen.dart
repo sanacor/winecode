@@ -170,7 +170,7 @@ class _MyLoginPageState extends State<LoginScreen> {
       var response = await http
           .post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
       var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
-      //TODO 발급받은 JWT를 Secure Storage에 저장해둬야 함
+      print("JWT : " + JsonResponse['data']);
       await storage.write(key: "jwt", value: JsonResponse['data']);
       //Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
       Navigator.of(context).pop();
