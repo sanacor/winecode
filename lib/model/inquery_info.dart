@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 
-class InqueryInfo {
+class InquiryInfo {
   String wineName;
   String wineCompany;
   List<String> wineShops;
 
-  InqueryInfo(this.wineName, this.wineCompany, this.wineShops);
+  InquiryInfo(this.wineName, this.wineCompany, this.wineShops);
 
-  InqueryInfo.fromJson(Map<String, dynamic> json)
+  InquiryInfo.fromJson(Map<String, dynamic> json)
       : wineName = json['wineName'],
         wineCompany = json['wineCompany'],
         wineShops = json['shops'];

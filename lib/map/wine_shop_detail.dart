@@ -189,7 +189,6 @@ class _WineShopDetailState extends State<WineShopDetail> {
         footer: new Footer(
           child: InkWell(
             onTap: () {
-              // navigationBar.onTap(1);
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => InqueryMapScreen()));
             },
             child: Center(

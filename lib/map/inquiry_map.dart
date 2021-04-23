@@ -10,6 +10,8 @@ import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'package:wine/model/inquery_info.dart';
 import 'package:wine/model/wine.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:wine/util/http.dart';
+
 
 class InqueryMapScreen extends StatefulWidget {
   final Wine wineItem;
@@ -93,7 +95,10 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
                 child: RichText(
                   text: TextSpan(
                     text: '문의 보낼 와인샵 선택',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 20),
                   ),
                 ),
                 height: MediaQuery.of(context).size.height / 25,
@@ -124,6 +129,7 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
       ),
     );
   }
+
   // ================== method ==========================
 
   void _onMapCreated(NaverMapController controller) {
@@ -161,12 +167,12 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
   }
 
   Future<void> _onInqueryTap() async {
-    if(_selectedShops.length <= 0) {
+    if (_selectedShops.length <= 0) {
       final snackBar = SnackBar(content: Text("와인샵을 선택해주세요."));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return;
     }
-    if(_selectedShops.length > 10) {
+    if (_selectedShops.length > 10) {
       final snackBar = SnackBar(content: Text("10개까지 선택 가능합니다."));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return;
@@ -175,25 +181,30 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
     String jwt = await storage.read(key: 'jwt');
     print(jwt);
 
-    var wineInquery = InqueryInfo(widget.wineItem.wineName, "", _selectedShops);
-    print(convert.jsonEncode(wineInquery));
+    var wineInquery = InquiryInfo(widget.wineItem.wineName, " ", _selectedShops);
+    // print(convert.jsonEncode(wineInquery));
+    // var body = convert.jsonEncode(wineInquery);
 
-    var url =
-        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/inquery/send";
-    print(url);
-    var response;
-    try {
-      response = await http.post(
-          Uri.encodeFull(url),
-          headers: {"Accept": "application/json", "X-AUTH-TOKEN":jwt},
-          body: convert.jsonEncode(wineInquery),
-      );
-    } catch (e) {
-      print(e);
-    }
+    var response = await http_post(header: null, path: 'api/inquery/send', body: wineInquery.toJson());
+    // List responseJson = response;
 
-    var jsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes)); //한글깨짐 수정
-    print(jsonResponse.toString());
+    // var url =
+    //     "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/inquery/send";
+    // print(url);
+    // var response;
+    // try {
+    //   response = await http.post(
+    //     Uri.encodeFull(url),
+    //     headers: {"Accept": "application/json", "X-AUTH-TOKEN": jwt},
+    //     body: convert.jsonEncode(wineInquery),
+    //   );
+    // } catch (e) {
+    //   print(e);
+    // }
+
+    // var jsonResponse =
+    //     convert.jsonDecode(utf8.decode(response.bodyBytes)); //한글깨짐 수정
+    // print(jsonResponse.toString());
 
     if (response.statusCode == 200) {
       final snackBar = SnackBar(content: Text("문의보내기 완료!"));

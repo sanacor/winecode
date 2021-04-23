@@ -1,9 +1,8 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
-
-
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:wine/main.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:wine/reply/reply_screen.dart';
 
 
 class SettingsScreen extends StatefulWidget {
@@ -13,6 +12,30 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   static final storage = FlutterSecureStorage();
+
+  @override
+  Widget build(BuildContext context) {
+    return  SafeArea(
+        child: Center(
+            child: Column(children: <Widget>[
+              Container(height: Platform.isAndroid ? 10 : 1 ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 20),
+                    alignment: Alignment.bottomLeft,
+                    child: RichText(
+                      text: TextSpan(
+                        text: '나의 페이지',
+                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+                      ),
+                    ),
+                    height: MediaQuery.of(context).size.height / 25,
+                  ),
+                  Expanded(child: ListView(
+                    physics: BouncingScrollPhysics(),
+                    children: LoadSettingTile(context),
+                  ))
+            ])));
+  }
 
   List<Widget> LoadSettingTile(BuildContext context) {
     List<ListTile> widgetList = [];
@@ -42,6 +65,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       title: Text('앱 설정'),
     ));
     widgetList.add(ListTile(
+      leading: Icon(Icons.add_business_outlined),
+      title: Text('사장님 메뉴'),
+      onTap: () => _storeOwner(context),
+    ));
+    widgetList.add(ListTile(
       leading: Icon(Icons.logout),
       title: Text('로그아웃'),
       onTap: () => _tapLogout(context),
@@ -65,17 +93,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             MyHomePage()));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            title: Text('설정'),
-            backgroundColor: Colors.white70,
-            centerTitle: true,
-            elevation: 0.0),
-        body: ListView(
-          physics: BouncingScrollPhysics(),
-          children: LoadSettingTile(context),
-        ));
+  void _storeOwner(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ReplyScreen()));
   }
+
 }
