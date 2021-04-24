@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' hide Options;
 
-var BACK_END_HOST = 'https://9l885hmyfg.execute-api.ap-northeast-2.amazonaws.com/dev/';
+var BACK_END_HOST = 'https://9l885hmyfg.execute-api.ap-northeast-2.amazonaws.com/dev/inquiry';
 
 
 Future<dynamic> http_get({header, String path}) async {
@@ -13,7 +13,8 @@ Future<dynamic> http_get({header, String path}) async {
 
   try {
     var response = await Dio().get(
-        BACK_END_HOST+path,
+        BACK_END_HOST,
+        // BACK_END_HOST+path,
         options: Options(
           headers: {
             "X-AUTH-TOKEN" : jwt,
