@@ -6,6 +6,8 @@ import 'package:wine/model/wine.dart';
 class ManualInquiry extends StatelessWidget {
   final inquiryController = TextEditingController();
   Wine wine_item = Wine('', '');
+  var inquiry_text_field = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +83,9 @@ class ManualInquiry extends StatelessWidget {
                 // runSpacing: 6.0,
                 children: <Widget>[
                   _buildChip('재고 있나요?', Color(0xFFff6666)),
-                  _buildChip('가격이 궁금해요!', Color(0xFFff6666)),
+                  _buildChip('가격이 궁금해요^^', Color(0xFFff6666)),
                   _buildChip('주차 가능한가요?', Color(0xFFff6666)),
-                  _buildChip('영업시간을 알려주세요!', Color(0xFFff6666)),
+                  _buildChip('영업시간을 알려주세요~', Color(0xFFff6666)),
                 ],
               ),
             ),
@@ -101,6 +103,7 @@ class ManualInquiry extends StatelessWidget {
               height: 200,
               padding: EdgeInsets.only(left: 15, right: 15),
               child: TextField(
+                controller: inquiry_text_field,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 obscureText: false,
@@ -125,8 +128,12 @@ class ManualInquiry extends StatelessWidget {
   Widget _buildChip(String label, Color color) {
     return Container(
       margin: EdgeInsets.only(left: 2, right: 2),
-      child: Chip(
-
+      child: ActionChip(
+        onPressed: () {
+            print('shit-123');
+            inquiry_text_field.text = inquiry_text_field.text + label + '\n';
+            // inquiry_text_field.text = inquiry_text_field.text + '\n' + label + '\n';
+        },
         labelPadding: EdgeInsets.all(2.0),
         // avatar: CircleAvatar(
         //   backgroundColor: Colors.white70,
