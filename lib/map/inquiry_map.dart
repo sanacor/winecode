@@ -1,16 +1,11 @@
-import 'dart:async';
-import 'dart:convert' as convert;
-import 'dart:convert' show jsonEncode, utf8;
-import 'package:http/http.dart' as http;
-import 'package:wine/util/http.dart';
 import 'dart:io' show Platform;
-
+import 'dart:async';
+import 'package:wine/util/http.dart';
 import 'package:flutter/material.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
 import 'package:wine/model/inquery_info.dart';
 import 'package:wine/model/wine.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:wine/util/http.dart';
 
 
 class InqueryMapScreen extends StatefulWidget {

@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:wine/util/http.dart';
+
 
 class Wine {
   String wineName;
@@ -14,22 +12,23 @@ class Wine {
   }
 }
 
+
 class PostViewModel {
 
-  Future<List<Wine>> searchByKeyword([String search_keyword = ""]) async {
-    if (search_keyword == "") {
+  Future<List<Wine>> searchByKeyword([String searchByKeyword = ""]) async {
+    if (searchByKeyword == "") {
       return [];
     }
 
-    var response = await http_get(header: null, path: 'api/product/search/'+search_keyword);
+    var response = await http_get(header: null, path: 'api/product/search/'+searchByKeyword);
     List responseJson = response;
 
-    Map<String, dynamic> find_manaully = {
+    Map<String, dynamic> findManaully = {
       'wineName': '결과에 와인이 없는 경우 여기를 터치해주세요',
       'wineImage': 'http://images.vivino.com/thumbs/default_label_150x200.jpg'
     };
-    responseJson.insert(0, find_manaully);
-    responseJson.add(find_manaully);
+    responseJson.insert(0, findManaully);
+    responseJson.add(findManaully);
 
 
     return responseJson.map((post) => new Wine.fromJson(post)).toList();

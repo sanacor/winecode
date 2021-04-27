@@ -8,7 +8,7 @@ var BACK_END_HOST = 'https://9l885hmyfg.execute-api.ap-northeast-2.amazonaws.com
 Future<dynamic> http_get({header, String path}) async {
   final storage = FlutterSecureStorage();
   String jwt = await storage.read(key: 'jwt');
-
+  print('JWT Token: $jwt');
   print(BACK_END_HOST+path);
 
   try {
@@ -23,7 +23,8 @@ Future<dynamic> http_get({header, String path}) async {
     );
     print(response);
     if (response.statusCode == 200) {
-      return response.data;
+      // return response.data;
+      return response;
 
     }
 

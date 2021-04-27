@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class InquiryDetail extends StatefulWidget {
 
-  final wine_name;
-  final List<dynamic> inquiryInfo;
+  final inqPdtName;
+  final List<dynamic> replyInfo;
 
-  const InquiryDetail({Key key, this.wine_name, this.inquiryInfo}) : super(key: key);
+  const InquiryDetail({Key key, this.inqPdtName, this.replyInfo}) : super(key: key);
 
   @override
   _InqueryDetailState createState() => _InqueryDetailState();
@@ -14,13 +14,6 @@ class InquiryDetail extends StatefulWidget {
 class _InqueryDetailState extends State<InquiryDetail> {
   @override
   Widget build(BuildContext context) {
-
-    print('shit-InquiryDetail-001');
-    print(widget.inquiryInfo);
-    print(widget.inquiryInfo.runtimeType);
-    // print(widget.inquiryInfo['shop_name']);
-    // print(widget.inquiryInfo['status']);
-    // print(widget.inquiryInfo['contents']);
 
     return Scaffold(
       body: SafeArea(
@@ -34,14 +27,14 @@ class _InqueryDetailState extends State<InquiryDetail> {
                 )
             ),
             Container(
-              child: Text(widget.wine_name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+              child: Text(widget.inqPdtName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
             ),
             SizedBox(height: 20),
             Expanded(
               child: ListView.separated(
-                itemCount: widget.inquiryInfo.length,
+                itemCount: widget.replyInfo.length,
                 itemBuilder: (context, index) {
-                  return ReplyTile(widget.inquiryInfo[index]);
+                  return ReplyTile(widget.replyInfo[index]);
                 },
                 separatorBuilder: (context, index) {
                   return const Divider(thickness: 1);
@@ -65,17 +58,20 @@ class ReplyTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(Icons.storefront_outlined),
-      title: Text(_reply['shop_name']),
-      subtitle: Text(_reply['status'] == 'waiting' ?  '답변을 기다리는 중' : _reply['contents']),
+      title: Text(_reply['rlyRtlName']),
+      subtitle: Text(_reply['rlyStatus'] == 'Waiting' ?  '답변을 기다리는 중' : _reply['contents']),
     );
   }
 }
 
 class Reply {
-  String shop_id;
-  String shop_name;
-  String status;
-  String contents;
+  int  rlyId;
+  int rlyInqId;
+  String rlyRtlId;
+  String rlyRtlName;
+  String rlyStatus;
+  String rlyContents;
+  String rlyTime;
 
-  Reply(this.shop_id, this.shop_name, this.status, this.contents);
+  Reply(this.rlyId, this.rlyInqId, this.rlyRtlId, this.rlyRtlName, this.rlyStatus, this.rlyContents, this.rlyTime);
 }

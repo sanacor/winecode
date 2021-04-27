@@ -1,9 +1,14 @@
 import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
-import 'package:wine/reply/ReplyTile.dart';
-// import 'package:wine/util/http.dart';
+// import 'package:wine/inquiry/model/InquiryDetail.dart';
+import 'package:wine/reply/replyTile.dart';
 import 'package:wine/util/http_mock.dart';
+import 'package:logger/logger.dart';
+
+var logger = Logger(
+  printer: PrettyPrinter(),
+);
 
 class ReplyScreen extends StatelessWidget {
   @override
@@ -41,16 +46,21 @@ class ReplyPage extends StatefulWidget {
 class _ReplyPageState extends State<ReplyPage> {
   @override
   Widget build(BuildContext context) {
+    logger.d('ReplyPage !!!');
     return FutureBuilder(
         initialData: [],
         future: _fetchReplyData(),
         builder: (context, snapshot) {
+          print('ReplyPage FutureBuilder');
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData) {
+
+            logger.d(snapshot.data);
+            print('ReplyPage FutureBuilder - 2');
             return ListView.separated(
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
-                return replyTile(snapshot.data[index]);
+                return ReplyTile(snapshot.data[index]);
               },
               separatorBuilder: (context, index) {
                 return const Divider(thickness: 1);
@@ -64,15 +74,18 @@ class _ReplyPageState extends State<ReplyPage> {
         });
   }
 
-  Future<List<replyInfo>> _fetchReplyData() async {
-    List<replyInfo> replyInfoList = [];
+  Future<List<ReplyInfo>> _fetchReplyData() async {
+    List<ReplyInfo> replyInfoList = [];
     var response = await http_get(header: null, path: 'api/retail/mylist');
-    List responseJson = response;
-    print(responseJson);
+    print('nnnn-0001');
+    logger.d(response.runtimeType);
+    List responseJson = response.data['list'];
+    logger.d(responseJson.runtimeType);
+    print('nnnn-0002');
 
-    return responseJson
-        .map((inqueryInfo) => new replyInfo.fromJson(inqueryInfo))
-        .toList();
+    var result = responseJson.map((inquiryInfo) => new ReplyInfo.fromJson(inquiryInfo)).toList();
+
+    return result;
 
   }
 }

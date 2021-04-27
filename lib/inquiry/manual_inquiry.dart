@@ -130,9 +130,7 @@ class ManualInquiry extends StatelessWidget {
       margin: EdgeInsets.only(left: 2, right: 2),
       child: ActionChip(
         onPressed: () {
-            print('shit-123');
             inquiry_text_field.text = inquiry_text_field.text + label + '\n';
-            // inquiry_text_field.text = inquiry_text_field.text + '\n' + label + '\n';
         },
         labelPadding: EdgeInsets.all(2.0),
         // avatar: CircleAvatar(

@@ -2,22 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:wine/reply/replying.dart';
 
 
-class replyTile extends StatelessWidget {
-  replyTile(this._replyInfo);
+class ReplyTile extends StatelessWidget {
+  ReplyTile(this._replyInfo);
 
-  final replyInfo _replyInfo;
+  final ReplyInfo _replyInfo;
 
   @override
   Widget build(BuildContext context) {
-    print('shit-1001');
-    print(_replyInfo.reply.runtimeType);
-    print(_replyInfo.reply.toString());
     return ListTile(
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
-        child: Image.network(_replyInfo.wine_image, fit: BoxFit.fill),
+        child: Image.network(_replyInfo.inqPdtName, fit: BoxFit.fill),
       ),
-      title: Text(_replyInfo.wine_name.toString()),
+      title: Text(_replyInfo.inqPdtName.toString()),
       // subtitle: Text("${_replyInfo.reply.toString()}"),
       // trailing: Text(_replyInfo.reply.toString()),
       onTap: () {
@@ -28,33 +25,41 @@ class replyTile extends StatelessWidget {
   }
 }
 
-class replyInfo {
-  String id;
-  String wine_name;
-  String wine_id;
-  // List<Map<String, String>> reply;
-  List<dynamic> reply;
-  String wine_image;
-  /*
-   {
-        "id": "987-326-436",
-        "shop": "저스트와인",
-        "wine": "Game Of Thrones pinor Noir",
-        "state": "답변 완료",
-        "content": "재고 충분합니다. 궁금한 사항 연락주세요:)"
-    },
-   */
+class ReplyInfo {
+  String reply;
+  String rlyId;
+  String rlyInqId;
+  String rlyRtlId;
+  String rlyRtlName;
+  String rlyTime;
+  String rlyContents;
+  String inqId;
+  String rlyStatus;
+  String inqUserMsrl;
+  String inqPdtName;
+  String inqPdtCompany;
+  String inqContents;
+  String inqTime;
 
-  replyInfo({this.id, this.reply, this.wine_id, this.wine_name, this.wine_image});
+  ReplyInfo({this.rlyId, this.rlyInqId, this.rlyRtlId, this.rlyRtlName, this.rlyStatus, this.rlyTime, this.rlyContents, this.inqId, this.inqUserMsrl, this.inqPdtName, this.inqPdtCompany, this.inqContents, this.inqTime});
 
-  factory replyInfo.fromJson(Map<String,dynamic> json){
+  factory ReplyInfo.fromJson(Map<String,dynamic> json){
     print('nooo-001');
-    return replyInfo(
-      id : json['reply_id'],
-      reply: json['reply'],
-      wine_id: json['wine_id'],
-      wine_name: json['wine_name'],
-      wine_image: json['wine_image']
+    return ReplyInfo(
+      rlyId: json['reply']['rlyId'],
+      rlyInqId: json['reply']['rlyInqId'],
+      rlyRtlId: json['reply']['rlyRtlId'],
+      rlyRtlName: json['reply']['rlyRtlName'],
+      rlyStatus: json['inquery']['rlyStatus'],
+      rlyTime: json['reply']['rlyTime'],
+      rlyContents: json['reply']['rlyContents'],
+      inqId: json['inquery']['inqId'],
+      inqUserMsrl: json['inquery']['inqUserMsrl'],
+      inqPdtName: json['inquery']['inqPdtName'],
+      inqPdtCompany: json['inquery']['inqPdtCompany'],
+      inqContents: json['inquery']['inqContents'],
+      inqTime: json['inquery']['inqTime'],
+
     );
   }
 }

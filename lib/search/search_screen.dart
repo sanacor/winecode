@@ -1,21 +1,16 @@
 import 'dart:ui';
-import 'dart:math';
-import 'dart:async';
 import 'dart:io' show Platform;
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
 import 'package:wine/model/wine.dart';
 import 'package:flutter/material.dart';
-import 'package:flappy_search_bar/flappy_search_bar.dart';
-import 'package:flappy_search_bar/scaled_tile.dart';
 import 'package:wine/widget/wine_detail.dart';
 import 'package:wine/inquiry/manual_inquiry.dart';
-import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+
 
 class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
+
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _textController = new TextEditingController();

@@ -1,6 +1,6 @@
+import 'dart:convert';
 import 'dart:convert' as convert;
-import 'dart:convert' show jsonEncode, utf8;
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     hide Options;
@@ -11,22 +11,27 @@ var BACK_END_HOST =
 Future<dynamic> http_get({header, String path}) async {
   final storage = FlutterSecureStorage();
   String jwt = await storage.read(key: 'jwt');
+  var url = BACK_END_HOST + path;
 
+  print('JWT $jwt');
   print(BACK_END_HOST + path);
 
   try {
-    var response = await Dio().get(BACK_END_HOST + path,
-        options: Options(
-          headers: {
-            "X-AUTH-TOKEN": jwt,
-          },
-        ));
-    print(response);
+    var response = await http.get(Uri.encodeFull(url), headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "X-AUTH-TOKEN":jwt
+    });
+
     if (response.statusCode == 200) {
-      return response.data;
+      var responseJson = json.decode(utf8.decode(response.bodyBytes));
+      print(responseJson);
+      return responseJson;
+    } else {
+      throw Exception('Failed to HTTP GET');
     }
-  } catch (e) {
-    print(e);
+  } catch (ex) {
+    print(ex);
   }
 }
 
@@ -39,22 +44,25 @@ Future<dynamic> http_post(
   print(BACK_END_HOST + path);
   print(body);
 
-  try {
-    var response = await Dio().post(BACK_END_HOST + path,
-        options: Options(
-          headers: {
-            "X-AUTH-TOKEN": jwt,
-          },
-        ),
-        data: body);
+  var url = BACK_END_HOST + path;
+  var response;
 
-    print(response);
+  try {
+    response = await http.post(
+      Uri.encodeFull(url),
+      headers: {"Accept": "application/json",  "Content-Type": "application/json", "X-AUTH-TOKEN":jwt},
+      body: convert.jsonEncode(body),
+    );
 
     if (response.statusCode == 200) {
-      return response;
+      var responseJson = json.decode(utf8.decode(response.bodyBytes));
+      print(responseJson);
+      return responseJson;
+    } else {
+      throw Exception('Failed to HTTP POST');
     }
-  } catch (e) {
-    print(e);
+  } catch (ex) {
+    print(ex);
   }
 }
 
@@ -65,13 +73,5 @@ Future<dynamic> http_delete(url, path, header) async {
 
   print(BACK_END_HOST + path);
 
-  try {
-    var response = await Dio().delete(BACK_END_HOST + path);
-    print(response);
-    if (response.statusCode == 200) {
-      return response.data;
-    }
-  } catch (e) {
-    print(e);
-  }
+
 }
