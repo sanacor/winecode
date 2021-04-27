@@ -177,31 +177,10 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
     print(jwt);
 
     var wineInquery = InquiryInfo(widget.wineItem.wineName, " ", _selectedShops);
-    // print(convert.jsonEncode(wineInquery));
-    // var body = convert.jsonEncode(wineInquery);
 
     var response = await http_post(header: null, path: 'api/inquery/send', body: wineInquery.toJson());
-    // List responseJson = response;
 
-    // var url =
-    //     "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/inquery/send";
-    // print(url);
-    // var response;
-    // try {
-    //   response = await http.post(
-    //     Uri.encodeFull(url),
-    //     headers: {"Accept": "application/json", "X-AUTH-TOKEN": jwt},
-    //     body: convert.jsonEncode(wineInquery),
-    //   );
-    // } catch (e) {
-    //   print(e);
-    // }
-
-    // var jsonResponse =
-    //     convert.jsonDecode(utf8.decode(response.bodyBytes)); //한글깨짐 수정
-    // print(jsonResponse.toString());
-
-    if (response.statusCode == 200) {
+    if (response['success'] == true) {
       final snackBar = SnackBar(content: Text("문의보내기 완료!"));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
+import 'package:wine/inquiry/manual_inquiry.dart';
 import 'package:wine/model/wine.dart';
 import 'package:wine/map/inquiry_map.dart';
 
@@ -183,7 +184,7 @@ class _WineDetailState extends State<WineDetail> {
             onTap: () {
               // navigationBar.onTap(1);
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => InqueryMapScreen(wineItem: widget.wineItem)));
+                  MaterialPageRoute(builder: (context) => ManualInquiry(widget.wineItem)));
             },
             child: Center(
                 child: Padding(

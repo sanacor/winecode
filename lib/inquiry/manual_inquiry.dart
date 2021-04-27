@@ -4,13 +4,17 @@ import 'package:wine/map/inquiry_map.dart';
 import 'package:wine/model/wine.dart';
 
 class ManualInquiry extends StatelessWidget {
-  final inquiryController = TextEditingController();
-  Wine wine_item = Wine('', '');
-  var inquiry_text_field = TextEditingController();
+  Wine wineItem;
+  final wineNameController = TextEditingController();
+  
+  var inquiryContentsController = TextEditingController();
+
+  ManualInquiry([this.wineItem]);
 
 
   @override
   Widget build(BuildContext context) {
+    wineNameController.text = wineItem.wineName;
     // return Container(color: Colors.red,);
     return Scaffold(
       body: SafeArea(
@@ -36,10 +40,10 @@ class ManualInquiry extends StatelessWidget {
                   )),
               GestureDetector(
                   onTap: () {
-                    wine_item.wineName = inquiryController.text;
+                    wineItem.wineName = wineNameController.text;
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
-                            InqueryMapScreen(wineItem: wine_item)));
+                            InqueryMapScreen(wineItem: wineItem)));
                   },
                   child: new Container(
                       padding: EdgeInsets.only(top: 15, right: 15),
@@ -58,7 +62,7 @@ class ManualInquiry extends StatelessWidget {
             Container(
               padding: EdgeInsets.only(left: 15, right: 15),
               child: TextField(
-                controller: inquiryController,
+                controller: wineNameController,
                 obscureText: false,
                 decoration: InputDecoration(
                   // border: OutlineInputBorder(),
@@ -103,7 +107,7 @@ class ManualInquiry extends StatelessWidget {
               height: 200,
               padding: EdgeInsets.only(left: 15, right: 15),
               child: TextField(
-                controller: inquiry_text_field,
+                controller: inquiryContentsController,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 obscureText: false,
@@ -130,7 +134,7 @@ class ManualInquiry extends StatelessWidget {
       margin: EdgeInsets.only(left: 2, right: 2),
       child: ActionChip(
         onPressed: () {
-            inquiry_text_field.text = inquiry_text_field.text + label + '\n';
+            inquiryContentsController.text = inquiryContentsController.text + label + '\n';
         },
         labelPadding: EdgeInsets.all(2.0),
         // avatar: CircleAvatar(

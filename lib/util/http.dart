@@ -20,7 +20,7 @@ Future<dynamic> http_get({header, String path}) async {
     var response = await http.get(Uri.encodeFull(url), headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      "X-AUTH-TOKEN":jwt
+      "X-AUTH-TOKEN": jwt
     });
 
     if (response.statusCode == 200) {
@@ -50,7 +50,11 @@ Future<dynamic> http_post(
   try {
     response = await http.post(
       Uri.encodeFull(url),
-      headers: {"Accept": "application/json",  "Content-Type": "application/json", "X-AUTH-TOKEN":jwt},
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "X-AUTH-TOKEN": jwt
+      },
       body: convert.jsonEncode(body),
     );
 
@@ -72,6 +76,4 @@ Future<dynamic> http_delete(url, path, header) async {
   String jwt = await storage.read(key: 'jwt');
 
   print(BACK_END_HOST + path);
-
-
 }
