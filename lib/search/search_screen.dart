@@ -17,11 +17,14 @@ class SearchScreen extends StatefulWidget {
   _SearchScreenState createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchScreenState extends State<SearchScreen> with AutomaticKeepAliveClientMixin {
   final TextEditingController _textController = new TextEditingController();
   final PostViewModel viewModel = PostViewModel();
   var isLoading = false;
   // return SafeArea(child: Center(child: Container(child: ListWidget())));
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {

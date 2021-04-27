@@ -82,33 +82,41 @@ class WineApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key }) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-
-
+  
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+// SingleTickerProviderStateMixin 클래스는 애니메이션을 처리하기 위한 헬퍼 클래스
+// 상속에 포함시키지 않으면 탭바 컨트롤러를 생성할 수 없다.
+// mixin은 다중 상속에서 코드를 재사용하기 위한 한 가지 방법으로 with 키워드와 함께 사용
+class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
   static int _selectedIndex = 0;
   static final storage = new FlutterSecureStorage(); //flutter_secure_storage 사용을 위한 초기화 작업
+
+  // 컨트롤러는 TabBar와 TabBarView 객체를 생성할 때 직접 전달
+  TabController controller;
+
+  List<Widget> _pages = [SearchScreen(),    WineMapScreen(),    InquiryScreen(),    SettingsScreen()];
 
   @override
   void initState() {
     super.initState();
+    // SingleTickerProviderStateMixin를 상속 받아서
+    // vsync에 this 형태로 전달해야 애니메이션이 정상 처리된다.
+    controller = TabController(vsync: this, length: 4);
     firebaseCloudMessaging_Listeners();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkJWT();
     });
+  }
+
+  // initState 함수의 반대.
+  // 위젯 트리에서 제거되기 전에 호출. 멤버로 갖고 있는 컨트롤러부터 제거.
+  @override
+  void dispose(){
+    controller.dispose();
+    super.dispose();
   }
 
   _checkJWT() async {
@@ -167,61 +175,28 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _onBottomItemTapped(int index) {
-    setState(() {
-      print(index);
-      _selectedIndex = index;
-    });
-  }
-
-  static const List<BottomNavigationBarItem> _bnbItems =
-  <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-        icon: Icon(Icons.search, color: Colors.black),
-        title: Text('검색', style: TextStyle(color: Colors.black))
-    ),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.room_outlined, color: Colors.black),
-        title: Text('지도', style: TextStyle(color: Colors.black))
-    ),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.chat_outlined, color: Colors.black),
-        title: Text('문의', style: TextStyle(color: Colors.black))
-    ),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.settings_outlined, color: Colors.black),
-        title: Text('설정', style: TextStyle(color: Colors.black))
-    )
-  ];
-
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          items: _bnbItems,
-          currentIndex: _selectedIndex,
-          selectedItemColor: Theme.of(context).accentColor,
-          onTap: _onBottomItemTapped,
-          showUnselectedLabels: true,
-          unselectedItemColor: Colors.blue,
-
-
+      body: TabBarView(
+        physics: NeverScrollableScrollPhysics(),
+        controller: controller,
+        children: _pages,
       ),
-      body:IndexedStack(
-        children: <Widget>[
-          SearchScreen(),
-          WineMapScreen(),
-          InquiryScreen(),
-          SettingsScreen()
-        ],
-        index: _selectedIndex,
+      bottomNavigationBar: Container(
+        child: TabBar(
+          controller: controller,
+          tabs: [
+            Tab(icon: Icon(Icons.search, color: Colors.black),
+                child: Text('검색', style: TextStyle(color: Colors.black))),
+            Tab(icon: Icon(Icons.room_outlined, color: Colors.black),
+                child: Text('지도', style: TextStyle(color: Colors.black))),
+            Tab(icon: Icon(Icons.chat_outlined, color: Colors.black),
+                child: Text('문의', style: TextStyle(color: Colors.black))),
+            Tab(icon: Icon(Icons.settings_outlined, color: Colors.black),
+                child: Text('설정', style: TextStyle(color: Colors.black))),
+          ],
+        ),
       ),
     );
   }
