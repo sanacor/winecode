@@ -17,38 +17,38 @@ class ManualInquiry extends StatelessWidget {
           child: Container(
         child: Column(
           children: [
-            Stack(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                    alignment: Alignment.bottomLeft,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.grey),
-                      onPressed: () => Navigator.of(context).pop(),
-                    )),
-                Container(
-                    padding: EdgeInsets.only(top: 15),
-                    alignment: Alignment.center,
-                    child: Text(
-                      '와인 문의 하기',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    )),
-                GestureDetector(
-                    onTap: () {
-                      wine_item.wineName = inquiryController.text;
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              InqueryMapScreen(wineItem: wine_item)));
-                    },
-                    child: new Container(
-                        padding: EdgeInsets.only(top: 15, right: 15),
-                        alignment: Alignment.bottomRight,
-                        child: Text(
-                          '다음',
-                          style: TextStyle(fontSize: 17),
-                        )))
-              ],
-            ),
+              Container(
+                  alignment: Alignment.bottomLeft,
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.grey),
+                    onPressed: () => Navigator.of(context).pop(),
+                  )),
+              Container(
+                  padding: EdgeInsets.only(top: 15),
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    '와인 문의 하기',
+                    style:
+                    TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  )),
+              GestureDetector(
+                  onTap: () {
+                    wine_item.wineName = inquiryController.text;
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            InqueryMapScreen(wineItem: wine_item)));
+                  },
+                  child: new Container(
+                      padding: EdgeInsets.only(top: 15, right: 15),
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        '다음',
+                        style: TextStyle(fontSize: 17),
+                      )))
+            ],),
             const Divider(
               height: 20,
               thickness: 1,
