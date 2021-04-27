@@ -59,7 +59,7 @@ class ReplyTile extends StatelessWidget {
     return ListTile(
       leading: Icon(Icons.storefront_outlined),
       title: Text(_reply['rlyRtlName']),
-      subtitle: Text(_reply['rlyStatus'] == 'Waiting' ?  '답변을 기다리는 중' : _reply['contents']),
+      subtitle: Text(_reply['rlyStatus'] == 'Waiting' ?  '답변을 기다리는 중' : _reply['rlyContents']),
     );
   }
 }
