@@ -8,52 +8,46 @@ class InquiryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('shit-1001');
     print(_inquiryInfo.reply.runtimeType);
     print(_inquiryInfo.reply.toString());
     return ListTile(
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
-        child: Image.network(_inquiryInfo.wine_image, fit: BoxFit.fill),
+        child: Image.network(_inquiryInfo.inqPdtImage, fit: BoxFit.fill),
       ),
-      title: Text(_inquiryInfo.wine_name.toString()),
+      title: Text(_inquiryInfo.inqPdtName.toString()),
       // subtitle: Text("${_inquiryInfo.reply.toString()}"),
       // trailing: Text(_inquiryInfo.reply.toString()),
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => InquiryDetail(wine_name: _inquiryInfo.wine_name, inquiryInfo: _inquiryInfo.reply)));
+            builder: (context) => InquiryDetail(inqPdtName: _inquiryInfo.inqPdtName, replyInfo: _inquiryInfo.reply)));
       },
     );
   }
 }
 
 class InquiryInfo {
-  String id;
-  String wine_name;
-  String wine_id;
-  // List<Map<String, String>> reply;
+  int inqId;
+  int inqUserMsrl;
+  String inqPdtName;
+  String inqPdtImage;
+  String inqPdtCompany;
+  String inqContents;
+  String inqTime;
   List<dynamic> reply;
-  String wine_image;
-  /*
-   {
-        "id": "987-326-436",
-        "shop": "저스트와인",
-        "wine": "Game Of Thrones pinor Noir",
-        "state": "답변 완료",
-        "content": "재고 충분합니다. 궁금한 사항 연락주세요:)"
-    },
-   */
 
-  InquiryInfo({this.id, this.reply, this.wine_id, this.wine_name, this.wine_image});
+  InquiryInfo({this.inqId, this.inqUserMsrl, this.inqPdtName, this.inqPdtImage, this.inqPdtCompany, this.inqContents, this.inqTime, this.reply });
 
   factory InquiryInfo.fromJson(Map<String,dynamic> json){
-    print('nooo-001');
     return InquiryInfo(
-      id : json['inquiry_id'],
-      reply: json['reply'],
-      wine_id: json['wine_id'],
-      wine_name: json['wine_name'],
-      wine_image: json['wine_image']
+      inqId : json['inqId'],
+      inqUserMsrl: json['inqUserMsrl'],
+      inqPdtName: json['inqPdtName'],
+      inqPdtImage: 'https://i.ibb.co/yQjhY5p/Screen-Shot-2021-04-15-at-10-52-11-PM.png',
+      inqPdtCompany: json['inqPdtCompany'],
+      inqContents: json['inqContents'],
+      inqTime: json['inqTime'],
+      reply: json['reply']
     );
   }
 }

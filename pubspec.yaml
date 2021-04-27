@@ -29,6 +29,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   http: ^0.12.0
   provider: ^5.0.0
+  logger: ^1.0.0
   flappy_search_bar: ^1.7.2
   firebase_messaging: 7.0.3
   carousel_slider: ^3.0.0

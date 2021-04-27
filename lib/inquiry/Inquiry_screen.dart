@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:wine/inquiry/model/InquiryTile.dart';
-import 'package:http/http.dart' as http;
+import 'package:wine/util/http.dart';
 
 class InquiryScreen extends StatelessWidget {
   @override
@@ -62,30 +62,11 @@ class _InquiryPageState extends State<InquiryPage> {
         });
   }
 
-  Future<List<InquiryInfo>> _fetchInquiryData() async {
-    List<InquiryInfo> InquiryList = [];
-    var url =
-        'https://9l885hmyfg.execute-api.ap-northeast-2.amazonaws.com/dev/inquiry';
-
+  Future<List<dynamic>> _fetchInquiryData() async {
     print("[fetchInquiryData] started fetch Inquiry data http request");
-
-    try {
-      var response = await http.get(Uri.encodeFull(url), headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      });
-
-      if (response.statusCode == 200) {
-        print('shit-200');
-        List responseJson = json.decode(utf8.decode(response.bodyBytes));
-        return responseJson
-            .map((inqueryInfo) => new InquiryInfo.fromJson(inqueryInfo))
-            .toList();
-      } else {
-        throw Exception('Failed to load InquiryInfo Data');
-      }
-    } catch (ex) {
-      print(ex);
-    }
+    var response = await http_get(header: null, path: 'api/inquery/list');
+    var inquiryList = response['list'];
+    inquiryList = inquiryList.map((inquiryInfo) => new InquiryInfo.fromJson(inquiryInfo)).toList();
+    return inquiryList;
   }
 }

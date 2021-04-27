@@ -2,13 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:io' show Platform;
-import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'dart:convert' show jsonEncode, utf8;
-
-import 'package:wine/main.dart';
+import 'package:wine/util/http.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -104,17 +101,7 @@ class _MyLoginPageState extends State<LoginScreen> {
       //print("AccessToken : " + token.accessToken);
       try {
         User user = await UserApi.instance.me();
-        //print(user.toString());
-        /*
-        Fluttertoast.showToast(
-            msg: user.properties['nickname'] + "님 반갑습니다.",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-         */
+
         final snackBar = SnackBar(content: Text(user.properties['nickname'] + "님 반갑습니다."));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         await _registerUserInfoWithKakao(token.accessToken);
@@ -148,30 +135,35 @@ class _MyLoginPageState extends State<LoginScreen> {
   }
 
   _registerUserInfoWithKakao(String accessToken) async {
-    var url =
-        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/v1/signup/kakao?accessToken=" +
-            accessToken;
+    // var url =
+    //     "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/v1/signup/kakao?accessToken=" +
+    //         accessToken;
     try {
-      var response = await http
-          .post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-      var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
+      // var response = await http
+      //     .post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+      // var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
       //TODO 여기서 응답코드에 따라서 로그인으로 넘어갈지 회원가입으로 갈지 결정??
-      print(JsonResponse);
+      // print(JsonResponse);
+      var response = await http_post(header: null, path: 'v1/signup/kakao?accessToken='+accessToken);
     } catch (e) {
       print(e);
     }
   }
 
   _issueJWTandLogin(String accessToken) async {
-    var url =
-        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/v1/signin/kakao?accessToken=" +
-            accessToken;
+    // var url =
+    //     "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/v1/signin/kakao?accessToken=" +
+    //         accessToken;
     try {
-      var response = await http
-          .post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-      var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
-      print("JWT : " + JsonResponse['data']);
-      await storage.write(key: "jwt", value: JsonResponse['data']);
+      // var response = await http
+      //     .post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+      // var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
+
+
+      var response = await http_post(header: null, path: 'v1/signin/kakao?accessToken='+accessToken);
+
+      print("JWT : " + response['data']);
+      await storage.write(key: "jwt", value: response['data']);
       //Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
       Navigator.of(context).pop();
     } catch (e) {
