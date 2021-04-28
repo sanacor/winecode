@@ -20,7 +20,7 @@ Future<dynamic> http_get({header, String path}) async {
     var response = await http.get(Uri.encodeFull(url), headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      "X-AUTH-TOKEN": jwt
+      "Authorization": "Bearer " + jwt
     });
 
     if (response.statusCode == 200) {
