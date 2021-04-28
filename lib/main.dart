@@ -122,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   _checkJWT() async {
     //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
     //(데이터가 없을때는 null을 반환을 합니다.)
-    String jwt = await storage.read(key: "jwt");
+    String jwt = await storage.read(key: "access_token");
     print(jwt);
 
     //jwt가 없는 경우 로그인 페이지로 이동

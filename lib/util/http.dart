@@ -10,7 +10,7 @@ var BACK_END_HOST =
 
 Future<dynamic> http_get({header, String path}) async {
   final storage = FlutterSecureStorage();
-  String jwt = await storage.read(key: 'jwt');
+  String jwt = await storage.read(key: 'access_token');
   var url = BACK_END_HOST + path;
 
   print('JWT $jwt');
@@ -39,7 +39,7 @@ Future<dynamic> http_get({header, String path}) async {
 Future<dynamic> http_post(
     {header, String path, Map<String, dynamic> body}) async {
   final storage = FlutterSecureStorage();
-  String jwt = await storage.read(key: 'jwt');
+  String jwt = await storage.read(key: 'access_token');
 
   print(BACK_END_HOST + path);
   print(body);
@@ -73,7 +73,7 @@ Future<dynamic> http_post(
 // 추가 구현 필요
 Future<dynamic> http_delete(url, path, header) async {
   final storage = FlutterSecureStorage();
-  String jwt = await storage.read(key: 'jwt');
+  String jwt = await storage.read(key: 'access_token');
 
   print(BACK_END_HOST + path);
 }

@@ -162,8 +162,9 @@ class _MyLoginPageState extends State<LoginScreen> {
 
       var response = await http_post(header: null, path: 'v1/signin/kakao?accessToken='+accessToken);
 
-      print("JWT : " + response['data']);
-      await storage.write(key: "jwt", value: response['data']);
+      print("access_token : " + response['data']['access_token']);
+      await storage.write(key: "access_token", value: response['data']['access_token']);
+      await storage.write(key: "access_token", value: response['data']['refresh_token']);
       //Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
       Navigator.of(context).pop();
     } catch (e) {
