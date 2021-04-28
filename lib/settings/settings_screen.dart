@@ -87,7 +87,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _tapLogout(BuildContext context) async{
-    await storage.delete(key: "jwt");
+    await storage.delete(key: "access_token");
+    await storage.delete(key: "refresh_token");
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) =>
             MyHomePage()));
