@@ -164,7 +164,7 @@ class _MyLoginPageState extends State<LoginScreen> {
 
       print("access_token : " + response['data']['access_token']);
       await storage.write(key: "access_token", value: response['data']['access_token']);
-      await storage.write(key: "access_token", value: response['data']['refresh_token']);
+      await storage.write(key: "refresh_token", value: response['data']['refresh_token']);
       //Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
       Navigator.of(context).pop();
     } catch (e) {

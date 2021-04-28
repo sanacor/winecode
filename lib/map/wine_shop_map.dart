@@ -38,8 +38,6 @@ class _MarkerMapPageState extends State<WineMapScreen> {
       context: context,
     );
 
-    //TODO 첫 홈화면이 떴을 때 토큰이 없어서 실패하고, 이후에 카톡 로그인하더라도 기존에 이미 실패했기 때문에 마커가 표시되지 않음
-    //이슈 수정 필요
     var response = await http_get(header: null, path: 'api/retail/infoall');
     
     print(response);
