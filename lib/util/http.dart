@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:convert' as convert;
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
@@ -11,13 +12,16 @@ var BACK_END_HOST =
 Future<dynamic> http_get({header, String path}) async {
   final storage = FlutterSecureStorage();
   String jwt = await storage.read(key: 'access_token');
+
   var url = BACK_END_HOST + path;
 
   print('JWT $jwt');
   print(BACK_END_HOST + path);
 
+  var response;
+
   try {
-    var response = await http.get(Uri.encodeFull(url), headers: {
+    response = await http.get(Uri.encodeFull(url), headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
       "Authorization": "Bearer " + jwt
@@ -48,21 +52,37 @@ Future<dynamic> http_post(
   var response;
 
   try {
-    response = await http.post(
-      Uri.encodeFull(url),
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "X-AUTH-TOKEN": jwt
-      },
-      body: convert.jsonEncode(body),
-    );
+    if (jwt == null) {
+      response = await http.post(
+        Uri.encodeFull(url),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          //Authorization 헤더가 있는 경우 Spring Security에서 무조건 검증하기 때문에 포함하면 안됨
+          //signin, signup할 때 post사용하므로 꼭 필요한 코드
+        },
+        body: convert.jsonEncode(body),
+      );
+    } else {
+      response = await http.post(
+        Uri.encodeFull(url),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + jwt,
+        },
+        body: convert.jsonEncode(body),
+      );
+    }
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(utf8.decode(response.bodyBytes));
       print(responseJson);
       return responseJson;
     } else {
+      print(response.request);
+      var responseJson = json.decode(utf8.decode(response.bodyBytes));
+      print(responseJson);
       throw Exception('Failed to HTTP POST');
     }
   } catch (ex) {
