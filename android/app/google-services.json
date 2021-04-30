@@ -1,37 +1,37 @@
 {
   "project_info": {
-    "project_number": "155184351759",
-    "project_id": "winecode-10a78",
-    "storage_bucket": "winecode-10a78.appspot.com"
+    "project_number": "441215028866",
+    "project_id": "winecode-e8f6f",
+    "storage_bucket": "winecode-e8f6f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:155184351759:android:91faeb7eed029486f5f17a",
+        "mobilesdk_app_id": "1:441215028866:android:03d108a57c51911860ae9b",
         "android_client_info": {
           "package_name": "com.example.winecode"
         }
       },
       "oauth_client": [
         {
-          "client_id": "155184351759-s4fbkua2d4g43b95guf8itfvuggegajm.apps.googleusercontent.com",
+          "client_id": "441215028866-alpc921njs07n7dcc371tdvbeihdajrr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC8QLkR9rAuqwbESWGtdLpKs4efwpeD5rU"
+          "current_key": "AIzaSyD8-Q1d4EQL7uCAR0FXSzcAoxYhm0n6hi0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "155184351759-s4fbkua2d4g43b95guf8itfvuggegajm.apps.googleusercontent.com",
+              "client_id": "441215028866-alpc921njs07n7dcc371tdvbeihdajrr.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "155184351759-6mt6j3074lhll87163q270l6p3ivbma1.apps.googleusercontent.com",
+              "client_id": "441215028866-jm9239l10t03r2fai3b8aj39bqa33hi0.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "nclab.taehee.winecode"
