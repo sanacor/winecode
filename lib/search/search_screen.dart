@@ -118,7 +118,7 @@ class _SearchScreenState extends State<SearchScreen> with AutomaticKeepAliveClie
                                   Text('${snapshot.data[index].wineName}'),
                                   onTap: () {
                                     Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => (index == snapshot.data.length - 1) || (index == 0) ?  ManualInquiry() : WineDetail(
+                                        builder: (context) => (index == snapshot.data.length - 1) || (index == 0) ?  ManualInquiry(Wine('', '')) : WineDetail(
                                             wineItem: snapshot.data[index])));
                                   },
                                 ),)
