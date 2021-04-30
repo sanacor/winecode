@@ -2,10 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:io' show Platform;
 import 'dart:convert' as convert;
 import 'dart:convert' show jsonEncode, utf8;
 import 'package:wine/util/http.dart';
+
+
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -96,8 +101,11 @@ class _MyLoginPageState extends State<LoginScreen> {
 
   _issueAccessToken(String authCode) async {
     try {
+      print('do-gi-0');
       var token = await AuthApi.instance.issueAccessToken(authCode);
+      print('do-gi-1');
       AccessTokenStore.instance.toStore(token);
+      print('do-gi-2');
       //print("AccessToken : " + token.accessToken);
       try {
         User user = await UserApi.instance.me();
@@ -116,8 +124,10 @@ class _MyLoginPageState extends State<LoginScreen> {
     if (_isKakaoTalkInstalled) {
       try {
         var code = await AuthCodeClient.instance.requestWithTalk();
+        print('do-gi');
         await _issueAccessToken(code);
       } catch (e) {
+        print('do-gi-error');
         print(e);
       }
     } else {
@@ -144,6 +154,7 @@ class _MyLoginPageState extends State<LoginScreen> {
       // var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
       //TODO 여기서 응답코드에 따라서 로그인으로 넘어갈지 회원가입으로 갈지 결정??
       // print(JsonResponse);
+
       var response = await http_post(header: null, path: 'v1/signup/kakao?accessToken='+accessToken);
     } catch (e) {
       print(e);
@@ -158,9 +169,12 @@ class _MyLoginPageState extends State<LoginScreen> {
       // var response = await http
       //     .post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
       // var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
+      print('toooken');
+      var fcm_token = await _firebaseMessaging.getToken();
+      print(fcm_token);
+      var signUpBody = {'fcmToken': fcm_token};
 
-
-      var response = await http_post(header: null, path: 'v1/signin/kakao?accessToken='+accessToken);
+      var response = await http_post(header: null, path: 'v1/signin/kakao?accessToken='+accessToken, body: signUpBody);
 
       print("access_token : " + response['data']['access_token']);
       await storage.write(key: "access_token", value: response['data']['access_token']);
