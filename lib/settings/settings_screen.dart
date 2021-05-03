@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wine/main.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:wine/reply/reply_screen.dart';
+import 'package:wine/settings/app_settrings_screen.dart';
 
 
 class SettingsScreen extends StatefulWidget {
@@ -63,6 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     widgetList.add(ListTile(
       leading: Icon(Icons.android_outlined),
       title: Text('앱 설정'),
+      onTap: () => _tapPageCallback(context),
     ));
     widgetList.add(ListTile(
       leading: Icon(Icons.add_business_outlined),
@@ -76,6 +78,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ));
 
     return widgetList;
+  }
+
+  void _tapPageCallback(BuildContext context){
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AppSettingScreen()));
   }
 
   void _tapCallback(BuildContext context) {
