@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     hide Options;
 
-var BACK_END_HOST =
-    'http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/';
+// var BACK_END_HOST = 'http://172.30.1.39:8080/';
+var BACK_END_HOST = 'http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/';
+
 
 Future<dynamic> http_get({header, String path}) async {
   final storage = FlutterSecureStorage();
@@ -46,6 +47,7 @@ Future<dynamic> http_post(
   String jwt = await storage.read(key: 'access_token');
 
   print(BACK_END_HOST + path);
+  print('JWT $jwt');
   print(body);
 
   var url = BACK_END_HOST + path;

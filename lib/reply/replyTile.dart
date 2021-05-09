@@ -12,9 +12,9 @@ class ReplyTile extends StatelessWidget {
     return ListTile(
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
-        child: Image.network(_replyInfo.inqPdtName, fit: BoxFit.fill),
+        child: Image.network('https://i.ibb.co/yQjhY5p/Screen-Shot-2021-04-15-at-10-52-11-PM.png', fit: BoxFit.fill),
       ),
-      title: Text(_replyInfo.inqPdtName.toString()),
+      title: Text(_replyInfo.reply['inquery']['inqPdtName']),
       // subtitle: Text("${_replyInfo.reply.toString()}"),
       // trailing: Text(_replyInfo.reply.toString()),
       onTap: () {
@@ -26,40 +26,14 @@ class ReplyTile extends StatelessWidget {
 }
 
 class ReplyInfo {
-  String reply;
-  String rlyId;
-  String rlyInqId;
-  String rlyRtlId;
-  String rlyRtlName;
-  String rlyTime;
-  String rlyContents;
-  String inqId;
-  String rlyStatus;
-  String inqUserMsrl;
-  String inqPdtName;
-  String inqPdtCompany;
-  String inqContents;
-  String inqTime;
+  Map<String, dynamic> reply;
 
-  ReplyInfo({this.rlyId, this.rlyInqId, this.rlyRtlId, this.rlyRtlName, this.rlyStatus, this.rlyTime, this.rlyContents, this.inqId, this.inqUserMsrl, this.inqPdtName, this.inqPdtCompany, this.inqContents, this.inqTime});
+  ReplyInfo({this.reply});
 
   factory ReplyInfo.fromJson(Map<String,dynamic> json){
-    print('nooo-001');
-    return ReplyInfo(
-      rlyId: json['reply']['rlyId'],
-      rlyInqId: json['reply']['rlyInqId'],
-      rlyRtlId: json['reply']['rlyRtlId'],
-      rlyRtlName: json['reply']['rlyRtlName'],
-      rlyStatus: json['inquery']['rlyStatus'],
-      rlyTime: json['reply']['rlyTime'],
-      rlyContents: json['reply']['rlyContents'],
-      inqId: json['inquery']['inqId'],
-      inqUserMsrl: json['inquery']['inqUserMsrl'],
-      inqPdtName: json['inquery']['inqPdtName'],
-      inqPdtCompany: json['inquery']['inqPdtCompany'],
-      inqContents: json['inquery']['inqContents'],
-      inqTime: json['inquery']['inqTime'],
 
+    return ReplyInfo(
+        reply: json
     );
   }
 }

@@ -3,7 +3,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 // import 'package:wine/inquiry/model/InquiryDetail.dart';
 import 'package:wine/reply/replyTile.dart';
-import 'package:wine/util/http_mock.dart';
+import 'package:wine/util/http.dart';
 import 'package:logger/logger.dart';
 
 var logger = Logger(
@@ -55,7 +55,7 @@ class _ReplyPageState extends State<ReplyPage> {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData) {
 
-            logger.d(snapshot.data);
+            // logger.d(snapshot.data);
             print('ReplyPage FutureBuilder - 2');
             return ListView.separated(
               itemCount: snapshot.data.length,
@@ -79,7 +79,8 @@ class _ReplyPageState extends State<ReplyPage> {
     var response = await http_get(header: null, path: 'api/retail/mylist');
     print('nnnn-0001');
     logger.d(response.runtimeType);
-    List responseJson = response.data['list'];
+    // List responseJson = response.data['list'];
+    List responseJson = response['list'];
     logger.d(responseJson.runtimeType);
     print('nnnn-0002');
 

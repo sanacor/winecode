@@ -29,7 +29,7 @@ class Replying extends StatelessWidget {
                     padding: EdgeInsets.only(top: 15),
                     alignment: Alignment.center,
                     child: Text(
-                      '와인 문의 하기',
+                      '와인 답변 하기',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     )),
