@@ -55,6 +55,9 @@ dependencies:
   #Secure Storage
   flutter_secure_storage: ^4.1.0
 
+  #Package for image upload
+  multi_image_picker: ^4.8.0
+
 
 dev_dependencies:
   flutter_test:

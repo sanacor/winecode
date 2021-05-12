@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wine/main.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:wine/reply/reply_screen.dart';
-
+import 'package:wine/testScreen/image_upload.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -15,26 +15,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
+    return SafeArea(
         child: Center(
             child: Column(children: <Widget>[
-              Container(height: Platform.isAndroid ? 10 : 1 ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 20),
-                    alignment: Alignment.bottomLeft,
-                    child: RichText(
-                      text: TextSpan(
-                        text: '나의 페이지',
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
-                      ),
-                    ),
-                    height: MediaQuery.of(context).size.height / 25,
-                  ),
-                  Expanded(child: ListView(
-                    physics: BouncingScrollPhysics(),
-                    children: LoadSettingTile(context),
-                  ))
-            ])));
+      Container(height: Platform.isAndroid ? 10 : 1),
+      Container(
+        padding: const EdgeInsets.only(left: 20),
+        alignment: Alignment.bottomLeft,
+        child: RichText(
+          text: TextSpan(
+            text: '나의 페이지',
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+          ),
+        ),
+        height: MediaQuery.of(context).size.height / 25,
+      ),
+      Expanded(
+          child: ListView(
+        physics: BouncingScrollPhysics(),
+        children: LoadSettingTile(context),
+      ))
+    ])));
   }
 
   List<Widget> LoadSettingTile(BuildContext context) {
@@ -70,6 +72,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
       onTap: () => _storeOwner(context),
     ));
     widgetList.add(ListTile(
+      leading: Icon(Icons.add_business_outlined),
+      title: Text('이미지 업로드'),
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => ImageUploadScreen()));
+      },
+    ));
+    widgetList.add(ListTile(
       leading: Icon(Icons.logout),
       title: Text('로그아웃'),
       onTap: () => _tapLogout(context),
@@ -86,17 +96,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
         });
   }
 
-  void _tapLogout(BuildContext context) async{
+  void _tapLogout(BuildContext context) async {
     await storage.delete(key: "access_token");
     await storage.delete(key: "refresh_token");
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            MyHomePage()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => MyHomePage()));
   }
 
   void _storeOwner(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => ReplyScreen()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => ReplyScreen()));
   }
-
 }
