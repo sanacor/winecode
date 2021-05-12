@@ -4,22 +4,21 @@ import 'package:wine/map/inquiry_map.dart';
 import 'package:wine/model/wine.dart';
 
 
-class Replying extends StatelessWidget {
+class Replied extends StatelessWidget {
   final inquiryController = TextEditingController();
   Wine wine_item = Wine('', '');
 
-
-  Replying(Map<String, dynamic> reply) {
+  Replied(Map<String, dynamic> reply) {
     this.reply = reply;
-    this.wine_item.wineName = reply['inquery']['inqPdtName'];
-    print(this.wine_item.wineName);
+    this.wine_item = reply['inqPdtName'];
+    print('shsh');
   }
 
   set reply(Map<String, dynamic> reply) {}
 
+
   @override
   Widget build(BuildContext context) {
-    inquiryController.text = wine_item.wineName;
     // return Container(color: Colors.red,);
     return Scaffold(
       body: SafeArea(
@@ -38,7 +37,7 @@ class Replying extends StatelessWidget {
                     padding: EdgeInsets.only(top: 15),
                     alignment: Alignment.center,
                     child: Text(
-                      '와인 답변 하기',
+                      '완료된 와인 답변',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     )),
