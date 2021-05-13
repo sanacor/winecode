@@ -101,18 +101,19 @@ class _MyLoginPageState extends State<LoginScreen> {
 
   _issueAccessToken(String authCode) async {
     try {
-      print('do-gi-0');
       var token = await AuthApi.instance.issueAccessToken(authCode);
-      print('do-gi-1');
       AccessTokenStore.instance.toStore(token);
-      print('do-gi-2');
       //print("AccessToken : " + token.accessToken);
       try {
         User user = await UserApi.instance.me();
 
         final snackBar = SnackBar(content: Text(user.properties['nickname'] + "님 반갑습니다."));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        await _registerUserInfoWithKakao(token.accessToken);
+        if(!(await _registerUserInfoWithKakao(token.accessToken))){
+          final snackBar = SnackBar(content: Text("회원가입 실패"));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          return;
+        }
         await _issueJWTandLogin(token.accessToken);
       } on KakaoAuthException catch (e) {} catch (e) {}
     } catch (e) {
@@ -124,10 +125,8 @@ class _MyLoginPageState extends State<LoginScreen> {
     if (_isKakaoTalkInstalled) {
       try {
         var code = await AuthCodeClient.instance.requestWithTalk();
-        print('do-gi');
         await _issueAccessToken(code);
       } catch (e) {
-        print('do-gi-error');
         print(e);
       }
     } else {
@@ -144,18 +143,13 @@ class _MyLoginPageState extends State<LoginScreen> {
     }
   }
 
-  _registerUserInfoWithKakao(String accessToken) async {
-    // var url =
-    //     "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/v1/signup/kakao?accessToken=" +
-    //         accessToken;
+  Future<bool> _registerUserInfoWithKakao(String accessToken) async {
     try {
-      // var response = await http
-      //     .post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-      // var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
-      //TODO 여기서 응답코드에 따라서 로그인으로 넘어갈지 회원가입으로 갈지 결정??
-      // print(JsonResponse);
-
       var response = await http_post(header: null, path: 'v1/signup/kakao?accessToken='+accessToken);
+      if(response['code'] == 0 || response['code'] == -9999)//정상 가입 또는 이미 가입한 회원
+        return true;
+      else
+        return false;
     } catch (e) {
       print(e);
     }

@@ -7,8 +7,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     hide Options;
 
 // var BACK_END_HOST = 'http://172.30.1.39:8080/';
-var BACK_END_HOST = 'http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/';
-
+var BACK_END_HOST =
+    'http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/';
 
 Future<dynamic> http_get({header, String path}) async {
   final storage = FlutterSecureStorage();
@@ -28,19 +28,37 @@ Future<dynamic> http_get({header, String path}) async {
       "Authorization": "Bearer " + jwt
     });
 
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
-      var responseJson = json.decode(utf8.decode(response.bodyBytes));
       print(responseJson);
       return responseJson;
     } else {
-      throw Exception('Failed to HTTP GET');
+      var responseCode = _getResponseCode(responseJson);
+      if (responseCode == null)
+        throw Exception("Failed to HTTP POST");
+
+      if (responseCode == -9999) {
+        //이미 가입된 회원
+        return responseJson;
+      } else if (responseCode == -9998) {
+        //만료된 Access Token
+        print("만료된 Access Token");
+        if(await _reissueAccessToken())
+          return http_get(header : header, path : path);
+        else
+          return responseJson;
+      } else if (responseCode == -9997) {
+        //TODO 만료된 Refresh Token(아예 로그아웃 처리)
+        return responseJson;
+      } else {
+        throw Exception('Failed to HTTP GET(2)');
+      }
     }
   } catch (ex) {
     print(ex);
   }
 }
 
-// 추가 구현 필요
 Future<dynamic> http_post(
     {header, String path, Map<String, dynamic> body}) async {
   final storage = FlutterSecureStorage();
@@ -85,10 +103,71 @@ Future<dynamic> http_post(
       print(response.request);
       var responseJson = json.decode(utf8.decode(response.bodyBytes));
       print(responseJson);
-      throw Exception('Failed to HTTP POST');
+      var responseCode = _getResponseCode(responseJson);
+      if (responseCode == null)
+        throw Exception("Failed to HTTP POST");
+
+      if (responseCode == -9999) {
+        //이미 가입된 회원
+        return responseJson;
+      } else if (responseCode == -9998) {
+        //만료된 Access Token
+        if(await _reissueAccessToken())
+          return http_post(header : header, path : path, body: body);
+        else
+          return responseJson;
+      } else if (responseCode == -9997) {
+        //TODO 만료된 Refresh Token(아예 로그아웃 처리)
+        return responseJson;
+      } else {
+        throw Exception("Failed to HTTP POST(2)");
+      }
     }
   } catch (ex) {
     print(ex);
+  }
+}
+
+int _getResponseCode(dynamic responseJson) {
+  var responseCode = responseJson['code'];
+  if (responseCode != null) {
+    return responseCode;
+  } else {
+    return null;
+  }
+}
+
+Future<bool> _reissueAccessToken() async{
+  final storage = FlutterSecureStorage();
+  String accessToken = await storage.read(key: 'access_token');
+  String refreshToken = await storage.read(key: 'refresh_token');
+
+  var url = BACK_END_HOST + 'api/token/refresh?refreshToken=' + refreshToken;
+
+  print(url);
+
+  var response;
+
+  try {
+    response = await http.get(Uri.encodeFull(url),
+        headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + accessToken
+      },
+    );
+
+    var responseJson = json.decode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      print(responseJson);
+      await storage.write(key: "access_token", value: responseJson['data']['access_token']);
+      return true;
+    } else {
+      return false;
+    }
+  } catch (ex) {
+    print(ex);
+    return false;
   }
 }
 
