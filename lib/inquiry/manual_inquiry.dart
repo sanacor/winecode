@@ -41,6 +41,8 @@ class ManualInquiry extends StatelessWidget {
               GestureDetector(
                   onTap: () {
                     wineItem.wineName = wineNameController.text;
+                    wineItem.inqContents = inquiryContentsController.text;
+
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
                             InqueryMapScreen(wineItem: wineItem)));
