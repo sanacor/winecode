@@ -3,6 +3,7 @@ import 'package:wine/util/http.dart';
 
 class Wine {
   String wineName;
+  String inqContents;
   String wineImageURL;
 
   Wine(this.wineName, this.wineImageURL);
