@@ -43,8 +43,8 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
     var wineShopList = responseJson;
 
     for (Map wine_shop in wineShopList) {
-      _addMarker(wine_shop['retailId'].toString(), wine_shop['retailName'],
-          wine_shop['retailLocationX'], wine_shop['retailLocationY']);
+      _addMarker(wine_shop['rtlId'].toString(), wine_shop['rtlName'],
+          wine_shop['xcoordinate'], wine_shop['ycoordinate']);
     }
   }
 
