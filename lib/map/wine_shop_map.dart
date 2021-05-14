@@ -47,35 +47,9 @@ class _MarkerMapPageState extends State<WineMapScreen> {
     var wineShopList = responseJson;
 
     for (Map wine_shop in wineShopList) {
-      _addMarker(wine_shop['retailId'].toString(), wine_shop['retailName'],
-          wine_shop['retailLocationX'], wine_shop['retailLocationY']);
+      _addMarker(wine_shop['rtlId'].toString(), wine_shop['rtlName'],
+          wine_shop['xcoordinate'], wine_shop['ycoordinate']);
     }
-    // if (response.statusCode == 200) {
-    //   //var jsonResponse = convert.jsonDecode(response.body);
-    //   var jsonResponse =
-    //       convert.jsonDecode(utf8.decode(response.bodyBytes)); //한글깨짐 수정
-    //   // var wine_list = jsonResponse['wine_list'];
-    //   var wineShopList = jsonResponse;
-    //   //print(wine_shop_list);
-    //   //print(wine_shop_list is List);
-    //
-    //   for (Map wine_shop in wineShopList) {
-    //     _addMarker(wine_shop['retailId'].toString(), wine_shop['retailName'],
-    //         wine_shop['retailLocationX'], wine_shop['retailLocationY']);
-    //     //print("a");
-    //     /*
-    //     wineShopList.add(
-    //         WineShop(wine_shop['retailId'].toString(),wine_shop['retailName'],wine_shop['retailPhone'],
-    //             //wine_shop['retailAddress'],wine_shop['retailBhours'],wine_shop['retailExp'])
-    //             wine_shop['retailAddress'],"Test","Test")//retailBhours, reatailExp가 null이면 코드는 진행되나 마커가 표시안됨
-    //     );
-    //      */
-    //     //print("b");
-    //   }
-    // } else {
-    //   print('http 500');
-    //   print(response);
-    // }
   }
 
   void _addMarker(String retailId, String retailName, double retailLocationX,
@@ -179,47 +153,16 @@ class _MarkerMapPageState extends State<WineMapScreen> {
 
     Map wineShopInfo = response;
     WineShop selectedWineShop = WineShop(
-      retail_id: wineShopInfo['retailId'].toString(),
-      retail_address: wineShopInfo['retailAddress'].toString(),
-      retail_name: wineShopInfo['retailName'].toString(),
-      //retail_bhours: wineShopInfo['retailBhours'].toString(),
-      retail_phone: wineShopInfo['retailPhone'].toString(),
-      //retail_exp: wineShopInfo['retailExp'].toString(),
+      retail_id: wineShopInfo['rtlId'].toString(),
+      retail_address: wineShopInfo['rtlAddress'].toString(),
+      retail_name: wineShopInfo['rtlName'].toString(),
+      //TODO Null이어도 되도록 해야함
+      //retail_bhours: wineShopInfo['rtlBhours'].toString(),
+      retail_phone: wineShopInfo['rtlPhone'].toString(),
+      //retail_exp: wineShopInfo['rtlExp'].toString(),
     );
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => WineShopDetail(wineShopItem: selectedWineShop)));
     _markers[pos].captionColor = Colors.red;
-
-    /*
-    var url =
-        "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/retail/" + _markers[pos].markerId;
-    var response;
-    try {
-      response = await http
-          .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-    } catch (e) {
-      print(e);
-    }
-    print(response);
-    if (response.statusCode == 200) {
-      var jsonResponse =
-      convert.jsonDecode(utf8.decode(response.bodyBytes)); //한글깨짐 수정
-      Map wineShopInfo = jsonResponse;
-      WineShop selectedWineShop =
-      WineShop(
-        retail_id : wineShopInfo['retailId'].toString(),
-        retail_address: wineShopInfo['retailAddress'].toString(),
-        retail_name: wineShopInfo['retailName'].toString(),
-        //retail_bhours: wineShopInfo['retailBhours'].toString(),
-        retail_phone: wineShopInfo['retailPhone'].toString(),
-        //retail_exp: wineShopInfo['retailExp'].toString(),
-      );
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => WineShopDetail(wineShopItem: selectedWineShop)));
-      _markers[pos].captionColor = Colors.red;
-    } else {
-      print('http 500');
-      print(response);
-    }
-     */
   }
 }
