@@ -23,7 +23,8 @@ class Replying extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
           child: Container(
-        child: Column(
+        child: SingleChildScrollView(
+            child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
@@ -87,12 +88,14 @@ class Replying extends StatelessWidget {
               child: Text(this.reply['inquery']['inqContents'],
                   style: TextStyle(fontSize: 17, height: 1.2)),
             ),
-            const Divider(
-              height: 20,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
-            ),
+            Container(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                child: Divider(
+                  height: 20,
+                  thickness: 1,
+                  indent: 0,
+                  endIndent: 0,
+                )),
             Container(
               height: 200,
               padding: EdgeInsets.only(left: 15, right: 15),
@@ -113,7 +116,7 @@ class Replying extends StatelessWidget {
               ),
             )
           ],
-        ),
+        )),
       )),
     );
   }
