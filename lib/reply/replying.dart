@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:wine/map/inquiry_map.dart';
 import 'package:wine/model/wine.dart';
 
-
 class Replying extends StatelessWidget {
   final inquiryController = TextEditingController();
   Wine wine_item = Wine('', '');
-
+  var reply = new Map();
 
   Replying(Map<String, dynamic> reply) {
     this.reply = reply;
@@ -15,7 +14,7 @@ class Replying extends StatelessWidget {
     print(this.wine_item.wineName);
   }
 
-  set reply(Map<String, dynamic> reply) {}
+  // set reply(Map<String, dynamic> reply) {}
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +24,7 @@ class Replying extends StatelessWidget {
       body: SafeArea(
           child: Container(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               children: [
@@ -42,22 +42,20 @@ class Replying extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     )),
-            GestureDetector(
-                onTap: (){
-                  wine_item.wineName = inquiryController.text;
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => InqueryMapScreen(wineItem: wine_item)));
-
-                },
-                child: new Container(
-                    padding: EdgeInsets.only(top: 15, right: 15),
-                    alignment: Alignment.bottomRight,
-                    child: Text(
-                      '다음',
-                      style: TextStyle(fontSize: 17),
-
-                    ))
-            )
+                GestureDetector(
+                    onTap: () {
+                      wine_item.wineName = inquiryController.text;
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              InqueryMapScreen(wineItem: wine_item)));
+                    },
+                    child: new Container(
+                        padding: EdgeInsets.only(top: 15, right: 15),
+                        alignment: Alignment.bottomRight,
+                        child: Text(
+                          '다음',
+                          style: TextStyle(fontSize: 17),
+                        )))
               ],
             ),
             const Divider(
@@ -72,16 +70,29 @@ class Replying extends StatelessWidget {
                 controller: inquiryController,
                 obscureText: false,
                 decoration: InputDecoration(
-                    // border: OutlineInputBorder(),
-                    hintText: '와인 이름',
+                  // border: OutlineInputBorder(),
+                  hintText: '와인 이름',
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey[300]),
                   ),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey[300]),
                   ),
-                ),),
+                ),
               ),
+            ),
+            Container(
+              padding:
+                  EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+              child: Text(this.reply['inquery']['inqContents'],
+                  style: TextStyle(fontSize: 17, height: 1.2)),
+            ),
+            const Divider(
+              height: 20,
+              thickness: 1,
+              indent: 0,
+              endIndent: 0,
+            ),
             Container(
               height: 200,
               padding: EdgeInsets.only(left: 15, right: 15),
@@ -98,13 +109,12 @@ class Replying extends StatelessWidget {
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Color(0x00000000)),
                   ),
-                ),),
-            ),
-
+                ),
+              ),
+            )
           ],
         ),
       )),
     );
   }
-
 }
