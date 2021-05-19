@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wine/map/inquiry_map.dart';
 import 'package:wine/model/wine.dart';
+import 'package:wine/util/http.dart';
+
 
 class Replying extends StatelessWidget {
   final inquiryController = TextEditingController();
+  final replyController = TextEditingController();
   Wine wine_item = Wine('', '');
   var reply = new Map();
 
@@ -18,6 +23,7 @@ class Replying extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     inquiryController.text = wine_item.wineName;
     // return Container(color: Colors.red,);
     return Scaffold(
@@ -44,17 +50,18 @@ class Replying extends StatelessWidget {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     )),
                 GestureDetector(
-                    onTap: () {
-                      wine_item.wineName = inquiryController.text;
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              InqueryMapScreen(wineItem: wine_item)));
+                    onTap: () async {
+                      // wine_item.wineName = inquiryController.text;
+                      var snackBar = await _onReplyTap();
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                      Navigator.of(context).pop();
                     },
                     child: new Container(
                         padding: EdgeInsets.only(top: 15, right: 15),
                         alignment: Alignment.bottomRight,
                         child: Text(
-                          '다음',
+                          '완료',
                           style: TextStyle(fontSize: 17),
                         )))
               ],
@@ -100,6 +107,7 @@ class Replying extends StatelessWidget {
               height: 200,
               padding: EdgeInsets.only(left: 15, right: 15),
               child: TextField(
+                controller: replyController,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 obscureText: false,
@@ -119,5 +127,24 @@ class Replying extends StatelessWidget {
         )),
       )),
     );
+
+  }
+
+
+  dynamic _onReplyTap() async {
+    Map<String, dynamic> a =
+    {
+      'rlyId': reply['reply']['rlyId'].toString(),
+      'rlyContents': replyController.text
+    };
+
+
+    var response = await http_post(header: null, path: 'api/retail/reply', body: a);
+
+    if (response['success'] == true) {
+      return SnackBar(content: Text("문의보내기 완료!"));
+    } else {
+      return SnackBar(content: Text("문의보내기 실패!"));
+    }
   }
 }
