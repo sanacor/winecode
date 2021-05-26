@@ -38,7 +38,7 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
 
     print(response);
 
-    List responseJson = response;
+    List responseJson = response['list'];
 
     var wineShopList = responseJson;
 

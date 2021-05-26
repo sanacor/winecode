@@ -42,7 +42,7 @@ class _MarkerMapPageState extends State<WineMapScreen> {
     
     print(response);
 
-    List responseJson = response;
+    List responseJson = response['list'];
 
     var wineShopList = responseJson;
 
@@ -151,7 +151,7 @@ class _MarkerMapPageState extends State<WineMapScreen> {
 
     print(response);
 
-    Map wineShopInfo = response;
+    Map wineShopInfo = response['data'];
     WineShop selectedWineShop = WineShop(
       retail_id: wineShopInfo['rtlId'].toString(),
       retail_address: wineShopInfo['rtlAddress'].toString(),
