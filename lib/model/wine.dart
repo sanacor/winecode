@@ -22,7 +22,7 @@ class PostViewModel {
     }
 
     var response = await http_get(header: null, path: 'api/product/search/'+searchByKeyword);
-    List responseJson = response;
+    List responseJson = response['list'];
 
     Map<String, dynamic> findManaully = {
       'wineName': '결과에 와인이 없는 경우 여기를 터치해주세요',
