@@ -45,7 +45,7 @@ class Replied extends StatelessWidget {
                 onTap: (){
                   wine_item.wineName = inquiryController.text;
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => InqueryMapScreen(wineItem: wine_item)));
+                      MaterialPageRoute(builder: (context) => InquiryMapScreen(wineItem: wine_item)));
 
                 },
                 child: new Container(

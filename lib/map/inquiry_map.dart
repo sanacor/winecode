@@ -3,21 +3,21 @@ import 'dart:async';
 import 'package:wine/util/http.dart';
 import 'package:flutter/material.dart';
 import 'package:naver_map_plugin/naver_map_plugin.dart';
-import 'package:wine/model/inquery_info.dart';
+import 'package:wine/model/inquiry_info.dart';
 import 'package:wine/model/wine.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
-class InqueryMapScreen extends StatefulWidget {
+class InquiryMapScreen extends StatefulWidget {
   final Wine wineItem;
 
-  const InqueryMapScreen({this.wineItem}) : super();
+  const InquiryMapScreen({this.wineItem}) : super();
 
   @override
   _MarkerMapPageState createState() => _MarkerMapPageState();
 }
 
-class _MarkerMapPageState extends State<InqueryMapScreen> {
+class _MarkerMapPageState extends State<InquiryMapScreen> {
   Completer<NaverMapController> _controller = Completer();
   List<Marker> _markers = [];
   List<String> _selectedShops = [];
@@ -114,7 +114,7 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           child: Text("문의"),
-          onPressed: _onInqueryTap,
+          onPressed: _onInquiryTap,
         ),
         bottomNavigationBar: BottomAppBar(
             child: Container(
@@ -161,7 +161,7 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
     print(_selectedShops);
   }
 
-  Future<void> _onInqueryTap() async {
+  Future<void> _onInquiryTap() async {
     if (_selectedShops.length <= 0) {
       final snackBar = SnackBar(content: Text("와인샵을 선택해주세요."));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -173,9 +173,9 @@ class _MarkerMapPageState extends State<InqueryMapScreen> {
       return;
     }
 
-    var wineInquery = InquiryInfo(widget.wineItem.wineName, widget.wineItem.inqContents, " ", _selectedShops);
+    var wineInquiry = InquiryInfo(widget.wineItem.wineName, widget.wineItem.inqContents, " ", _selectedShops);
 
-    var response = await http_post(header: null, path: 'api/inquery/send', body: wineInquery.toJson());
+    var response = await http_post(header: null, path: 'api/inquiry/send', body: wineInquiry.toJson());
 
     if (response['success'] == true) {
       final snackBar = SnackBar(content: Text("문의보내기 완료!"));

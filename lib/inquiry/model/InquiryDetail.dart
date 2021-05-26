@@ -8,10 +8,10 @@ class InquiryDetail extends StatefulWidget {
   const InquiryDetail({Key key, this.inqPdtName, this.replyInfo}) : super(key: key);
 
   @override
-  _InqueryDetailState createState() => _InqueryDetailState();
+  _InquiryDetailState createState() => _InquiryDetailState();
 }
 
-class _InqueryDetailState extends State<InquiryDetail> {
+class _InquiryDetailState extends State<InquiryDetail> {
   @override
   Widget build(BuildContext context) {
 

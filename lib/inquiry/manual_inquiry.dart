@@ -45,7 +45,7 @@ class ManualInquiry extends StatelessWidget {
 
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
-                            InqueryMapScreen(wineItem: wineItem)));
+                            InquiryMapScreen(wineItem: wineItem)));
                   },
                   child: new Container(
                       padding: EdgeInsets.only(top: 15, right: 15),

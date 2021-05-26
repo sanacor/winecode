@@ -15,7 +15,7 @@ class Replying extends StatelessWidget {
 
   Replying(Map<String, dynamic> reply) {
     this.reply = reply;
-    this.wine_item.wineName = reply['inquery']['inqPdtName'];
+    this.wine_item.wineName = reply['inquiry']['inqPdtName'];
     print(this.wine_item.wineName);
   }
 
@@ -92,7 +92,7 @@ class Replying extends StatelessWidget {
             Container(
               padding:
                   EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-              child: Text(this.reply['inquery']['inqContents'],
+              child: Text(this.reply['inquiry']['inqContents'],
                   style: TextStyle(fontSize: 17, height: 1.2)),
             ),
             Container(
