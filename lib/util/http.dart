@@ -22,7 +22,7 @@ Future<dynamic> http_get({header, String path}) async {
   var response;
 
   try {
-    response = await http.get(Uri.encodeFull(url), headers: {
+    response = await http.get(Uri.parse(Uri.encodeFull(url)), headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
       "Authorization": "Bearer " + jwt
@@ -75,7 +75,7 @@ Future<dynamic> http_post(
   try {
     if (jwt == null) {
       response = await http.post(
-        Uri.encodeFull(url),
+        Uri.parse(Uri.encodeFull(url)),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json",
@@ -86,7 +86,7 @@ Future<dynamic> http_post(
       );
     } else {
       response = await http.post(
-        Uri.encodeFull(url),
+        Uri.parse(Uri.encodeFull(url)),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json",
@@ -152,7 +152,7 @@ Future<bool> _reissueAccessToken() async{
   var response;
 
   try {
-    response = await http.get(Uri.encodeFull(url),
+    response = await http.get(Uri.parse(Uri.encodeFull(url)),
         headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",

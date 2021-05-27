@@ -1,9 +1,9 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
+import 'package:wine/image/image_upload.dart';
 import 'package:wine/main.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:wine/reply/reply_screen.dart';
-import 'package:wine/testScreen/image_upload.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override

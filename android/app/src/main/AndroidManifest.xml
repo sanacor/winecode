@@ -12,6 +12,7 @@
         android:label="winecode"
         android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
        >
        <meta-data android:name="com.kakao.sdk.AppKey" android:value="ca40c6c8ce91488eb2134298e99bbdee"/>
        <meta-data
