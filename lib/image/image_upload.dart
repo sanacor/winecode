@@ -43,7 +43,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
           children: <Widget>[
             RaisedButton(
               child: Text("Upload selected images"),
-              onPressed: uploadImage('/api/image/upload',1),
+              onPressed: () => uploadImage('api/image/upload', 1),
             ),
             Expanded(
               child: buildGridView(),
@@ -129,7 +129,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
       });
   }
 
-  uploadImage(String path, int inqId) async {
+  void uploadImage(String path, int inqId) async {
     if (images != null) {
       // string to uri
       Uri uri = Uri.parse(
