@@ -66,16 +66,16 @@ class _ManualInquiryState extends State<ManualInquiry> {
                       String imgUrl = await _myKey.currentState.uploadImage();
                       widget.wineItem.wineImageURL = imgUrl;
                       widget.wineItem.wineCompany = "";
-                      //TODO 이미지 업로드 후 InquiryMapScreen으로 넘어가는 경우 내 위치로 이동안되는 문제
                     }
                     widget.wineItem.wineName = wineNameController.text;
                     widget.wineItem.inqContents = inquiryContentsController.text;
 
-                    sleep(const Duration(seconds:1));
-
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            InquiryMapScreen(wineItem: widget.wineItem)));
+                    //TODO Delay되는 동안 Loading화면 띄우기
+                    Future.delayed(const Duration(milliseconds: 500), () { //이거 안넣어주면 맵이 초기에 위치를 못찾음
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              InquiryMapScreen(wineItem: widget.wineItem)));
+                    });
                   },
                   child: new Container(
                       padding: EdgeInsets.only(top: 15, right: 15),

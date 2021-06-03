@@ -106,6 +106,7 @@ class _MarkerMapPageState extends State<InquiryMapScreen> {
                 onMapCreated: _onMapCreated,
                 onMapTap: _onMapTap,
                 markers: _markers,
+                locationButtonEnable: true,
                 initLocationTrackingMode: LocationTrackingMode.Follow,
               ),
               flex: 21,
@@ -128,6 +129,7 @@ class _MarkerMapPageState extends State<InquiryMapScreen> {
   // ================== method ==========================
 
   void _onMapCreated(NaverMapController controller) {
+    if (_controller.isCompleted) _controller = Completer();
     _controller.complete(controller);
   }
 
