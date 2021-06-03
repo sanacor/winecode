@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wine/image/image_upload.dart';
 import 'package:wine/map/inquiry_map.dart';
 import 'package:wine/model/wine.dart';
 
@@ -8,6 +9,8 @@ class ManualInquiry extends StatelessWidget {
   final wineNameController = TextEditingController();
   
   var inquiryContentsController = TextEditingController();
+
+  ImageUploadScreen _imageUploadScreen = ImageUploadScreen();
 
   ManualInquiry([this.wineItem]);
 
@@ -61,6 +64,13 @@ class ManualInquiry extends StatelessWidget {
               indent: 0,
               endIndent: 0,
             ),
+
+            Container(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                height: 150.0,
+                child: _imageUploadScreen
+            ),
+
             Container(
               padding: EdgeInsets.only(left: 15, right: 15),
               child: TextField(

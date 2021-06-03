@@ -41,13 +41,18 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
       child: new Scaffold(
         body: Column(
           children: <Widget>[
+            /*
             RaisedButton(
               child: Text("Upload selected images"),
               onPressed: () => uploadImage('api/image/upload', 1),
             ),
-            Expanded(
+             */
+            Center(
+                child: Container(
+              width: 150,
+              height: 150.0,
               child: buildGridView(),
-            ),
+            )),
           ],
         ),
       ),
@@ -57,7 +62,8 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
   Widget buildGridView() {
     return GridView.count(
       shrinkWrap: true,
-      crossAxisCount: 3,
+      //crossAxisCount: 3,
+      crossAxisCount: 1,
       childAspectRatio: 1,
       children: List.generate(images.length, (index) {
         if (images[index] is ImageUploadModel) {
@@ -109,7 +115,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
       source: ImageSource.gallery,
       imageQuality: 50,
     );
-    if(pickedFile != null)
+    if (pickedFile != null)
       _imageFile = File(pickedFile.path);
     else
       return;
@@ -119,14 +125,14 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
   }
 
   void getFileImage(int index) async {
-      setState(() {
-        ImageUploadModel imageUpload = new ImageUploadModel();
-        imageUpload.isUploaded = false;
-        imageUpload.uploading = false;
-        imageUpload.imageFile = _imageFile;
-        imageUpload.imageUrl = '';
-        images.replaceRange(index, index + 1, [imageUpload]);
-      });
+    setState(() {
+      ImageUploadModel imageUpload = new ImageUploadModel();
+      imageUpload.isUploaded = false;
+      imageUpload.uploading = false;
+      imageUpload.imageFile = _imageFile;
+      imageUpload.imageUrl = '';
+      images.replaceRange(index, index + 1, [imageUpload]);
+    });
   }
 
   void uploadImage(String path, int inqId) async {
@@ -139,7 +145,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
       MultipartRequest request = http.MultipartRequest("POST", uri);
       request.fields['inqId'] = inqId.toString();
 
-      for (var i=0;i<images.length;i++) {
+      for (var i = 0; i < images.length; i++) {
         if (images[i] is ImageUploadModel) {
           ImageUploadModel imageModel = images[i];
           File imageFile = imageModel.imageFile;
@@ -165,7 +171,6 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
     }
   }
 }
-
 
 /*
 class ImageUploadScreen extends StatefulWidget {
