@@ -36,7 +36,10 @@ class PostViewModel {
 
     Map<String, dynamic> findManaully = {
       'wineName': '결과에 와인이 없는 경우 여기를 터치해주세요',
-      'wineImage': 'http://images.vivino.com/thumbs/default_label_150x200.jpg'
+      'wineImage': 'http://images.vivino.com/thumbs/default_label_150x200.jpg',
+      'wineCompany' : '',
+      'wineRegion': '',
+      'wineCountry':''
     };
     responseJson.insert(0, findManaully);
     responseJson.add(findManaully);

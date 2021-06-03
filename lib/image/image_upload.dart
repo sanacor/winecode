@@ -138,7 +138,8 @@ class ImageUploadScreenState extends State<ImageUploadScreen> {
   }
 
   Future<String> uploadImage() async {
-    if (images != null) {
+    if (images != null &&
+    images[0] is ImageUploadModel) {
       // string to uri
       Uri uri = Uri.parse(
           'http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/image/upload');

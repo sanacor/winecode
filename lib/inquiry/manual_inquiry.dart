@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wine/image/image_upload.dart';
@@ -64,9 +66,12 @@ class _ManualInquiryState extends State<ManualInquiry> {
                       String imgUrl = await _myKey.currentState.uploadImage();
                       widget.wineItem.wineImageURL = imgUrl;
                       widget.wineItem.wineCompany = "";
+                      //TODO 이미지 업로드 후 InquiryMapScreen으로 넘어가는 경우 내 위치로 이동안되는 문제
                     }
                     widget.wineItem.wineName = wineNameController.text;
                     widget.wineItem.inqContents = inquiryContentsController.text;
+
+                    sleep(const Duration(seconds:1));
 
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
