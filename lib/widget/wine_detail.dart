@@ -184,7 +184,7 @@ class _WineDetailState extends State<WineDetail> {
             onTap: () {
               // navigationBar.onTap(1);
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => ManualInquiry(widget.wineItem)));
+                  MaterialPageRoute(builder: (context) => ManualInquiry(wineItem : widget.wineItem)));
             },
             child: Center(
                 child: Padding(

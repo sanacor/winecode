@@ -112,13 +112,13 @@ class _SearchScreenState extends State<SearchScreen> with AutomaticKeepAliveClie
                                     child: Image.network(snapshot.data[index].wineImageURL, fit: BoxFit.fill),
                                   ),
 
-                                  title: Text('${snapshot.data[index].wineName}'),
+                                  title: Text('${snapshot.data[index].wineCompany}' + " " + '${snapshot.data[index].wineName}'),
                                   isThreeLine: false,
                                   subtitle:
-                                  Text('${snapshot.data[index].wineName}'),
+                                  Text('${snapshot.data[index].wineRegion}' + " in " + '${snapshot.data[index].wineCountry}'),
                                   onTap: () {
                                     Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => (index == snapshot.data.length - 1) || (index == 0) ?  ManualInquiry(Wine('', '')) : WineDetail(
+                                        builder: (context) => (index == snapshot.data.length - 1) || (index == 0) ?  ManualInquiry(wineItem: Wine()) : WineDetail(
                                             wineItem: snapshot.data[index])));
                                   },
                                 ),)

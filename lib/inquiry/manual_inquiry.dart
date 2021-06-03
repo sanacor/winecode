@@ -4,20 +4,36 @@ import 'package:wine/image/image_upload.dart';
 import 'package:wine/map/inquiry_map.dart';
 import 'package:wine/model/wine.dart';
 
-class ManualInquiry extends StatelessWidget {
+class ManualInquiry extends StatefulWidget {
   Wine wineItem;
+
+  ManualInquiry({this.wineItem});
+
+  @override
+  _ManualInquiryState createState() => _ManualInquiryState();
+}
+
+class _ManualInquiryState extends State<ManualInquiry> {
+  GlobalKey<ImageUploadScreenState> _myKey = GlobalKey();
+
   final wineNameController = TextEditingController();
-  
+
   var inquiryContentsController = TextEditingController();
 
-  ImageUploadScreen _imageUploadScreen = ImageUploadScreen();
+  ImageUploadScreen _imageUploadScreen;
 
-  ManualInquiry([this.wineItem]);
-
+  @override
+  void initState() {
+    super.initState();
+    _imageUploadScreen = ImageUploadScreen(key:_myKey);
+  }
 
   @override
   Widget build(BuildContext context) {
-    wineNameController.text = wineItem.wineName;
+    if(widget.wineItem.wineName != "") {
+      wineNameController.text =
+          widget.wineItem.wineCompany + " " + widget.wineItem.wineName;
+    }
     // return Container(color: Colors.red,);
     return Scaffold(
       body: SafeArea(
@@ -42,13 +58,19 @@ class ManualInquiry extends StatelessWidget {
                     TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   )),
               GestureDetector(
-                  onTap: () {
-                    wineItem.wineName = wineNameController.text;
-                    wineItem.inqContents = inquiryContentsController.text;
+                  onTap: () async {
+                    if(widget.wineItem.wineName == "") {
+                      //ManualInquiry
+                      String imgUrl = await _myKey.currentState.uploadImage();
+                      widget.wineItem.wineImageURL = imgUrl;
+                      widget.wineItem.wineCompany = "";
+                    }
+                    widget.wineItem.wineName = wineNameController.text;
+                    widget.wineItem.inqContents = inquiryContentsController.text;
 
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) =>
-                            InquiryMapScreen(wineItem: wineItem)));
+                            InquiryMapScreen(wineItem: widget.wineItem)));
                   },
                   child: new Container(
                       padding: EdgeInsets.only(top: 15, right: 15),
@@ -65,11 +87,19 @@ class ManualInquiry extends StatelessWidget {
               endIndent: 0,
             ),
 
+            //사용자가 직접 입력하는 경우 업로드 화면, 선택해서 넘어온 경우 와인이미지 보여줌
+            widget.wineItem.wineName == "" ?
             Container(
                 padding: EdgeInsets.only(left: 15, right: 15),
                 height: 150.0,
                 child: _imageUploadScreen
-            ),
+            ) :
+            Container(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                height: 150.0,
+                child: Image.network(widget.wineItem.wineImageURL)
+            )
+            ,
 
             Container(
               padding: EdgeInsets.only(left: 15, right: 15),
@@ -116,7 +146,7 @@ class ManualInquiry extends StatelessWidget {
               ),
             ),
             Container(
-              height: 200,
+              height: 100,
               padding: EdgeInsets.only(left: 15, right: 15),
               child: TextField(
                 controller: inquiryContentsController,

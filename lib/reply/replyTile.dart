@@ -13,7 +13,7 @@ class ReplyTile extends StatelessWidget {
     return ListTile(
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
-        child: Image.network('https://i.ibb.co/yQjhY5p/Screen-Shot-2021-04-15-at-10-52-11-PM.png', fit: BoxFit.fill),
+        child: Image.network(_replyInfo.reply['inquiry']['inqImgUrl'], fit: BoxFit.fill),
       ),
       title: Text(_replyInfo.reply['inquiry']['inqPdtName']),
       subtitle: Text("${_replyInfo.reply['reply']['rlyStatus']}"),

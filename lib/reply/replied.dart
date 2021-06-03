@@ -6,7 +6,7 @@ import 'package:wine/model/wine.dart';
 
 class Replied extends StatelessWidget {
   final inquiryController = TextEditingController();
-  Wine wine_item = Wine('', '');
+  Wine wine_item = Wine();
 
   Replied(Map<String, dynamic> reply) {
     this.reply = reply;

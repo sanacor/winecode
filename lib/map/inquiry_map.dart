@@ -173,7 +173,13 @@ class _MarkerMapPageState extends State<InquiryMapScreen> {
       return;
     }
 
-    var wineInquiry = InquiryInfo(widget.wineItem.wineName, widget.wineItem.inqContents, " ", _selectedShops);
+    var wineInquiry = InquiryInfo(
+      wineName: widget.wineItem.wineName,
+      wineCompany: widget.wineItem.wineCompany,
+      inqContents: widget.wineItem.inqContents,
+      wineShops: _selectedShops,
+      inqImgUrl: widget.wineItem.wineImageURL
+    );
 
     var response = await http_post(header: null, path: 'api/inquiry/send', body: wineInquiry.toJson());
 

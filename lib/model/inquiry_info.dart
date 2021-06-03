@@ -8,14 +8,16 @@ class InquiryInfo {
   String wineCompany;
   List<String> wineShops;
   String inqContents;
+  String inqImgUrl;
 
-  InquiryInfo(this.wineName, this.inqContents, this.wineCompany, this.wineShops);
+  InquiryInfo({this.wineName, this.inqContents, this.wineCompany, this.wineShops, this.inqImgUrl});
 
   InquiryInfo.fromJson(Map<String, dynamic> json)
       : wineName = json['wineName'],
         wineCompany = json['wineCompany'],
         wineShops = json['shops'],
-        inqContents = json['inqContents'];
+        inqContents = json['inqContents'],
+        inqImgUrl = json['inqImgUrl'];
 
 
   Map<String, dynamic> toJson() =>
@@ -23,7 +25,8 @@ class InquiryInfo {
         'wineName': wineName,
         'wineCompany' : wineCompany,
         'shops': wineShops,
-        'inqContents': inqContents
+        'inqContents': inqContents,
+        'inqImgUrl' : inqImgUrl
       };
 }
 

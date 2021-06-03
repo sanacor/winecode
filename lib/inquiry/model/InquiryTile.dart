@@ -43,7 +43,7 @@ class InquiryInfo {
       inqId : json['inqId'],
       inqUserMsrl: json['inqUserMsrl'],
       inqPdtName: json['inqPdtName'],
-      inqPdtImage: 'https://i.ibb.co/yQjhY5p/Screen-Shot-2021-04-15-at-10-52-11-PM.png',
+      inqPdtImage: json['inqImgUrl'],
       inqPdtCompany: json['inqPdtCompany'],
       inqContents: json['inqContents'],
       inqTime: json['inqTime'],

@@ -5,11 +5,21 @@ class Wine {
   String wineName;
   String inqContents;
   String wineImageURL;
+  String wineCompany;
+  String wineType;
+  String wineCountry;
+  String wineRegion;
 
-  Wine(this.wineName, this.wineImageURL);
+  Wine({this.wineName ="", this.wineImageURL="", this.wineCompany="", this.wineType="", this.wineCountry="", this.wineRegion=""});
 
   factory Wine.fromJson(Map<String, dynamic> json) {
-    return Wine(json['wineName'], json['wineImage']);
+    return Wine(wineName: json['wineName'],
+        wineImageURL: json['wineImage'],
+        wineCompany : json['wineCompany'],
+        wineType : json['wineType'],
+        wineCountry: json['wineCountry'],
+        wineRegion: json['wineRegion']
+    );
   }
 }
 

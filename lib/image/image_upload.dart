@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -13,13 +14,14 @@ import 'package:image_picker/image_picker.dart';
 import 'model/ImageUploadModel.dart';
 
 class ImageUploadScreen extends StatefulWidget {
+  const ImageUploadScreen({Key key}) : super(key: key);
   @override
-  _ImageUploadScreenState createState() {
-    return _ImageUploadScreenState();
+  ImageUploadScreenState createState() {
+    return ImageUploadScreenState();
   }
 }
 
-class _ImageUploadScreenState extends State<ImageUploadScreen> {
+class ImageUploadScreenState extends State<ImageUploadScreen> {
   List<Object> images = [];
   File _imageFile;
   final ImagePicker _picker = ImagePicker();
@@ -135,7 +137,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
     });
   }
 
-  void uploadImage(String path, int inqId) async {
+  Future<String> uploadImage() async {
     if (images != null) {
       // string to uri
       Uri uri = Uri.parse(
@@ -143,7 +145,6 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
 
       // create multipart request
       MultipartRequest request = http.MultipartRequest("POST", uri);
-      request.fields['inqId'] = inqId.toString();
 
       for (var i = 0; i < images.length; i++) {
         if (images[i] is ImageUploadModel) {
@@ -166,9 +167,13 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
 
       // send
       var response = await request.send();
-      final respStr = await response.stream.bytesToString();
-      print(respStr);
+      //final respStr = await response.stream.bytesToString();
+      //print(respStr);
+      var responseJson = json.decode(utf8.decode(await response.stream.toBytes()));
+      print(responseJson);
+      return 'http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/image/view/' + responseJson['list'][0].toString();
     }
+    return "http://images.vivino.com/thumbs/default_label_150x200.jpg";
   }
 }
 

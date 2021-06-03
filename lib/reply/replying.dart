@@ -10,7 +10,7 @@ import 'package:wine/util/http.dart';
 class Replying extends StatelessWidget {
   final inquiryController = TextEditingController();
   final replyController = TextEditingController();
-  Wine wine_item = Wine('', '');
+  Wine wine_item = Wine();
   var reply = new Map();
 
   Replying(Map<String, dynamic> reply) {
