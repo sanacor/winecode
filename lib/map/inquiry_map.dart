@@ -192,5 +192,6 @@ class _MarkerMapPageState extends State<InquiryMapScreen> {
       final snackBar = SnackBar(content: Text("문의보내기 실패!"));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }
