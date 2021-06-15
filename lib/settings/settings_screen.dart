@@ -17,30 +17,54 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Center(
-            child: Column(children: <Widget>[
-      Container(height: Platform.isAndroid ? 10 : 1),
-      Container(
-        padding: const EdgeInsets.only(left: 20),
-        alignment: Alignment.bottomLeft,
-        child: RichText(
-          text: TextSpan(
-            text: '나의 페이지',
-            style: TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
-          ),
-        ),
-        height: MediaQuery.of(context).size.height / 25,
-      ),
-      Expanded(
-          child: ListView(
-        physics: BouncingScrollPhysics(),
-        children: LoadSettingTile(context),
-      ))
+            child: Column(
+                children: <Widget>[
+                  Container(height: Platform.isAndroid ? 10 : 1),
+                  Container(
+                    padding: const EdgeInsets.only(left: 20),
+                    alignment: Alignment.bottomLeft,
+                    child: RichText(
+                      text: TextSpan(
+                      text: '설정',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+                      ),
+                    ),
+                  height: MediaQuery.of(context).size.height / 25,
+                  ),
+                  SizedBox(
+                    height: 115,
+                    width: 115,
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage("images/wine.png"),
+                      backgroundColor: Colors.white,
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'OONI',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 15),
+                      ),
+                    ),
+                    height: MediaQuery.of(context).size.height / 25,
+                  ),
+                  Expanded(
+                      child: ListView(
+                    physics: BouncingScrollPhysics(),
+                    children: LoadSettingTile(context),
+                  )
+                  )
     ])));
   }
 
   List<Widget> LoadSettingTile(BuildContext context) {
     List<ListTile> widgetList = [];
+    /*
     widgetList.add(ListTile(
       leading: Icon(Icons.quick_contacts_dialer),
       title: Text('내 정보'),
@@ -54,23 +78,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
       leading: Icon(Icons.timer),
       title: Text('예약 내역 확인'),
     ));
+     */
     widgetList.add(ListTile(
       leading: Icon(Icons.batch_prediction),
       title: Text('공지사항'),
+      onTap: () => _tapCallback(context),
     ));
     widgetList.add(ListTile(
       leading: Icon(Icons.question_answer),
       title: Text('자주 묻는 질문'),
     ));
+    /*
     widgetList.add(ListTile(
       leading: Icon(Icons.android_outlined),
       title: Text('앱 설정'),
     ));
+     */
     widgetList.add(ListTile(
       leading: Icon(Icons.add_business_outlined),
       title: Text('사장님 메뉴'),
       onTap: () => _storeOwner(context),
     ));
+    /*
     widgetList.add(ListTile(
       leading: Icon(Icons.add_business_outlined),
       title: Text('이미지 업로드'),
@@ -79,6 +108,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             .push(MaterialPageRoute(builder: (context) => ImageUploadScreen()));
       },
     ));
+     */
     widgetList.add(ListTile(
       leading: Icon(Icons.logout),
       title: Text('로그아웃'),
@@ -92,7 +122,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(title: Text("선택"), content: Text("항목을 선택했습니다."));
+          return AlertDialog(title: Text("공지"), content: Text("환영합니다."));
         });
   }
 
