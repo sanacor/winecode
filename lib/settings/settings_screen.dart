@@ -4,6 +4,7 @@ import 'package:wine/image/image_upload.dart';
 import 'package:wine/main.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:wine/reply/reply_screen.dart';
+import 'package:wine/util/http.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -12,6 +13,16 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   static final storage = FlutterSecureStorage();
+  String thumbnailImgUrl = 'http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/image/view/53';//비어있는 유저 사진
+  String userName = 'User';
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getUserInfo();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +47,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     height: 115,
                     width: 115,
                     child: CircleAvatar(
-                      backgroundImage: AssetImage("images/wine.png"),
-                      backgroundColor: Colors.white,
+                      backgroundImage:
+                      NetworkImage(thumbnailImgUrl),
+                      backgroundColor: Colors.transparent,
                     ),
                   ),
                   Container(
                     padding: const EdgeInsets.only(top: 10),
                     child: RichText(
                       text: TextSpan(
-                        text: 'OONI',
+                        text: userName,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -136,5 +148,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _storeOwner(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => ReplyScreen()));
+  }
+
+  Future<void> _getUserInfo() async {
+    var response = await http_get(header: null, path: 'api/user');
+
+    print(response);
+
+    List responseJson = response['list'];
+
+    setState(() {
+      thumbnailImgUrl = response['data']['profile']['uspImage'];
+      userName = response['data']['user']['name'];
+    });
   }
 }
