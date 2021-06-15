@@ -117,8 +117,17 @@ class ImageUploadScreenState extends State<ImageUploadScreen> {
       source: ImageSource.gallery,
       imageQuality: 50,
     );
-    if (pickedFile != null)
+    if (pickedFile != null) {
+      File pFile = File(pickedFile.path);
+      int fileSize = await pFile.length();
+      if(fileSize > 1024 * 1024) { //1MB
+        print("file path : " + pFile.path + "file Size : " + fileSize.toString());
+        final snackBar = SnackBar(content: Text("이미지의 사이즈가 너무 큽니다."));
+        ScaffoldMessenger.of(this.context).showSnackBar(snackBar);
+        return;
+      }
       _imageFile = File(pickedFile.path);
+    }
     else
       return;
     setState(() {

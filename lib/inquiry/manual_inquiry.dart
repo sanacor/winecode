@@ -22,6 +22,8 @@ class _ManualInquiryState extends State<ManualInquiry> {
 
   var inquiryContentsController = TextEditingController();
 
+  bool _imageUploading = false;
+
   ImageUploadScreen _imageUploadScreen;
 
   @override
@@ -38,9 +40,30 @@ class _ManualInquiryState extends State<ManualInquiry> {
     }
     // return Container(color: Colors.red,);
     return Scaffold(
-      body: SafeArea(
-          child: Container(
-        child: Column(
+      body: SafeArea(child: Container(
+        child: _imageUploading ?
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                    valueColor: new AlwaysStoppedAnimation<Color>(
+                        Colors.red[900])
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                RichText(
+                  text: TextSpan(
+                    text: '이미지를 업로드 중입니다.',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.black, fontSize: 15),
+                  ),
+                ),
+              ],
+            )
+          )
+        : Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,6 +84,9 @@ class _ManualInquiryState extends State<ManualInquiry> {
                   )),
               GestureDetector(
                   onTap: () async {
+                    setState(() {
+                      _imageUploading = true;
+                    });
                     if(widget.wineItem.wineName == "") {
                       //ManualInquiry
                       String imgUrl = await _myKey.currentState.uploadImage();
@@ -71,7 +97,10 @@ class _ManualInquiryState extends State<ManualInquiry> {
                     widget.wineItem.inqContents = inquiryContentsController.text;
 
                     //TODO Delay되는 동안 Loading화면 띄우기
-                    Future.delayed(const Duration(milliseconds: 500), () { //이거 안넣어주면 맵이 초기에 위치를 못찾음
+                    Future.delayed(const Duration(milliseconds: 3000), () { //이거 안넣어주면 맵이 초기에 위치를 못찾음
+                      setState(() {
+                        _imageUploading = false;
+                      });
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) =>
                               InquiryMapScreen(wineItem: widget.wineItem)));
