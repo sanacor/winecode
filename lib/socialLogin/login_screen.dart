@@ -107,7 +107,7 @@ class _MyLoginPageState extends State<LoginScreen> {
       try {
         User user = await UserApi.instance.me();
 
-        final snackBar = SnackBar(content: Text(user.properties['nickname'] + "님 반갑습니다."));
+        final snackBar = SnackBar(content: Text(user.properties!['nickname']! + "님 반갑습니다."));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
         if(!(await _registerUserInfoWithKakao(token.accessToken))){
           final snackBar = SnackBar(content: Text("회원가입 실패"));
@@ -143,7 +143,7 @@ class _MyLoginPageState extends State<LoginScreen> {
     }
   }
 
-  Future<bool> _registerUserInfoWithKakao(String accessToken) async {
+  Future<bool?> _registerUserInfoWithKakao(String accessToken) async {
     try {
       var response = await http_post(header: null, path: 'v1/signup/kakao?accessToken='+accessToken);
       if(response['code'] == 0 || response['code'] == -9999)//정상 가입 또는 이미 가입한 회원

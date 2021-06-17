@@ -4,11 +4,11 @@ import 'package:http/http.dart' as http;
 
 
 class InquiryInfo {
-  String wineName;
-  String wineCompany;
-  List<String> wineShops;
-  String inqContents;
-  String inqImgUrl;
+  String? wineName;
+  String? wineCompany;
+  List<String>? wineShops;
+  String? inqContents;
+  String? inqImgUrl;
 
   InquiryInfo({this.wineName, this.inqContents, this.wineCompany, this.wineShops, this.inqImgUrl});
 

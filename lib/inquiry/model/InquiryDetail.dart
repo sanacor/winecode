@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class InquiryDetail extends StatefulWidget {
 
   final inqPdtName;
-  final List<dynamic> replyInfo;
+  final List<dynamic>? replyInfo;
 
-  const InquiryDetail({Key key, this.inqPdtName, this.replyInfo}) : super(key: key);
+  const InquiryDetail({Key? key, this.inqPdtName, this.replyInfo}) : super(key: key);
 
   @override
   _InquiryDetailState createState() => _InquiryDetailState();
@@ -32,9 +32,9 @@ class _InquiryDetailState extends State<InquiryDetail> {
             SizedBox(height: 20),
             Expanded(
               child: ListView.separated(
-                itemCount: widget.replyInfo.length,
+                itemCount: widget.replyInfo!.length,
                 itemBuilder: (context, index) {
-                  return ReplyTile(widget.replyInfo[index]);
+                  return ReplyTile(widget.replyInfo![index]);
                 },
                 separatorBuilder: (context, index) {
                   return const Divider(thickness: 1);

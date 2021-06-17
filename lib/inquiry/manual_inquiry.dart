@@ -7,7 +7,7 @@ import 'package:wine/map/inquiry_map.dart';
 import 'package:wine/model/wine.dart';
 
 class ManualInquiry extends StatefulWidget {
-  Wine wineItem;
+  Wine? wineItem;
 
   ManualInquiry({this.wineItem});
 
@@ -24,7 +24,7 @@ class _ManualInquiryState extends State<ManualInquiry> {
 
   bool _imageUploading = false;
 
-  ImageUploadScreen _imageUploadScreen;
+  ImageUploadScreen? _imageUploadScreen;
 
   @override
   void initState() {

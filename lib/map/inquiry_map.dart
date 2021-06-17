@@ -9,7 +9,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
 class InquiryMapScreen extends StatefulWidget {
-  final Wine wineItem;
+  final Wine? wineItem;
 
   const InquiryMapScreen({this.wineItem}) : super();
 
@@ -22,7 +22,7 @@ class _MarkerMapPageState extends State<InquiryMapScreen> {
   List<Marker> _markers = [];
   List<String> _selectedShops = [];
 
-  OverlayImage wineShopMarker;
+  OverlayImage? wineShopMarker;
 
   int _selectCnt = 0;
 
@@ -70,7 +70,7 @@ class _MarkerMapPageState extends State<InquiryMapScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getWineShopList();
     });
   }

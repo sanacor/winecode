@@ -10,11 +10,11 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart'
 var BACK_END_HOST =
     'http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/';
 
-Future<dynamic> http_get({header, String path}) async {
+Future<dynamic> http_get({header, String? path}) async {
   final storage = FlutterSecureStorage();
-  String jwt = await storage.read(key: 'access_token');
+  String? jwt = await storage.read(key: 'access_token');
 
-  var url = BACK_END_HOST + path;
+  var url = BACK_END_HOST + path!;
 
   print('JWT $jwt');
   print(BACK_END_HOST + path);
@@ -25,7 +25,7 @@ Future<dynamic> http_get({header, String path}) async {
     response = await http.get(Uri.parse(Uri.encodeFull(url)), headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      "Authorization": "Bearer " + jwt
+      "Authorization": "Bearer " + jwt!
     });
 
     var responseJson = json.decode(utf8.decode(response.bodyBytes));
@@ -60,11 +60,11 @@ Future<dynamic> http_get({header, String path}) async {
 }
 
 Future<dynamic> http_post(
-    {header, String path, Map<String, dynamic> body}) async {
+    {header, String? path, Map<String, dynamic>? body}) async {
   final storage = FlutterSecureStorage();
-  String jwt = await storage.read(key: 'access_token');
+  String? jwt = await storage.read(key: 'access_token');
 
-  print(BACK_END_HOST + path);
+  print(BACK_END_HOST + path!);
   print('JWT $jwt');
   print(body);
 
@@ -131,7 +131,7 @@ Future<dynamic> http_post(
   }
 }
 
-int _getResponseCode(dynamic responseJson) {
+dynamic _getResponseCode(dynamic responseJson) {
   var responseCode = responseJson['code'];
   if (responseCode != null) {
     return responseCode;
@@ -142,10 +142,10 @@ int _getResponseCode(dynamic responseJson) {
 
 Future<bool> _reissueAccessToken() async{
   final storage = FlutterSecureStorage();
-  String accessToken = await storage.read(key: 'access_token');
-  String refreshToken = await storage.read(key: 'refresh_token');
+  String? accessToken = await storage.read(key: 'access_token');
+  String? refreshToken = await storage.read(key: 'refresh_token');
 
-  var url = BACK_END_HOST + 'api/token/refresh?refreshToken=' + refreshToken;
+  var url = BACK_END_HOST + 'api/token/refresh?refreshToken=' + refreshToken!;
 
   print(url);
 
@@ -156,7 +156,7 @@ Future<bool> _reissueAccessToken() async{
         headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      "Authorization": "Bearer " + accessToken
+      "Authorization": "Bearer " + accessToken!
       },
     );
 
@@ -177,7 +177,7 @@ Future<bool> _reissueAccessToken() async{
 // 추가 구현 필요
 Future<dynamic> http_delete(url, path, header) async {
   final storage = FlutterSecureStorage();
-  String jwt = await storage.read(key: 'access_token');
+  String? jwt = await storage.read(key: 'access_token');
 
   print(BACK_END_HOST + path);
 }

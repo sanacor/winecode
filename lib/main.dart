@@ -1,22 +1,25 @@
 import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wine/search/search_screen.dart';
-
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:wine/settings/settings_screen.dart';
 import 'package:wine/inquiry/Inquiry_screen.dart';
 
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:wine/map/wine_shop_map.dart';
 import 'package:provider/provider.dart';
 
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:wine/socialLogin/login_screen.dart';
 
-final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+// final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
 
 
 class Profile with ChangeNotifier {
@@ -32,10 +35,60 @@ class Profile with ChangeNotifier {
   }
 }
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
 
-void main() {
+/// Create a [AndroidNotificationChannel] for heads up notifications
+AndroidNotificationChannel? channel;
+
+/// Initialize the [FlutterLocalNotificationsPlugin] package.
+FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
+
+
+
+Future<void> main() async {
   KakaoContext.clientId = "ca40c6c8ce91488eb2134298e99bbdee";
   KakaoContext.javascriptClientId = "b17c77211acfdb44a6e6d6a91310cd44";
+
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  // Set the background messaging handler early on, as a named top-level function
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  if (!kIsWeb) {
+    channel = const AndroidNotificationChannel(
+      'high_importance_channel', // id
+      'High Importance Notifications', // title
+      'This channel is used for important notifications.', // description
+      importance: Importance.high,
+    );
+
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    /// Create an Android Notification Channel.
+    ///
+    /// We use this channel in the `AndroidManifest.xml` file to override the
+    /// default FCM channel to enable heads up notifications.
+    await flutterLocalNotificationsPlugin!
+        .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel!);
+
+    /// Update the iOS foreground notification presentation options to allow
+    /// heads up notifications.
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+  }
 
   return runApp(
     MultiProvider(
@@ -53,7 +106,7 @@ void main() {
 
 class WineApp extends StatelessWidget {
 
-  const WineApp({ Key key }) : super(key: key);
+  const WineApp({ Key? key }) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -144,11 +197,11 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     }
   }
 
-  void firebaseCloudMessaging_Listeners() {
+  void firebaseCloudMessaging_Listeners() async {
     if (Platform.isIOS) iOS_Permission();
 
     _firebaseMessaging.getToken().then((token){
-      print('token:'+token);
+      print('fcm token:'+token);
     });
 
     _firebaseMessaging.configure(

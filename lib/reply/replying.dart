@@ -10,13 +10,13 @@ import 'package:wine/util/http.dart';
 class Replying extends StatelessWidget {
   final inquiryController = TextEditingController();
   final replyController = TextEditingController();
-  Wine wine_item = Wine();
-  var reply = new Map();
+  Wine? wine_item = Wine();
+  var reply? = new Map();
 
-  Replying(Map<String, dynamic> reply) {
+  Replying(Map<String, dynamic>? reply) {
     this.reply = reply;
-    this.wine_item.wineName = reply['inquiry']['inqPdtName'];
-    print(this.wine_item.wineName);
+    this.wine_item!.wineName = reply['inquiry']['inqPdtName'];
+    print(this.wine_item!.wineName);
   }
 
   // set reply(Map<String, dynamic> reply) {}
@@ -24,7 +24,7 @@ class Replying extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    inquiryController.text = wine_item.wineName;
+    inquiryController.text = wine_item!.wineName;
     // return Container(color: Colors.red,);
     return Scaffold(
       body: SafeArea(
@@ -132,7 +132,7 @@ class Replying extends StatelessWidget {
 
 
   dynamic _onReplyTap() async {
-    Map<String, dynamic> a =
+    Map<String, dynamic>? a =
     {
       'rlyId': reply['reply']['rlyId'].toString(),
       'rlyContents': replyController.text

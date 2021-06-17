@@ -2,13 +2,13 @@ import 'package:wine/util/http.dart';
 
 
 class Wine {
-  String wineName;
-  String inqContents;
-  String wineImageURL;
-  String wineCompany;
-  String wineType;
-  String wineCountry;
-  String wineRegion;
+  String? wineName;
+  String? inqContents;
+  String? wineImageURL;
+  String? wineCompany;
+  String? wineType;
+  String? wineCountry;
+  String? wineRegion;
 
   Wine({this.wineName ="", this.wineImageURL="", this.wineCompany="", this.wineType="", this.wineCountry="", this.wineRegion=""});
 

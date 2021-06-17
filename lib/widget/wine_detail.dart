@@ -59,14 +59,14 @@ class CarouselWithIndicatorDemo extends StatefulWidget {
 }
 
 class FullscreenSliderDemo extends StatelessWidget {
-  final Wine wineItem;
+  final Wine? wineItem;
 
-  const FullscreenSliderDemo({Key key, this.wineItem}) : super(key: key);
+  const FullscreenSliderDemo({Key? key, this.wineItem}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     imgList.clear();
-    imgList.add(wineItem.wineImageURL);
+    imgList.add(wineItem!.wineImageURL);
 
     return Scaffold(
       body: Builder(builder: (context) {
@@ -142,9 +142,9 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
 }
 
 class WineDetail extends StatefulWidget {
-  final Wine wineItem;
+  final Wine? wineItem;
 
-  const WineDetail({Key key, this.wineItem}) : super(key: key);
+  const WineDetail({Key? key, this.wineItem}) : super(key: key);
 
   @override
   _WineDetailState createState() => _WineDetailState();

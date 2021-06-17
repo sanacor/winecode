@@ -14,7 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'model/ImageUploadModel.dart';
 
 class ImageUploadScreen extends StatefulWidget {
-  const ImageUploadScreen({Key key}) : super(key: key);
+  const ImageUploadScreen({Key? key}) : super(key: key);
   @override
   ImageUploadScreenState createState() {
     return ImageUploadScreenState();
@@ -23,7 +23,7 @@ class ImageUploadScreen extends StatefulWidget {
 
 class ImageUploadScreenState extends State<ImageUploadScreen> {
   List<Object> images = [];
-  File _imageFile;
+  File? _imageFile;
   final ImagePicker _picker = ImagePicker();
   @override
   void initState() {
@@ -69,13 +69,13 @@ class ImageUploadScreenState extends State<ImageUploadScreen> {
       childAspectRatio: 1,
       children: List.generate(images.length, (index) {
         if (images[index] is ImageUploadModel) {
-          ImageUploadModel uploadModel = images[index];
+          ImageUploadModel? uploadModel = images[index] as ImageUploadModel?;
           return Card(
             clipBehavior: Clip.antiAlias,
             child: Stack(
               children: <Widget>[
                 Image.file(
-                  File(uploadModel.imageFile.path),
+                  File(uploadModel!.imageFile!.path),
                   width: 300,
                   height: 300,
                 ),
@@ -113,7 +113,7 @@ class ImageUploadScreenState extends State<ImageUploadScreen> {
   }
 
   Future _onAddImageClick(int index) async {
-    PickedFile pickedFile = await _picker.getImage(
+    PickedFile? pickedFile = await _picker.getImage(
       source: ImageSource.gallery,
       imageQuality: 50,
     );
@@ -140,7 +140,7 @@ class ImageUploadScreenState extends State<ImageUploadScreen> {
       ImageUploadModel imageUpload = new ImageUploadModel();
       imageUpload.isUploaded = false;
       imageUpload.uploading = false;
-      imageUpload.imageFile = _imageFile;
+      imageUpload.imageFile = _imageFile!;
       imageUpload.imageUrl = '';
       images.replaceRange(index, index + 1, [imageUpload]);
     });
@@ -158,9 +158,9 @@ class ImageUploadScreenState extends State<ImageUploadScreen> {
 
       for (var i = 0; i < images.length; i++) {
         if (images[i] is ImageUploadModel) {
-          ImageUploadModel imageModel = images[i];
-          File imageFile = imageModel.imageFile;
-          List<int> imageData = await imageFile.readAsBytes();
+          ImageUploadModel? imageModel = images[i] as ImageUploadModel?;
+          File? imageFile = imageModel!.imageFile;
+          List<int> imageData = await imageFile!.readAsBytes();
 
           MultipartFile multipartFile = MultipartFile.fromBytes(
             'files', //key of the api
