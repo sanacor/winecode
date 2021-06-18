@@ -9,8 +9,8 @@ import 'dart:convert' show jsonEncode, utf8;
 import 'package:wine/util/http.dart';
 
 
-final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
+// final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+//
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -164,16 +164,17 @@ class _MyLoginPageState extends State<LoginScreen> {
       // var response = await http
       //     .post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
       // var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
-      print('toooken');
-      var fcm_token = await _firebaseMessaging.getToken();
-      print(fcm_token);
-      var signUpBody = {'fcmToken': fcm_token};
 
-      var response = await http_post(header: null, path: 'v1/signin/kakao?accessToken='+accessToken, body: signUpBody);
+      // print('toooken');
+      // var fcm_token = await _firebaseMessaging.getToken();
+      // print(fcm_token);
+      // var signUpBody = {'fcmToken': fcm_token};
+      //
+      // var response = await http_post(header: null, path: 'v1/signin/kakao?accessToken='+accessToken, body: signUpBody);
 
-      print("access_token : " + response['data']['access_token']);
-      await storage.write(key: "access_token", value: response['data']['access_token']);
-      await storage.write(key: "refresh_token", value: response['data']['refresh_token']);
+      // print("access_token : " + response['data']['access_token']);
+      // await storage.write(key: "access_token", value: response['data']['access_token']);
+      // await storage.write(key: "refresh_token", value: response['data']['refresh_token']);
       //Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
       Navigator.of(context).pop();
     } catch (e) {
