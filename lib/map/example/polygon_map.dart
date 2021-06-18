@@ -15,7 +15,7 @@ class _PolygonMapState extends State<PolygonMap>
   Completer<NaverMapController> _controller = Completer();
   late AnimationController _animationController;
   late Animation _colorTwin;
-  late Animation _rotation;
+  late Animation<double> _rotation;
 
   List<Marker> _markers = [];
   List<PolygonOverlay> _polygon = [];

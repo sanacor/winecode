@@ -101,7 +101,7 @@ class _MyLoginPageState extends State<LoginScreen> {
 
   _issueAccessToken(String authCode) async {
     try {
-      var token = await AuthApi.instance.issueAccessToken(authCode);
+      AccessTokenResponse? token = await AuthApi.instance.issueAccessToken(authCode);
       AccessTokenStore.instance.toStore(token);
       //print("AccessToken : " + token.accessToken);
       try {
@@ -143,15 +143,16 @@ class _MyLoginPageState extends State<LoginScreen> {
     }
   }
 
-  Future<bool?> _registerUserInfoWithKakao(String accessToken) async {
+  Future<bool> _registerUserInfoWithKakao(String? accessToken) async {
     try {
-      var response = await http_post(header: null, path: 'v1/signup/kakao?accessToken='+accessToken);
+      var response = await http_post(header: null, path: 'v1/signup/kakao?accessToken='+accessToken!);
       if(response['code'] == 0 || response['code'] == -9999)//정상 가입 또는 이미 가입한 회원
         return true;
       else
         return false;
     } catch (e) {
       print(e);
+      return false;
     }
   }
 

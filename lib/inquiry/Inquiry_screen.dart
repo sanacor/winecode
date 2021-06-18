@@ -42,13 +42,13 @@ class _InquiryPageState extends State<InquiryPage> {
     return FutureBuilder(
         initialData: [],
         future: _fetchInquiryData(),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData) {
             return ListView.separated(
-              itemCount: snapshot.data.length,
+              itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                return InquiryTile(snapshot.data[index]);
+                return InquiryTile(snapshot.data![index]);
               },
               separatorBuilder: (context, index) {
                 return const Divider(thickness: 1);

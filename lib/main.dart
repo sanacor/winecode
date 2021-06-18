@@ -159,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     // vsync에 this 형태로 전달해야 애니메이션이 정상 처리된다.
     controller = TabController(vsync: this, length: 4);
     firebaseCloudMessaging_Listeners();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _checkJWT();
     });
   }

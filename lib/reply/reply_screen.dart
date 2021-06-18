@@ -50,7 +50,7 @@ class _ReplyPageState extends State<ReplyPage> {
     return FutureBuilder(
         initialData: [],
         future: _fetchReplyData(),
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot snapshot) {
           print('ReplyPage FutureBuilder');
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData) {
@@ -60,7 +60,7 @@ class _ReplyPageState extends State<ReplyPage> {
             return ListView.separated(
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
-                return ReplyTile(snapshot.data[index]);
+                return ReplyTile(snapshot.data?[index]);
               },
               separatorBuilder: (context, index) {
                 return const Divider(thickness: 1);
