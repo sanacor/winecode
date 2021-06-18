@@ -74,10 +74,10 @@ class Replied extends StatelessWidget {
                     // border: OutlineInputBorder(),
                     hintText: '와인 이름',
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey[300]),
+                    borderSide: BorderSide(color: Colors.grey[300]!),
                   ),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey[300]),
+                    borderSide: BorderSide(color: Colors.grey[300]!),
                   ),
                 ),),
               ),

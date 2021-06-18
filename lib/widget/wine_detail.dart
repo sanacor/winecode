@@ -66,7 +66,7 @@ class FullscreenSliderDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     imgList.clear();
-    imgList.add(wineItem!.wineImageURL);
+    imgList.add(wineItem!.wineImageURL!);
 
     return Scaffold(
       body: Builder(builder: (context) {
@@ -173,7 +173,7 @@ class _WineDetailState extends State<WineDetail> {
                       height: MediaQuery.of(context).size.height / 10 * 4,
                       child: Padding(
                           padding: EdgeInsets.fromLTRB(15, 30, 0, 0),
-                          child: Text(widget.wineItem.wineName,
+                          child: Text(widget.wineItem!.wineName!,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20))))
                 ],

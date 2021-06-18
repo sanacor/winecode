@@ -134,7 +134,7 @@ class WineApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key }) : super(key: key);
+  MyHomePage({Key? key }) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -148,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   static final storage = new FlutterSecureStorage(); //flutter_secure_storage 사용을 위한 초기화 작업
 
   // 컨트롤러는 TabBar와 TabBarView 객체를 생성할 때 직접 전달
-  TabController controller;
+  late TabController controller;
 
   List<Widget> _pages = [SearchScreen(),    WineMapScreen(),    InquiryScreen(),    SettingsScreen()];
 
@@ -175,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   _checkJWT() async {
     //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
     //(데이터가 없을때는 null을 반환을 합니다.)
-    String jwt = await storage.read(key: "access_token");
+    String? jwt = await storage.read(key: "access_token");
     print(jwt);
 
     //jwt가 없는 경우 로그인 페이지로 이동

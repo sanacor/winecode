@@ -19,7 +19,7 @@ class _MarkerMapPageState extends State<WineMapScreen> {
   Completer<NaverMapController> _controller = Completer();
   List<Marker> _markers = [];
 
-  OverlayImage wineShopMarker;
+  OverlayImage? wineShopMarker;
 
   Future<void> _getWineShopList() async {
     // var url =
@@ -75,7 +75,7 @@ class _MarkerMapPageState extends State<WineMapScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getWineShopList();
     });
   }

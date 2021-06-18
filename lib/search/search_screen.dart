@@ -88,7 +88,7 @@ class _SearchScreenState extends State<SearchScreen> with AutomaticKeepAliveClie
                     ? Center(
                         child: CircularProgressIndicator(
                             valueColor: new AlwaysStoppedAnimation<Color>(
-                                Colors.red[900])))
+                                Colors.red[900]!)))
                     : ListView.separated(
                         // scrollDirection: Axis.vertical,
                         // shrinkWrap: true,
@@ -100,7 +100,7 @@ class _SearchScreenState extends State<SearchScreen> with AutomaticKeepAliveClie
                           thickness: 1
                         ),
                         itemCount:
-                            snapshot.data == null ? 0 : snapshot.data.length,
+                            snapshot.data == null ? 0 : snapshot.data!.length,
                         itemBuilder: (context, index) {
                           return SingleChildScrollView(
                               physics: ScrollPhysics(),
@@ -109,17 +109,17 @@ class _SearchScreenState extends State<SearchScreen> with AutomaticKeepAliveClie
                                 child: Center(child: ListTile(
                                   leading: ClipRRect(
                                     borderRadius: BorderRadius.circular(10.0),
-                                    child: Image.network(snapshot.data[index].wineImageURL, fit: BoxFit.fill),
+                                    child: Image.network(snapshot.data![index].wineImageURL!, fit: BoxFit.fill),
                                   ),
 
-                                  title: Text('${snapshot.data[index].wineCompany}' + " " + '${snapshot.data[index].wineName}'),
+                                  title: Text('${snapshot.data![index].wineCompany}' + " " + '${snapshot.data![index].wineName}'),
                                   isThreeLine: false,
                                   subtitle:
-                                  Text('${snapshot.data[index].wineRegion}' + " in " + '${snapshot.data[index].wineCountry}'),
+                                  Text('${snapshot.data![index].wineRegion}' + " in " + '${snapshot.data![index].wineCountry}'),
                                   onTap: () {
                                     Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => (index == snapshot.data.length - 1) || (index == 0) ?  ManualInquiry(wineItem: Wine()) : WineDetail(
-                                            wineItem: snapshot.data[index])));
+                                        builder: (context) => (index == snapshot.data!.length - 1) || (index == 0) ?  ManualInquiry(wineItem: Wine()) : WineDetail(
+                                            wineItem: snapshot.data![index])));
                                   },
                                 ),)
                               ));

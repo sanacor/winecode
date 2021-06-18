@@ -34,9 +34,9 @@ class _ManualInquiryState extends State<ManualInquiry> {
 
   @override
   Widget build(BuildContext context) {
-    if(widget.wineItem.wineName != "") {
+    if(widget.wineItem!.wineName != "") {
       wineNameController.text =
-          widget.wineItem.wineCompany + " " + widget.wineItem.wineName;
+          widget.wineItem!.wineCompany! + " " + widget.wineItem!.wineName!;
     }
     // return Container(color: Colors.red,);
     return Scaffold(
@@ -48,7 +48,7 @@ class _ManualInquiryState extends State<ManualInquiry> {
               children: [
                 CircularProgressIndicator(
                     valueColor: new AlwaysStoppedAnimation<Color>(
-                        Colors.red[900])
+                        Colors.red[900]!)
                 ),
                 SizedBox(
                   height: 15,
@@ -87,14 +87,14 @@ class _ManualInquiryState extends State<ManualInquiry> {
                     setState(() {
                       _imageUploading = true;
                     });
-                    if(widget.wineItem.wineName == "") {
+                    if(widget.wineItem!.wineName == "") {
                       //ManualInquiry
-                      String imgUrl = await _myKey.currentState.uploadImage();
-                      widget.wineItem.wineImageURL = imgUrl;
-                      widget.wineItem.wineCompany = "";
+                      String imgUrl = await _myKey.currentState!.uploadImage();
+                      widget.wineItem!.wineImageURL = imgUrl;
+                      widget.wineItem!.wineCompany = "";
                     }
-                    widget.wineItem.wineName = wineNameController.text;
-                    widget.wineItem.inqContents = inquiryContentsController.text;
+                    widget.wineItem!.wineName = wineNameController.text;
+                    widget.wineItem!.inqContents = inquiryContentsController.text;
 
                     //TODO Delay되는 동안 Loading화면 띄우기
                     Future.delayed(const Duration(milliseconds: 3000), () { //이거 안넣어주면 맵이 초기에 위치를 못찾음
@@ -122,7 +122,7 @@ class _ManualInquiryState extends State<ManualInquiry> {
             ),
 
             //사용자가 직접 입력하는 경우 업로드 화면, 선택해서 넘어온 경우 와인이미지 보여줌
-            widget.wineItem.wineName == "" ?
+            widget.wineItem!.wineName == "" ?
             Container(
                 padding: EdgeInsets.only(left: 15, right: 15),
                 height: 150.0,
@@ -131,7 +131,7 @@ class _ManualInquiryState extends State<ManualInquiry> {
             Container(
                 padding: EdgeInsets.only(left: 15, right: 15),
                 height: 150.0,
-                child: Image.network(widget.wineItem.wineImageURL)
+                child: Image.network(widget.wineItem!.wineImageURL!)
             )
             ,
 
@@ -144,10 +144,10 @@ class _ManualInquiryState extends State<ManualInquiry> {
                   // border: OutlineInputBorder(),
                   hintText: '와인 이름',
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey[300]),
+                    borderSide: BorderSide(color: Colors.grey[300]!),
                   ),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey[300]),
+                    borderSide: BorderSide(color: Colors.grey[300]!),
                   ),
                 ),
               ),

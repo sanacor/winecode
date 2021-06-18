@@ -20,7 +20,7 @@ class ReplyTile extends StatelessWidget {
       // trailing: Text(_replyInfo.reply.toString()),
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) { return _replyInfo!.reply!['reply']['rlyStatus'] == 'Waiting' ? Replying(_replyInfo!.reply) : Replied(_replyInfo!.reply);}));
+            builder: (context) { return _replyInfo!.reply!['reply']['rlyStatus'] == 'Waiting' ? Replying(_replyInfo!.reply) : Replied(_replyInfo!.reply!);}));
       },
     );
   }

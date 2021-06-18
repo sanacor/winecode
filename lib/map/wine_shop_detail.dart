@@ -60,9 +60,9 @@ class CarouselWithIndicatorDemo extends StatefulWidget {
 }
 
 class FullscreenSliderDemo extends StatelessWidget {
-  final WineShop wineShop;
+  final WineShop? wineShop;
 
-  const FullscreenSliderDemo ({ Key key, this.wineShop }): super(key: key);
+  const FullscreenSliderDemo ({ Key? key, this.wineShop }): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -148,9 +148,9 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
 }
 
 class WineShopDetail extends StatefulWidget {
-  final WineShop wineShopItem;
+  final WineShop? wineShopItem;
 
-  const WineShopDetail ({ Key key, this.wineShopItem }): super(key: key);
+  const WineShopDetail ({ Key? key, this.wineShopItem }): super(key: key);
 
   @override
   _WineShopDetailState createState() => _WineShopDetailState();
@@ -175,9 +175,9 @@ class _WineShopDetailState extends State<WineShopDetail> {
                           padding: EdgeInsets.fromLTRB(15, 30, 0, 0),
                           child: Wrap(
                             children: <Widget> [
-                              Text(widget.wineShopItem.retail_name, style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 20)),
-                              Text(widget.wineShopItem.retail_phone, style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 20)),
-                              Text(widget.wineShopItem.retail_address, style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 20)),
+                              Text(widget.wineShopItem!.retail_name!, style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 20)),
+                              Text(widget.wineShopItem!.retail_phone!, style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 20)),
+                              Text(widget.wineShopItem!.retail_address!, style: TextStyle(fontWeight: FontWeight.bold,  fontSize: 20)),
                             ]
                           )
                       )

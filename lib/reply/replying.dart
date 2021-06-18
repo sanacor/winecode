@@ -11,10 +11,10 @@ class Replying extends StatelessWidget {
   final inquiryController = TextEditingController();
   final replyController = TextEditingController();
   Wine? wine_item = Wine();
-  var reply? = new Map();
+  var reply = new Map();
 
   Replying(Map<String, dynamic>? reply) {
-    this.reply = reply;
+    this.reply = reply!;
     this.wine_item!.wineName = reply['inquiry']['inqPdtName'];
     print(this.wine_item!.wineName);
   }
@@ -24,7 +24,7 @@ class Replying extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    inquiryController.text = wine_item!.wineName;
+    inquiryController.text = wine_item!.wineName!;
     // return Container(color: Colors.red,);
     return Scaffold(
       body: SafeArea(
@@ -81,10 +81,10 @@ class Replying extends StatelessWidget {
                   // border: OutlineInputBorder(),
                   hintText: '와인 이름',
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey[300]),
+                    borderSide: BorderSide(color: Colors.grey[300]!),
                   ),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey[300]),
+                    borderSide: BorderSide(color: Colors.grey[300]!),
                   ),
                 ),
               ),
