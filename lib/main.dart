@@ -39,14 +39,19 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
-  print('Handling a background message ${message.messageId}');
+
 }
 
 /// Create a [AndroidNotificationChannel] for heads up notifications
-AndroidNotificationChannel? channel;
+AndroidNotificationChannel  channel = const AndroidNotificationChannel(
+  'high_importance_channel', // id
+  'High Importance Notifications', // title
+  'This channel is used for important notifications.', // description
+  importance: Importance.high,
+);
 
 /// Initialize the [FlutterLocalNotificationsPlugin] package.
-FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 
 
@@ -61,34 +66,41 @@ Future<void> main() async {
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  if (!kIsWeb) {
-    channel = const AndroidNotificationChannel(
-      'high_importance_channel', // id
-      'High Importance Notifications', // title
-      'This channel is used for important notifications.', // description
-      importance: Importance.high,
-    );
+  print('============================ FirebaseMessaging.onMessage.listen');
 
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
 
-    /// Create an Android Notification Channel.
-    ///
-    /// We use this channel in the `AndroidManifest.xml` file to override the
-    /// default FCM channel to enable heads up notifications.
-    await flutterLocalNotificationsPlugin!
-        .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel!);
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+  });
 
-    /// Update the iOS foreground notification presentation options to allow
-    /// heads up notifications.
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-  }
+
+
+
+  /// Create an Android Notification Channel.
+  ///
+  /// We use this channel in the `AndroidManifest.xml` file to override the
+  /// default FCM channel to enable heads up notifications.
+  await flutterLocalNotificationsPlugin!
+      .resolvePlatformSpecificImplementation<
+      AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel!);
+
+  /// Update the iOS foreground notification presentation options to allow
+  /// heads up notifications.
+  await FirebaseMessaging.instance
+      .setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+  FirebaseMessaging.instance.getToken().then((value){
+    print("======= FirebaseMessaging getToken: "+value!);
+  });
 
   return runApp(
     MultiProvider(
@@ -145,6 +157,13 @@ class MyHomePage extends StatefulWidget {
 // mixin은 다중 상속에서 코드를 재사용하기 위한 한 가지 방법으로 with 키워드와 함께 사용
 class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
   static int _selectedIndex = 0;
+
+
+  // Push Notification
+
+
+
+
   static final storage = new FlutterSecureStorage(); //flutter_secure_storage 사용을 위한 초기화 작업
 
   // 컨트롤러는 TabBar와 TabBarView 객체를 생성할 때 직접 전달
@@ -155,6 +174,28 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null && !kIsWeb) {
+        flutterLocalNotificationsPlugin!.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channel.description,
+                // TODO add a proper drawable resource to android, for now using
+                //      one that already exists in example app.
+                icon: 'launch_background',
+              ),
+            ));
+      }
+    });
+
     // SingleTickerProviderStateMixin를 상속 받아서
     // vsync에 this 형태로 전달해야 애니메이션이 정상 처리된다.
     controller = TabController(vsync: this, length: 4);
@@ -162,6 +203,8 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _checkJWT();
     });
+
+
   }
 
   // initState 함수의 반대.
@@ -203,7 +246,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     // _firebaseMessaging.getToken().then((token){
     //   print('fcm token:'+token);
     // });
-    //
+
     // _firebaseMessaging.configure(
     //   onMessage: (Map<String, dynamic> message) async {
     //     print('on message $message');

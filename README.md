@@ -27,3 +27,7 @@ samples, guidance on mobile development, and a full API reference.
 ## 시작화면 변경
 pub run flutter_native_splash:create
 pub run flutter_native_splash:remove
+
+## Null Safety 
+https://happyguy81.tistory.com/138
+flutter run --no-sound-null-safety
