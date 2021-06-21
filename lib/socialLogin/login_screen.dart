@@ -161,21 +161,20 @@ class _MyLoginPageState extends State<LoginScreen> {
     //     "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/v1/signin/kakao?accessToken=" +
     //         accessToken;
     try {
-      // var response = await http
-      //     .post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+      // var response = await http.post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
       // var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
 
-      // print('toooken');
-      // var fcm_token = await _firebaseMessaging.getToken();
-      // print(fcm_token);
-      // var signUpBody = {'fcmToken': fcm_token};
-      //
-      // var response = await http_post(header: null, path: 'v1/signin/kakao?accessToken='+accessToken, body: signUpBody);
+      print('toooken');
+      var fcm_token = await FirebaseMessaging.instance.getToken();
+      print(fcm_token);
+      var signUpBody = {'fcmToken': fcm_token};
 
-      // print("access_token : " + response['data']['access_token']);
-      // await storage.write(key: "access_token", value: response['data']['access_token']);
-      // await storage.write(key: "refresh_token", value: response['data']['refresh_token']);
-      //Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
+      var response = await http_post(header: null, path: 'v1/signin/kakao?accessToken='+accessToken, body: signUpBody);
+
+      print("access_token : " + response['data']['access_token']);
+      await storage.write(key: "access_token", value: response['data']['access_token']);
+      await storage.write(key: "refresh_token", value: response['data']['refresh_token']);
+      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
       Navigator.of(context).pop();
     } catch (e) {
       print(e);
