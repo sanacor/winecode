@@ -31,3 +31,4 @@ pub run flutter_native_splash:remove
 ## Null Safety 
 https://happyguy81.tistory.com/138
 flutter run --no-sound-null-safety
+flutter build appbundle --no-sound-null-safety 
