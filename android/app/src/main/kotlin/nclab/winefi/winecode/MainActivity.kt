@@ -1,4 +1,4 @@
-package com.example.winecode
+package nclab.winefi.winecode
 
 import io.flutter.embedding.android.FlutterActivity
 

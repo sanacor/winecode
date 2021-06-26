@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.winecode">
+    package="nclab.winefi.winecode">
     <queries>
         <package android:name="com.kakao.talk" />
     </queries>
@@ -19,7 +19,7 @@
            android:name="com.naver.maps.map.CLIENT_ID"
            android:value="6urt83otmf" />
         <activity
-            android:name=".MainActivity"
+            android:name="nclab.winefi.winecode.MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -48,7 +48,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity">
-           <intent-filter android:label="flutter_web_auth">
+           <intent-filter android:label="WineFi">
                <action android:name="android.intent.action.VIEW" />
                <category android:name="android.intent.category.DEFAULT" />
                <category android:name="android.intent.category.BROWSABLE" />

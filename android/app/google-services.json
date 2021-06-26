@@ -40,6 +40,42 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:441215028866:android:41431ea8d3435e7160ae9b",
+        "android_client_info": {
+          "package_name": "nclab.winefi.winecode"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "441215028866-alpc921njs07n7dcc371tdvbeihdajrr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8-Q1d4EQL7uCAR0FXSzcAoxYhm0n6hi0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "441215028866-alpc921njs07n7dcc371tdvbeihdajrr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "441215028866-jm9239l10t03r2fai3b8aj39bqa33hi0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "nclab.taehee.winecode"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
