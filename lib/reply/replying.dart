@@ -8,6 +8,7 @@ import 'package:wine/util/http.dart';
 
 
 class Replying extends StatelessWidget {
+  // 아직 답변이 필요한 문의의 답변하기 페이지
   final inquiryController = TextEditingController();
   final replyController = TextEditingController();
   Wine? wine_item = Wine();

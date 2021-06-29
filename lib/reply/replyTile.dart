@@ -4,6 +4,7 @@ import 'package:wine/reply/replied.dart';
 
 
 class ReplyTile extends StatelessWidget {
+  // replying 또는 replied 상세 페이지로 가기전 답변 아이템 하나에 해당하는 위젯
   ReplyTile(this._replyInfo);
 
   final ReplyInfo? _replyInfo;

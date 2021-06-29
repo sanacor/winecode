@@ -4,7 +4,9 @@ import 'package:wine/map/inquiry_map.dart';
 import 'package:wine/model/wine.dart';
 
 
+
 class Replied extends StatelessWidget {
+  // 답변 완료한 문의 상세 페이지
   final inquiryController = TextEditingController();
   Wine wine_item = Wine();
 
