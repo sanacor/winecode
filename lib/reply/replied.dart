@@ -7,8 +7,11 @@ import 'package:wine/model/wine.dart';
 
 class Replied extends StatelessWidget {
   // 답변 완료한 문의 상세 페이지
-  final inquiryController = TextEditingController();
+  // reply['reply']
+  // reply['inquiry']
+  // final inquiryController = TextEditingController();
   Wine wine_item = Wine();
+  var reply = new Map();
 
   Replied(Map<String, dynamic> reply) {
     this.reply = reply;
@@ -16,7 +19,7 @@ class Replied extends StatelessWidget {
     print('shsh');
   }
 
-  set reply(Map<String, dynamic> reply) {}
+  // set reply(Map<String, dynamic> reply) {}
 
 
   @override
@@ -43,22 +46,22 @@ class Replied extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     )),
-            GestureDetector(
-                onTap: (){
-                  wine_item.wineName = inquiryController.text;
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => InquiryMapScreen(wineItem: wine_item)));
-
-                },
-                child: new Container(
-                    padding: EdgeInsets.only(top: 15, right: 15),
-                    alignment: Alignment.bottomRight,
-                    child: Text(
-                      '다음',
-                      style: TextStyle(fontSize: 17),
-
-                    ))
-            )
+            // GestureDetector(
+            //     onTap: (){
+            //       wine_item.wineName = inquiryController.text;
+            //       Navigator.of(context).push(
+            //           MaterialPageRoute(builder: (context) => InquiryMapScreen(wineItem: wine_item)));
+            //
+            //     },
+            //     child: new Container(
+            //         padding: EdgeInsets.only(top: 15, right: 15),
+            //         alignment: Alignment.bottomRight,
+            //         child: Text(
+            //           '다음',
+            //           style: TextStyle(fontSize: 17),
+            //
+            //         ))
+            // )
               ],
             ),
             const Divider(
@@ -70,11 +73,12 @@ class Replied extends StatelessWidget {
             Container(
               padding: EdgeInsets.only(left: 15, right: 15),
               child: TextField(
-                controller: inquiryController,
+                // controller: inquiryController,
                 obscureText: false,
                 decoration: InputDecoration(
                     // border: OutlineInputBorder(),
-                    hintText: '와인 이름',
+                    // hintText: '와인 이름',
+                    labelText: this.reply['inquiry']['inqPdtName'],
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey[300]!),
                   ),
@@ -92,7 +96,8 @@ class Replied extends StatelessWidget {
                 obscureText: false,
                 decoration: InputDecoration(
                   // border: OutlineInputBorder(),
-                  hintText: '답변 내용을 입력 해주세요:)',
+                  // hintText: '답변 내용을 입력 해주세요:)',
+                  labelText: this.reply['reply']['rlyContents'],
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Color(0x00000000)),
                   ),
