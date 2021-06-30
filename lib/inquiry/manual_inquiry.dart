@@ -63,7 +63,8 @@ class _ManualInquiryState extends State<ManualInquiry> {
               ],
             )
           )
-        : Column(
+        : SingleChildScrollView(
+            child:Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -200,7 +201,7 @@ class _ManualInquiryState extends State<ManualInquiry> {
               ),
             ),
           ],
-        ),
+        )),
       )),
     );
   }
