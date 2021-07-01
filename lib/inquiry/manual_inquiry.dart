@@ -55,7 +55,7 @@ class _ManualInquiryState extends State<ManualInquiry> {
                 ),
                 RichText(
                   text: TextSpan(
-                    text: '이미지를 업로드 중입니다.',
+                    text: '잠시만 기다려주세요.',
                     style: TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.black, fontSize: 15),
                   ),
