@@ -4,9 +4,9 @@ import 'package:kakao_flutter_sdk/all.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:io' show Platform;
-import 'dart:convert' as convert;
-import 'dart:convert' show jsonEncode, utf8;
 import 'package:wine/util/http.dart';
+import 'package:flutter/gestures.dart';
+import 'package:wine/webview/webview_screen.dart';
 
 
 // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -60,11 +60,30 @@ class _MyLoginPageState extends State<LoginScreen> {
                         padding: EdgeInsets.all(15),
                         child: RichText(
                           text: TextSpan(
-                            text: '회원가입 없이 이용 가능하며 첫 로그인 시 이용약관 및 개인정보처리방침 동의로 간주됩니다.',
+                            text: '회원가입 없이 이용 가능하며 첫 로그인 시 이용약관 및 ',
                             style: TextStyle(
                                 //fontWeight: FontWeight.bold,
                                 color: Colors.grey,
                                 fontSize: 13),
+                            children: <TextSpan> [
+                              TextSpan(
+                                  text: '개인정보처리방침',
+                                  style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.blue,
+                                    decorationStyle: TextDecorationStyle.wavy,
+                                  ),
+                                  recognizer: TapGestureRecognizer()..onTap = () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            WebViewScreen(webUrl: "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/privacy.html"))
+                                    );
+                                  },
+                              ),
+                              TextSpan(
+                                  text: ' 동의로 간주됩니다.',
+                              ),
+                            ],
                           ),
                         ),
                       ),
