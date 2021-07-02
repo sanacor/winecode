@@ -87,10 +87,15 @@ class _MarkerMapPageState extends State<WineMapScreen> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(height: Platform.isAndroid ? 10 : 1),
+            Container(
+              height: Platform.isAndroid ? 10 : 1,
+              color: Colors.white
+            ),
             Expanded(
               child: Container(
+                color: Colors.white,
                 padding: const EdgeInsets.only(left: 20),
+
                 alignment: Alignment.bottomLeft,
                 child: RichText(
                   text: TextSpan(
@@ -105,7 +110,11 @@ class _MarkerMapPageState extends State<WineMapScreen> {
               ),
               flex: 1,
             ),
-            SizedBox(height: 15),
+            // SizedBox(height: 15),
+            Container(
+              height: 15,
+              color: Colors.white,
+            ),
             Expanded(
               child: NaverMap(
                 onMapCreated: _onMapCreated,
