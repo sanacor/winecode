@@ -64,6 +64,9 @@ dependencies:
   #Webview
   webview_flutter: ^2.0.9
 
+  # url link
+  url_launcher: ^6.0.8
+
 
 dev_dependencies:
   flutter_test:
