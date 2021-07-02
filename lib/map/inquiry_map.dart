@@ -114,14 +114,15 @@ class _MarkerMapPageState extends State<InquiryMapScreen> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.red[900],
           child: Text("문의"),
           onPressed: _onInquiryTap,
         ),
-        bottomNavigationBar: BottomAppBar(
-            child: Container(
-          height: 40.0,
-          child: Text("선택된 와인샵 : " + _selectCnt.toString()),
-        )),
+        // bottomNavigationBar: BottomAppBar(
+        //     child: Container(
+        //   height: 40.0,
+        //   child: Text("선택된 와인샵 : " + _selectCnt.toString()),
+        // )),
       ),
     );
   }

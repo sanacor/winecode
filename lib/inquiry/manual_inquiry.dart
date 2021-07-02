@@ -112,7 +112,8 @@ class _ManualInquiryState extends State<ManualInquiry> {
                       alignment: Alignment.topCenter,
                       child: Text(
                         '다음',
-                        style: TextStyle(fontSize: 17),
+                        // style: TextStyle(fontSize: 17),
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color:Colors.red[900]),
                       )))
             ],),
             const Divider(
@@ -143,7 +144,7 @@ class _ManualInquiryState extends State<ManualInquiry> {
                 obscureText: false,
                 decoration: InputDecoration(
                   // border: OutlineInputBorder(),
-                  hintText: '와인 이름',
+                  hintText: '와인 이름을 입력해주세요:)',
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey[300]!),
                   ),
@@ -163,10 +164,10 @@ class _ManualInquiryState extends State<ManualInquiry> {
                 // spacing: 6.0,
                 // runSpacing: 6.0,
                 children: <Widget>[
-                  _buildChip('재고 있나요?', Color(0xFFff6666)),
-                  _buildChip('가격이 궁금해요^^', Color(0xFFff6666)),
-                  _buildChip('주차 가능한가요?', Color(0xFFff6666)),
-                  _buildChip('영업시간을 알려주세요~', Color(0xFFff6666)),
+                  _buildChip('재고 있나요?', Colors.red[900]!),
+                  _buildChip('가격이 궁금해요^^', Colors.red[900]!),
+                  _buildChip('주차 가능한가요?', Colors.red[900]!),
+                  _buildChip('영업시간을 알려주세요~', Colors.red[900]!),
                 ],
               ),
             ),
@@ -190,7 +191,7 @@ class _ManualInquiryState extends State<ManualInquiry> {
                 obscureText: false,
                 decoration: InputDecoration(
                   // border: OutlineInputBorder(),
-                  hintText: '문의하실 내용을 입력 해주세요:)',
+                  hintText: '문의하실 내용을 입력해주세요:)',
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Color(0x00000000)),
                   ),
