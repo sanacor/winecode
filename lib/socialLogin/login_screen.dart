@@ -76,7 +76,8 @@ class _MyLoginPageState extends State<LoginScreen> {
                                   recognizer: TapGestureRecognizer()..onTap = () {
                                     Navigator.of(context).push(MaterialPageRoute(
                                         builder: (context) =>
-                                            WebViewScreen(webUrl: "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/privacy.html"))
+                                            WebViewScreen(webTitle : "개인정보처리방침",
+                                                webUrl: "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/privacy.html"))
                                     );
                                   },
                               ),

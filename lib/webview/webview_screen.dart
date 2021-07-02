@@ -6,8 +6,9 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatefulWidget {
   String? webUrl;
+  String webTitle;
 
-  WebViewScreen({this.webUrl});
+  WebViewScreen({this.webUrl, required this.webTitle});
 
   @override
   WebViewExampleState createState() => WebViewExampleState();
@@ -23,10 +24,21 @@ class WebViewExampleState extends State<WebViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: WebView(
-          initialUrl: widget.webUrl,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.red,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          title: Text(widget.webTitle),
+          centerTitle: true,
+        ),
+        body: SafeArea(
+          child: WebView(
+            initialUrl: widget.webUrl,
+          ),
         ),
       ),
     );
