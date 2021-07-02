@@ -5,6 +5,8 @@ import 'package:wine/main.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:wine/reply/reply_screen.dart';
 import 'package:wine/util/http.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -15,6 +17,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   static final storage = FlutterSecureStorage();
   String thumbnailImgUrl = 'http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/image/view/53';//비어있는 유저 사진
   String userName = 'User';
+  String _kakao_talk_open_chat_url = 'https://open.kakao.com/o/sSYaf0ld';
 
   @override
   void initState() {
@@ -43,6 +46,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   height: MediaQuery.of(context).size.height / 25,
                   ),
+                  SizedBox(height: 15),
                   SizedBox(
                     height: 115,
                     width: 115,
@@ -111,6 +115,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       title: Text('사장님 메뉴'),
       onTap: () => _storeOwner(context),
     ));
+    widgetList.add(ListTile(
+      leading: Icon(Icons.batch_prediction),
+      title: Text('Wine-Fi에 연락하기'),
+      onTap: () => _helpCallback(context),
+    ));
     /*
     widgetList.add(ListTile(
       leading: Icon(Icons.add_business_outlined),
@@ -130,11 +139,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return widgetList;
   }
 
+  void _launchKakaoTalkOpenChat() async =>
+      await canLaunch(_kakao_talk_open_chat_url) ? await launch(_kakao_talk_open_chat_url) : throw 'Could not launch $_kakao_talk_open_chat_url';
+
   void _tapCallback(BuildContext context) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(title: Text("공지"), content: Text("환영합니다."));
+        });
+  }
+
+  void _helpCallback(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(title: Text("Wine-Fi에 연락하기"), content: GestureDetector(
+          onTap: (){
+          print("Container clicked");
+          _launchKakaoTalkOpenChat();
+          },
+          child: Text("카카오톡 1:1 오픈 채팅방 연결")));
         });
   }
 
