@@ -115,7 +115,8 @@ class _SearchScreenState extends State<SearchScreen> with AutomaticKeepAliveClie
                                   title: Text('${snapshot.data![index].wineCompany}' + " " + '${snapshot.data![index].wineName}'),
                                   isThreeLine: false,
                                   subtitle:
-                                  Text('${snapshot.data![index].wineRegion}' + " in " + '${snapshot.data![index].wineCountry}'),
+                                  Text(snapshot.data![index].wineRegion == null || snapshot.data![index].wineCountry == null ? '검색 결과에 와인이 없는 경우 여기 ✋' : '${snapshot.data![index].wineRegion}' + " in " + '${snapshot.data![index].wineCountry}'),
+                                  // Text('${snapshot.data![index].wineRegion}' + " in " + '${snapshot.data![index].wineCountry}'),
                                   onTap: () {
                                     Navigator.of(context).push(MaterialPageRoute(
                                         builder: (context) => (index == snapshot.data!.length - 1) || (index == 0) ?  ManualInquiry(wineItem: Wine()) : WineDetail(
