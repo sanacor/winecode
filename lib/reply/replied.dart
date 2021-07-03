@@ -87,6 +87,25 @@ class Replied extends StatelessWidget {
                   ),
                 ),),
               ),
+            SizedBox(height: 25,),
+            Container(
+              padding: EdgeInsets.only(left: 15, right: 15),
+              child: TextField(
+                maxLines: null,
+                // controller: inquiryController,
+                obscureText: false,
+                decoration: InputDecoration(
+                  // border: OutlineInputBorder(),
+                  // hintText: '와인 이름',
+                  labelText: this.reply['inquiry']['inqContents'],
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey[300]!),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey[300]!),
+                  ),
+                ),),
+            ),
             Container(
               height: 200,
               padding: EdgeInsets.only(left: 15, right: 15),
