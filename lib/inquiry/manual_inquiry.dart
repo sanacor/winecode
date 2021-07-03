@@ -182,7 +182,7 @@ class _ManualInquiryState extends State<ManualInquiry> {
               ),
             ),
             Container(
-              height: 100,
+              height: 300,
               padding: EdgeInsets.only(left: 15, right: 15),
               child: TextField(
                 controller: inquiryContentsController,
