@@ -143,9 +143,9 @@ class Replying extends StatelessWidget {
     var response = await http_post(header: null, path: 'api/retail/reply', body: a);
 
     if (response['success'] == true) {
-      return SnackBar(content: Text("문의보내기 완료!"));
+      return SnackBar(content: Text("답변 보내기 완료!"));
     } else {
-      return SnackBar(content: Text("문의보내기 실패!"));
+      return SnackBar(content: Text("답변 보내기 실패!"));
     }
   }
 }
