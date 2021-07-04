@@ -105,7 +105,7 @@ class Replying extends StatelessWidget {
                   endIndent: 0,
                 )),
             Container(
-              height: 200,
+              height: 400,
               padding: EdgeInsets.only(left: 15, right: 15),
               child: TextField(
                 controller: replyController,
