@@ -162,7 +162,8 @@ class _MarkerMapPageState extends State<WineMapScreen> {
 
     print(response);
 
-    Map wineShopInfo = response['data'];
+    var wineShopInfo = response['data'];
+    /*
     WineShop selectedWineShop = WineShop(
       retail_id: wineShopInfo['rtlId'].toString(),
       retail_address: wineShopInfo['rtlAddress'].toString(),
@@ -172,6 +173,8 @@ class _MarkerMapPageState extends State<WineMapScreen> {
       retail_phone: wineShopInfo['rtlPhone'].toString(),
       //retail_exp: wineShopInfo['rtlExp'].toString(),
     );
+     */
+    WineShop selectedWineShop = new WineShop.fromJson(wineShopInfo);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => WineShopDetail(wineShopItem: selectedWineShop)));
     _markers[pos].captionColor = Colors.red;
