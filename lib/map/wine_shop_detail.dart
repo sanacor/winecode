@@ -59,22 +59,26 @@ class _WineShopDetailState extends State<WineShopDetail> {
     List<ListTile> widgetList = [];
     widgetList.add(ListTile(
       leading: Icon(Icons.call),
-      title: Text(widget.wineShopItem!.retail_phone!),
+      title: Text("전화번호"),
+      subtitle: Text(widget.wineShopItem!.retail_phone!),
       onTap: () => {
         launch("tel://" + widget.wineShopItem!.retail_phone!)
       },
     ));
     widgetList.add(ListTile(
       leading: Icon(Icons.place),
-      title: Text(widget.wineShopItem!.retail_address!),
+      title: Text("주소"),
+      subtitle: Text(widget.wineShopItem!.retail_address!),
     ));
     widgetList.add(ListTile(
       leading: Icon(Icons.schedule),
-      title: Text(widget.wineShopItem!.retail_bhours! == "" ? "영업시간 정보없음" : widget.wineShopItem!.retail_bhours!),
+      title: Text("영업시간"),
+      subtitle: Text(widget.wineShopItem!.retail_bhours! == "" ? "영업시간 정보없음" : widget.wineShopItem!.retail_bhours!),
     ));
     widgetList.add(ListTile(
       leading: Icon(Icons.description),
-      title: Text(widget.wineShopItem!.retail_exp! == "" ?
+      title: Text("가게 소개"),
+      subtitle: Text(widget.wineShopItem!.retail_exp! == "" ?
         widget.wineShopItem!.retail_address! + "에 위치한 " + widget.wineShopItem!.retail_name! + " 입니다." : widget.wineShopItem!.retail_exp!),
     ));
     widgetList.add(ListTile(
