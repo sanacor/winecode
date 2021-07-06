@@ -56,7 +56,10 @@ class _InquiryPageState extends State<InquiryPage> {
             );
           } else {
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(
+                      Colors.red[900]!)
+              ),
             );
           }
         });

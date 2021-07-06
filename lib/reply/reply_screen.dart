@@ -68,7 +68,10 @@ class _ReplyPageState extends State<ReplyPage> {
             );
           } else {
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(
+                      Colors.red[900]!)
+              ),
             );
           }
         });
