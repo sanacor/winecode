@@ -165,7 +165,21 @@ class _WineDetailState extends State<WineDetail> {
                 height: (MediaQuery.of(context).size.height / 10) * 4,
                 child: FullscreenSliderDemo(wineItem: widget.wineItem)),
             SizedBox(
-              height: 20,
+              height: 3,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Image from ",
+                  style: TextStyle(fontSize: 9)
+                ),
+                Text("VIVINO",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: Colors.red[900])
+                ),
+              ]
+            ),
+            SizedBox(
+              height: 15,
             ),
             Row(
               children: [
@@ -216,7 +230,6 @@ class _WineDetailState extends State<WineDetail> {
                 )
               ],
             ),
-
           ],
         ),
         floatingActionButton: FloatingActionButton(
