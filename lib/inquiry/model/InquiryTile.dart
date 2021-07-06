@@ -16,8 +16,8 @@ class InquiryTile extends StatelessWidget {
         child: Image.network(_inquiryInfo!.inqPdtImage!, fit: BoxFit.fill),
       ),
       title: Text(_inquiryInfo!.inqPdtName.toString()),
-      // subtitle: Text("${_inquiryInfo.reply.toString()}"),
-      // trailing: Text(_inquiryInfo.reply.toString()),
+      subtitle: Text(_inquiryInfo!.inqTime.toString()),
+      trailing: Text(_inquiryInfo!.getCnt()),
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => InquiryDetail(inqPdtName: _inquiryInfo!.inqPdtName, replyInfo: _inquiryInfo!.reply)));
@@ -49,5 +49,19 @@ class InquiryInfo {
       inqTime: json['inqTime'],
       reply: json['reply']
     );
+  }
+
+  String getCnt() {
+    int totCnt = 0;
+    int repliedCnt = 0;
+    reply?.forEach((replyElement) {
+      totCnt += 1;
+      if(replyElement['rlyStatus'] == "Replied")
+        repliedCnt += 1;
+    });
+    if(repliedCnt == 0)
+      return "답변대기중";
+    else
+      return repliedCnt.toString() + "/" + totCnt.toString();
   }
 }
