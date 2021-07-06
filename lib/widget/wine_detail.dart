@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:footer/footer.dart';
-import 'package:footer/footer_view.dart';
 import 'package:wine/inquiry/manual_inquiry.dart';
 import 'package:wine/model/wine.dart';
-import 'package:wine/map/inquiry_map.dart';
 
 final List<String> imgList = [];
 
@@ -153,48 +150,84 @@ class WineDetail extends StatefulWidget {
 class _WineDetailState extends State<WineDetail> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: new FooterView(
-        children: <Widget>[
-          SafeArea(child: Container(
-              height: MediaQuery.of(context).size.height / 10 * 2,
-              child: Wrap(
-                children: <Widget>[
-                  Container(
-                      child: IconButton(
-                        icon: Icon(Icons.arrow_back, color: Colors.grey),
-                        onPressed: () => Navigator.of(context).pop(),
-                      )
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back, color: Colors.grey),
+                  onPressed: () => Navigator.of(context).pop(),
+            )),
+            Container(
+                height: (MediaQuery.of(context).size.height / 10) * 4,
+                child: FullscreenSliderDemo(wineItem: widget.wineItem)),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: 15,
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(widget.wineItem!.wineCompany!,
+                          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18)
+                      ),
+                      SizedBox(
+                        height: 2,
+                      ),
+                      Text(widget.wineItem!.wineName!,
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      RichText(
+                        text: TextSpan(
+                            text: widget.wineItem!.wineType!,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, color: Colors.black, fontSize: 15),
+                            children: [
+                              TextSpan(
+                                  text: " From ",
+                                  style: TextStyle(fontWeight: FontWeight.normal)
+                              ),
+                              TextSpan(
+                                text: widget.wineItem!.wineRegion!,
+                              ),
+                              TextSpan(
+                                text: " · ",
+                              ),
+                              TextSpan(
+                                text: widget.wineItem!.wineCountry!,
+                              ),
+                            ]
+                        ),
+                      ),
+                    ],
                   ),
-                  Container(
-                      height: MediaQuery.of(context).size.height / 10 * 4,
-                      child: FullscreenSliderDemo(wineItem: widget.wineItem)),
-                  Container(
-                      height: MediaQuery.of(context).size.height / 10 * 4,
-                      child: Padding(
-                          padding: EdgeInsets.fromLTRB(15, 30, 0, 0),
-                          child: Text(widget.wineItem!.wineName!,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20))))
-                ],
-              )))
-        ],
-        footer: new Footer(
-          child: InkWell(
-            onTap: () {
-              // navigationBar.onTap(1);
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => ManualInquiry(wineItem : widget.wineItem)));
-            },
-            child: Center(
-                child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
-                    child: Text('와인샵에 문의하기',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15)))),
-          ),
+                )
+              ],
+            ),
+
+          ],
         ),
-        flex: 1, //default flex is 2
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.red[900],
+          child: Text("문의"),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    ManualInquiry(wineItem: widget.wineItem)));
+          },
+        ),
       ),
     );
   }
