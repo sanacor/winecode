@@ -77,8 +77,12 @@ Future<void> main() async {
     }
   });
 
-
-
+  // await FirebaseMessaging.instance
+  //     .setForegroundNotificationPresentationOptions(
+  //   alert: true,
+  //   badge: true,
+  //   sound: true,
+  // );
 
   /// Create an Android Notification Channel.
   ///
@@ -95,6 +99,18 @@ Future<void> main() async {
       .setForegroundNotificationPresentationOptions(
     alert: true,
     badge: true,
+    sound: true,
+  );
+
+  // FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
     sound: true,
   );
 
@@ -269,6 +285,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     // {
     //   print("Settings registered: $settings");
     // });
+
   }
 
   @override
