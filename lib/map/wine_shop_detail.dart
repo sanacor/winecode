@@ -17,41 +17,40 @@ class _WineShopDetailState extends State<WineShopDetail> {
   @override
   Widget build(BuildContext context) {
 
-    return SafeArea(
-        child: Scaffold(
-          body: Center(
-            child: Column(
-              children: [
-                Container(
-                    alignment: Alignment.bottomLeft,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.black),
-                      onPressed: () => Navigator.of(context).pop(),
-                    )
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20),
-                  alignment: Alignment.bottomLeft,
-                  child: RichText(
-                    text: TextSpan(
-                      text: widget.wineShopItem!.retail_name!,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
-                    ),
-                  ),
-                  height: MediaQuery.of(context).size.height / 25,
-                ),
-                SizedBox(height: 30),
-                Expanded(
-                    child: ListView(
-                      physics: BouncingScrollPhysics(),
-                      children: LoadSettingTile(context),
-                    )
-                ),
-              ],
+    return Scaffold(
+      body: Center(
+        child: Column(
+          children: [
+            SizedBox(height: 40),
+            Container(
+                alignment: Alignment.bottomLeft,
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back, color: Colors.black),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
             ),
-          ),
-      )
+            Container(
+              padding: const EdgeInsets.only(left: 20),
+              alignment: Alignment.center,
+              child: RichText(
+                text: TextSpan(
+                  text: widget.wineShopItem!.retail_name!,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black, fontSize: 25),
+                ),
+              ),
+              height: MediaQuery.of(context).size.height / 25,
+            ),
+            SizedBox(height: 30),
+            Expanded(
+                child: ListView(
+                  physics: BouncingScrollPhysics(),
+                  children: LoadSettingTile(context),
+                )
+            ),
+          ],
+        ),
+      ),
     );
   }
 
