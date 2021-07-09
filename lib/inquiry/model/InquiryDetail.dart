@@ -22,7 +22,7 @@ class _InquiryDetailState extends State<InquiryDetail> {
             Container(
                 alignment: Alignment.bottomLeft,
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.grey),
+                  icon: Icon(Icons.arrow_back, color: Colors.black),
                   onPressed: () => Navigator.of(context).pop(),
                 )
             ),

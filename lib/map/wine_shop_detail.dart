@@ -25,7 +25,7 @@ class _WineShopDetailState extends State<WineShopDetail> {
                 Container(
                     alignment: Alignment.bottomLeft,
                     child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.grey),
+                      icon: Icon(Icons.arrow_back, color: Colors.black),
                       onPressed: () => Navigator.of(context).pop(),
                     )
                 ),

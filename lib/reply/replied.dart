@@ -37,7 +37,7 @@ class Replied extends StatelessWidget {
                       Container(
                           alignment: Alignment.bottomLeft,
                           child: IconButton(
-                            icon: Icon(Icons.arrow_back, color: Colors.grey),
+                            icon: Icon(Icons.arrow_back, color: Colors.black),
                             onPressed: () => Navigator.of(context).pop(),
                           )),
                       Container(
