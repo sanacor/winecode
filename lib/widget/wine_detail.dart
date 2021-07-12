@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/rendering.dart';
 import 'package:wine/inquiry/manual_inquiry.dart';
 import 'package:wine/model/wine.dart';
 
@@ -147,101 +148,272 @@ class WineDetail extends StatefulWidget {
   _WineDetailState createState() => _WineDetailState();
 }
 
-class _WineDetailState extends State<WineDetail> {
+class _WineDetailState extends State<WineDetail>
+    with SingleTickerProviderStateMixin {
+  ScrollController? _scrollController;
+  AnimationController? _hideFabAnimController;
+
+  @override
+  void dispose() {
+    _scrollController!.dispose();
+    _hideFabAnimController!.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _hideFabAnimController = AnimationController(
+      vsync: this,
+      duration: kThemeAnimationDuration,
+      value: 1, // initially visible
+    );
+
+    _scrollController!.addListener(() {
+      switch (_scrollController!.position.userScrollDirection) {
+        // Scrolling up - forward the animation (value goes to 1)
+        case ScrollDirection.forward:
+          _hideFabAnimController!.forward();
+          break;
+        // Scrolling down - reverse the animation (value goes to 0)
+        case ScrollDirection.reverse:
+          _hideFabAnimController!.reverse();
+          break;
+        // Idle - keep FAB visibility unchanged
+        case ScrollDirection.idle:
+          break;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(height: 40),
-          Container(
-              child: IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.black),
-                onPressed: () => Navigator.of(context).pop(),
-              )),
-          Container(
-              height: (MediaQuery.of(context).size.height / 10) * 4,
-              child: FullscreenSliderDemo(wineItem: widget.wineItem)),
-          SizedBox(
-            height: 3,
-          ),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+        body: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(height: 40),
+            Container(
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back, color: Colors.black),
+                  onPressed: () => Navigator.of(context).pop(),
+                )),
+            Container(
+                height: (MediaQuery.of(context).size.height / 10) * 4,
+                child: FullscreenSliderDemo(wineItem: widget.wineItem)),
+            SizedBox(
+              height: 3,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text("Image from ", style: TextStyle(fontSize: 9)),
+              Text("VIVINO",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 9,
+                      color: Colors.red[900])),
+            ]),
+            SizedBox(
+              height: 15,
+            ),
+            Row(
               children: [
-                Text("Image from ",
-                    style: TextStyle(fontSize: 9)
+                SizedBox(
+                  width: 15,
                 ),
-                Text("VIVINO",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: Colors.red[900])
-                ),
-              ]
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 15,
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(widget.wineItem!.wineCompany!,
-                        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18)
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Text(widget.wineItem!.wineName!,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    RichText(
-                      text: TextSpan(
-                          text: widget.wineItem!.wineType!,
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(widget.wineItem!.wineCompany!,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 15),
-                          children: [
-                            TextSpan(
-                                text: " From ",
-                                style: TextStyle(fontWeight: FontWeight.normal)
-                            ),
-                            TextSpan(
-                              text: widget.wineItem!.wineRegion!,
-                            ),
-                            TextSpan(
-                              text: " · ",
-                            ),
-                            TextSpan(
-                              text: widget.wineItem!.wineCountry!,
-                            ),
-                          ]
+                              fontWeight: FontWeight.w400, fontSize: 18)),
+                      SizedBox(
+                        height: 2,
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                      Text(widget.wineItem!.wineName!,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24)),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      RichText(
+                        text: TextSpan(
+                            text: widget.wineItem!.wineType!,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: 15),
+                            children: [
+                              TextSpan(
+                                  text: " From ",
+                                  style:
+                                  TextStyle(fontWeight: FontWeight.normal)),
+                              TextSpan(
+                                text: widget.wineItem!.wineRegion!,
+                              ),
+                              TextSpan(
+                                text: " · ",
+                              ),
+                              TextSpan(
+                                text: widget.wineItem!.wineCountry!,
+                              ),
+                            ]),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 300),
+            SizedBox(height: 300),
+          ],
+        ),),
+        floatingActionButton: FadeTransition(
+          opacity: _hideFabAnimController!,
+          child: ScaleTransition(
+            scale: _hideFabAnimController!,
+            child: FloatingActionButton(
+              backgroundColor: Colors.red[900],
+              child: Text("문의"),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        ManualInquiry(wineItem: widget.wineItem)));
+              },
+            ),
           ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.red[900],
-        child: Text("문의"),
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  ManualInquiry(wineItem: widget.wineItem)));
-        },
-      ),
+        )
+
+      // floatingActionButton: Visibility(
+      //   child: FloatingActionButton(
+      //     backgroundColor: Colors.red[900],
+      //     child: Text("문의"),
+      //     onPressed: () {
+      //       Navigator.of(context).push(MaterialPageRoute(
+      //           builder: (context) =>
+      //               ManualInquiry(wineItem: widget.wineItem)));
+      //     },
+      //   ),
+      //   // visible: false,
+      //   visible: true,
+      // ),
 
     );
+    // return SingleChildScrollView(controller: _scrollController, child: Scaffold(
+    //     body: Column(
+    //       mainAxisAlignment: MainAxisAlignment.start,
+    //       crossAxisAlignment: CrossAxisAlignment.start,
+    //       children: <Widget>[
+    //         SizedBox(height: 40),
+    //         Container(
+    //             child: IconButton(
+    //               icon: Icon(Icons.arrow_back, color: Colors.black),
+    //               onPressed: () => Navigator.of(context).pop(),
+    //             )),
+    //         Container(
+    //             height: (MediaQuery.of(context).size.height / 10) * 4,
+    //             child: FullscreenSliderDemo(wineItem: widget.wineItem)),
+    //         SizedBox(
+    //           height: 3,
+    //         ),
+    //         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+    //           Text("Image from ", style: TextStyle(fontSize: 9)),
+    //           Text("VIVINO",
+    //               style: TextStyle(
+    //                   fontWeight: FontWeight.bold,
+    //                   fontSize: 9,
+    //                   color: Colors.red[900])),
+    //         ]),
+    //         SizedBox(
+    //           height: 15,
+    //         ),
+    //         Row(
+    //           children: [
+    //             SizedBox(
+    //               width: 15,
+    //             ),
+    //             Expanded(
+    //               child: Column(
+    //                 mainAxisAlignment: MainAxisAlignment.start,
+    //                 crossAxisAlignment: CrossAxisAlignment.start,
+    //                 children: [
+    //                   Text(widget.wineItem!.wineCompany!,
+    //                       style: TextStyle(
+    //                           fontWeight: FontWeight.w400, fontSize: 18)),
+    //                   SizedBox(
+    //                     height: 2,
+    //                   ),
+    //                   Text(widget.wineItem!.wineName!,
+    //                       style: TextStyle(
+    //                           fontWeight: FontWeight.bold, fontSize: 24)),
+    //                   SizedBox(
+    //                     height: 5,
+    //                   ),
+    //                   RichText(
+    //                     text: TextSpan(
+    //                         text: widget.wineItem!.wineType!,
+    //                         style: TextStyle(
+    //                             fontWeight: FontWeight.bold,
+    //                             color: Colors.black,
+    //                             fontSize: 15),
+    //                         children: [
+    //                           TextSpan(
+    //                               text: " From ",
+    //                               style:
+    //                               TextStyle(fontWeight: FontWeight.normal)),
+    //                           TextSpan(
+    //                             text: widget.wineItem!.wineRegion!,
+    //                           ),
+    //                           TextSpan(
+    //                             text: " · ",
+    //                           ),
+    //                           TextSpan(
+    //                             text: widget.wineItem!.wineCountry!,
+    //                           ),
+    //                         ]),
+    //                   ),
+    //                 ],
+    //               ),
+    //             )
+    //           ],
+    //         ),
+    //       ],
+    //     ),
+    //     floatingActionButton: FadeTransition(
+    //       opacity: _hideFabAnimController!,
+    //       child: ScaleTransition(
+    //         scale: _hideFabAnimController!,
+    //         child: FloatingActionButton(
+    //           backgroundColor: Colors.red[900],
+    //           child: Text("문의"),
+    //           onPressed: () {
+    //             Navigator.of(context).push(MaterialPageRoute(
+    //                 builder: (context) =>
+    //                     ManualInquiry(wineItem: widget.wineItem)));
+    //           },
+    //         ),
+    //       ),
+    //     )
+    //
+    //   // floatingActionButton: Visibility(
+    //   //   child: FloatingActionButton(
+    //   //     backgroundColor: Colors.red[900],
+    //   //     child: Text("문의"),
+    //   //     onPressed: () {
+    //   //       Navigator.of(context).push(MaterialPageRoute(
+    //   //           builder: (context) =>
+    //   //               ManualInquiry(wineItem: widget.wineItem)));
+    //   //     },
+    //   //   ),
+    //   //   // visible: false,
+    //   //   visible: true,
+    //   // ),
+    //
+    // ),);
   }
 }
