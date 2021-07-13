@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:wine/map/model/wine_shop.dart';
 import 'package:wine/map/wine_shop_detail.dart';
 import 'package:wine/util/http.dart';
+import 'package:wine/inquiry/model/InquiryTile.dart';
 
 class InquiryDetail extends StatefulWidget {
 
   final inqPdtName;
   final List<dynamic>? replyInfo;
+  final InquiryInfo? inquiryInfo;
 
-  const InquiryDetail({Key? key, this.inqPdtName, this.replyInfo}) : super(key: key);
+  const InquiryDetail({Key? key, this.inqPdtName, this.replyInfo, this.inquiryInfo}) : super(key: key);
 
   @override
   _InquiryDetailState createState() => _InquiryDetailState();
@@ -33,6 +35,7 @@ class _InquiryDetailState extends State<InquiryDetail> {
               child: Text(widget.inqPdtName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
             ),
             SizedBox(height: 20),
+            Container(child: Text(widget.inquiryInfo!.inqContents!),),
             Expanded(
               child: ListView.separated(
                 itemCount: widget.replyInfo!.length,

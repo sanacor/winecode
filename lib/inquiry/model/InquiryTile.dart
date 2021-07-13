@@ -20,7 +20,7 @@ class InquiryTile extends StatelessWidget {
       trailing: Text(_inquiryInfo!.getCnt()),
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => InquiryDetail(inqPdtName: _inquiryInfo!.inqPdtName, replyInfo: _inquiryInfo!.reply)));
+            builder: (context) => InquiryDetail(inqPdtName: _inquiryInfo!.inqPdtName, replyInfo: _inquiryInfo!.reply, inquiryInfo: _inquiryInfo,)));
       },
     );
   }
