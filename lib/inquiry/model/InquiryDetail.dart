@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wine/map/model/wine_shop.dart';
+import 'package:wine/map/wine_shop_detail.dart';
+import 'package:wine/util/http.dart';
 
 class InquiryDetail extends StatefulWidget {
 
@@ -60,7 +63,19 @@ class ReplyTile extends StatelessWidget {
       leading: Icon(Icons.storefront_outlined),
       title: Text(_reply['rlyRtlName']),
       subtitle: Text(_reply['rlyStatus'] == 'Waiting' ?  '답변을 기다리는 중' : _reply['rlyContents']),
+      onTap: () => pushShopDetail(context),
+      // onTap: pushShopDetail(context),
     );
+  }
+
+  pushShopDetail(context) async {
+    var response = await http_get(header: null, path: 'api/retail/${_reply['rlyRtlId']}');
+    var wineShopInfo = response['data'];
+
+    WineShop selectedWineShop = new WineShop.fromJson(wineShopInfo);
+
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => WineShopDetail(wineShopItem: selectedWineShop)));
   }
 }
 

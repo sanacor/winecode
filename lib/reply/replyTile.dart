@@ -17,7 +17,7 @@ class ReplyTile extends StatelessWidget {
         child: Image.network(_replyInfo!.reply!['inquiry']['inqImgUrl'], fit: BoxFit.fill),
       ),
       title: Text(_replyInfo!.reply!['inquiry']['inqPdtName']),
-      subtitle: Text("${_replyInfo!.reply!['reply']['rlyStatus']}"),
+      subtitle: Text("${getReplyStatus(_replyInfo!.reply!['reply']['rlyStatus'])}", style: getReplyStatusStyle(_replyInfo!.reply!['reply']['rlyStatus']),),
       // trailing: Text(_replyInfo.reply.toString()),
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
@@ -25,7 +25,36 @@ class ReplyTile extends StatelessWidget {
       },
     );
   }
+
+  getReplyStatus(status) {
+    Map statusMap = {
+      'Waiting': '답변 필요',
+      'Replied': '답변 완료'
+    };
+
+    try {
+      return statusMap[status];
+    }
+    catch(e) {
+      return '';
+    }
+  }
+
+  getReplyStatusStyle(status) {
+    Map statusMap = {
+      'Waiting': TextStyle(color:Colors.red[900]),
+      'Replied': TextStyle(color:Colors.green[900]),
+    };
+
+    try {
+      return statusMap[status];
+    }
+    catch(e) {
+      return TextStyle(color:Colors.black);
+    }
+  }
 }
+
 
 class ReplyInfo {
   Map<String, dynamic>? reply;
