@@ -111,7 +111,7 @@ class Replied extends StatelessWidget {
                       collapseText: '더안보기',
                       maxLines: 5,
                       textAlign: TextAlign.left,
-                      linkColor: Colors.blue,
+                      linkColor: Colors.red[900],
                     ),
                     // child: TextField(
                     //   // controller: inquiryController,
@@ -142,7 +142,7 @@ class Replied extends StatelessWidget {
                       expandText: '더보기',
                       collapseText: '더안보기',
                       maxLines: 20,
-                      linkColor: Colors.blue,
+                      linkColor: Colors.red[900],
                     ),
                     // child: TextField(
                     //   keyboardType: TextInputType.multiline,
