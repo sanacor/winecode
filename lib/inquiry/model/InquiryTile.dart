@@ -61,6 +61,8 @@ class InquiryInfo {
     });
     if(repliedCnt == 0)
       return "답변대기중";
+    else if(repliedCnt == totCnt)
+      return "답변완료";
     else
       return repliedCnt.toString() + "/" + totCnt.toString();
   }
