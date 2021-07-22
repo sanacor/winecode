@@ -52,7 +52,11 @@ Future<dynamic> http_get({header, String? path}) async {
       } else if (responseCode == -9997) {
         //TODO 만료된 Refresh Token(아예 로그아웃 처리)
         return responseJson;
-      } else {
+      } else if (responseCode == -1008) {
+        //쿼리 결과가 없는 경우
+        return responseJson;
+      }
+      else {
         throw Exception('Failed to HTTP GET(2)');
       }
     }

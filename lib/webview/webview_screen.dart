@@ -38,6 +38,7 @@ class WebViewExampleState extends State<WebViewScreen> {
         body: SafeArea(
           child: WebView(
             initialUrl: widget.webUrl,
+            javascriptMode: JavascriptMode.unrestricted,
           ),
         ),
       ),
