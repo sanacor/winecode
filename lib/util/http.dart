@@ -187,3 +187,13 @@ Future<dynamic> http_delete(url, path, header) async {
 
   print(BACK_END_HOST + path);
 }
+
+Future<List<String>?> getUserRoles() async {
+  var response = await http_get(header: null, path: 'api/user');
+
+  print(response);
+
+  final res = (response['data']['user']['roles'] as List)?.map((e) => e as String)?.toList();
+
+  return res;
+}

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/rendering.dart';
@@ -158,6 +159,8 @@ class _WineDetailState extends State<WineDetail>
 
   List<Widget> reviewList = [];
 
+  bool isCreator = false;
+
   @override
   void dispose() {
     _scrollController!.dispose();
@@ -193,7 +196,18 @@ class _WineDetailState extends State<WineDetail>
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getReviewList();
+      _checkUserRole();
     });
+  }
+
+  void _checkUserRole() async {
+    List<String>? roles = await getUserRoles();
+
+    if(roles!.contains("ROLE_CREATOR")) {
+      setState(() {
+        isCreator = true;
+      });
+    }
   }
   
   ImageProvider<Object> _getSNSIcon(String sns) {
@@ -329,7 +343,7 @@ class _WineDetailState extends State<WineDetail>
                 ],
               ),
               SizedBox(
-                height: 15,
+                height: 30,
               ),
               Padding(
                 padding: EdgeInsets.only(left: 15),
@@ -337,9 +351,34 @@ class _WineDetailState extends State<WineDetail>
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("와인 크리에이터 리뷰",
-                        style: TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text("와인 크리에이터 리뷰",
+                            style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)
+                          ),
+                        ),
+                        isCreator == true ?
+                        RichText(
+                            text: TextSpan(
+                                text:"나의 리뷰 등록",
+                                style: TextStyle(
+                                  //decoration: TextDecoration.underline,
+                                  //decorationColor: Colors.blue,
+                                  color: Colors.black,
+                                ),
+                                recognizer: TapGestureRecognizer()..onTap = () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          WebViewScreen(webTitle : "개인정보처리방침",
+                                              webUrl: "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/privacy.html"))
+                                  );
+                            },
+                          )
+                        ) : Text(""),
+                        SizedBox(width: 10),
+                      ]
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
