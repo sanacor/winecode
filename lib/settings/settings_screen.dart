@@ -184,7 +184,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     setState(() {
       thumbnailImgUrl = response['data']['profile']['uspImage'];
-      userName = response['data']['user']['name'];
+      userName = response['data']['profile']['uspNickname'];
     });
   }
 }
