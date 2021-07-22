@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wine/image/image_upload.dart';
 import 'package:wine/map/inquiry_map.dart';
+import 'package:wine/model/review.dart';
 import 'package:wine/model/wine.dart';
 import 'package:wine/util/http.dart';
 
@@ -17,13 +18,15 @@ class ReviewRegister extends StatefulWidget {
 }
 
 class _ReviewRegisterState extends State<ReviewRegister> {
-  final wineNameController = TextEditingController();
-
-  var inquiryContentsController = TextEditingController();
+  final prvUrlController = TextEditingController();
+  final prvTitleController = TextEditingController();
 
   String? reviewAuthor = "";
   final List<String> _mediaList = ['YOUTUBE', 'INSTAGRAM', 'NAVER'];
   String _selectedMedia = 'NAVER';
+
+  final List<String> _recommendList = ['네', '아니요'];
+  String _selectedRecommend = '네';
 
   @override
   void initState() {
@@ -39,9 +42,18 @@ class _ReviewRegisterState extends State<ReviewRegister> {
   }
 
   Future<void> _registerReview() async {
+    var review = Review(
+      prvPdtId: this.widget.wineItem!.wineId,
+      prvMedia: _selectedMedia,
+      prvUrl: prvUrlController.value.toString(),
+      prvAuthor: reviewAuthor,
+      prvTitle: prvTitleController.value.toString(),
+      prvRecommend: _selectedRecommend == "네" ? 'Y' : 'N'
+    );
+
     var response = await http_post(
         header: null,
-        path: 'api/creator/review' /*, body: wineInquiry.toJson()*/);
+        path: 'api/creator/review', body: review.toJson());
 
     if (response['success'] == true) {
       final snackBar = SnackBar(content: Text("리뷰등록 완료!"));
@@ -149,6 +161,11 @@ class _ReviewRegisterState extends State<ReviewRegister> {
                               TextSpan(
                                 text: widget.wineItem!.wineCountry!,
                               ),
+                              TextSpan(
+                                text: " 에 대한 리뷰 등록",
+                                style:
+                                  TextStyle(fontWeight: FontWeight.normal)
+                              ),
                             ]),
                       ),
                     ],
@@ -157,7 +174,7 @@ class _ReviewRegisterState extends State<ReviewRegister> {
               ],
             ),
             Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
+              padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
               child: const Divider(
                 height: 20,
                 thickness: 1,
@@ -168,26 +185,19 @@ class _ReviewRegisterState extends State<ReviewRegister> {
             Row(
               children: [
                 SizedBox(width: 20),
-                Text("리뷰작성자 " + reviewAuthor!,
+                Text("리뷰작성자   " + reviewAuthor!,
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
               ],
             ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: const Divider(
-                height: 20,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-              ),
-            ),
+            SizedBox(height: 10),
             Row(
               children: [
                 SizedBox(width: 20),
                 Text("SNS 선택 ",
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                SizedBox(width: 20),
                 DropdownButton(
                   value: _selectedMedia,
                   items: _mediaList.map((value) {
@@ -210,15 +220,6 @@ class _ReviewRegisterState extends State<ReviewRegister> {
                 )
               ],
             ),
-            Container(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: const Divider(
-                height: 20,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-              ),
-            ),
             Row(
               children: [
                 SizedBox(width: 20),
@@ -228,11 +229,11 @@ class _ReviewRegisterState extends State<ReviewRegister> {
                 ),
                 Expanded(
                   child: TextField(
-                    controller: wineNameController,
+                    controller: prvUrlController,
                     obscureText: false,
                     decoration: InputDecoration(
                       // border: OutlineInputBorder(),
-                      hintText: '리뷰를 보여줄 수 있는 URL을 입력해주세요 : )',
+                      hintText: '리뷰를 볼 수 있는 URL을 입력해주세요 : )',
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey[300]!),
                       ),
@@ -241,6 +242,54 @@ class _ReviewRegisterState extends State<ReviewRegister> {
                       ),
                     ),
                   ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                SizedBox(width: 20),
+                Text("코멘트 ",
+                    style:
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 15)
+                ),
+                Expanded(
+                  child: TextField(
+                    controller: prvTitleController,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // border: OutlineInputBorder(),
+                      hintText: '사용자들에게 보여줄 내용을 적어주세요 : )',
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey[300]!),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey[300]!),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                SizedBox(width: 20),
+                Text("이 와인을 추천하시나요?",
+                    style:
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                SizedBox(width: 20),
+                DropdownButton(
+                  value: _selectedRecommend,
+                  items: _recommendList.map((value) {
+                    return DropdownMenuItem(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedRecommend = value.toString();
+                    });
+                  },
                 ),
               ],
             ),
