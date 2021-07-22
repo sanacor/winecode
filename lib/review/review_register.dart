@@ -21,13 +21,27 @@ class _ReviewRegisterState extends State<ReviewRegister> {
 
   var inquiryContentsController = TextEditingController();
 
+  String? reviewAuthor = "";
+  final List<String> _mediaList = ['YOUTUBE', 'INSTAGRAM', 'NAVER'];
+  String _selectedMedia = 'NAVER';
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _gerUserNickName();
+    });
+  }
+
+  Future<void> _gerUserNickName() async {
+    reviewAuthor = await getNickname();
+    setState(() {});
   }
 
   Future<void> _registerReview() async {
-    var response = await http_post(header: null, path: 'api/creator/review'/*, body: wineInquiry.toJson()*/);
+    var response = await http_post(
+        header: null,
+        path: 'api/creator/review' /*, body: wineInquiry.toJson()*/);
 
     if (response['success'] == true) {
       final snackBar = SnackBar(content: Text("리뷰등록 완료!"));
@@ -41,7 +55,7 @@ class _ReviewRegisterState extends State<ReviewRegister> {
 
   @override
   Widget build(BuildContext context) {
-    if(widget.wineItem!.wineName != "") {
+    if (widget.wineItem!.wineName != "") {
       wineNameController.text =
           widget.wineItem!.wineCompany! + " " + widget.wineItem!.wineName!;
     }
@@ -58,17 +72,15 @@ class _ReviewRegisterState extends State<ReviewRegister> {
                     child: IconButton(
                       icon: Icon(Icons.arrow_back, color: Colors.black),
                       onPressed: () => Navigator.of(context).pop(),
-                    )
-                ),
+                    )),
                 Container(
                     padding: EdgeInsets.only(top: 15),
                     alignment: Alignment.topCenter,
                     child: Text(
                       '와인 리뷰 정보 등록',
                       style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    )
-                ),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    )),
                 GestureDetector(
                     onTap: () => _registerReview(),
                     child: new Container(
@@ -77,13 +89,14 @@ class _ReviewRegisterState extends State<ReviewRegister> {
                         child: Text(
                           '등록',
                           // style: TextStyle(fontSize: 17),
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color:Colors.red[900]),
-                        )
-                    )
-                )
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red[900]),
+                        )))
               ],
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 40),
             Row(
               children: [
                 SizedBox(
@@ -117,7 +130,7 @@ class _ReviewRegisterState extends State<ReviewRegister> {
                               TextSpan(
                                   text: " From ",
                                   style:
-                                  TextStyle(fontWeight: FontWeight.normal)),
+                                      TextStyle(fontWeight: FontWeight.normal)),
                               TextSpan(
                                 text: widget.wineItem!.wineRegion!,
                               ),
@@ -134,67 +147,73 @@ class _ReviewRegisterState extends State<ReviewRegister> {
                 )
               ],
             ),
-
             Container(
               padding: EdgeInsets.only(left: 15, right: 15),
-              child:
-              const Divider(
+              child: const Divider(
                 height: 20,
                 thickness: 1,
                 indent: 0,
                 endIndent: 0,
               ),
             ),
-
+            Row(
+              children: [
+                SizedBox(width: 20),
+                Text("작성자 " + reviewAuthor!,
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+              ],
+            ),
             Container(
               padding: EdgeInsets.only(left: 15, right: 15),
-              child: TextField(
-                controller: wineNameController,
-                obscureText: false,
-                decoration: InputDecoration(
-                  // border: OutlineInputBorder(),
-                  hintText: '와인 이름을 입력해주세요:)',
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey[300]!),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey[300]!),
-                  ),
-                ),
+              child: const Divider(
+                height: 20,
+                thickness: 1,
+                indent: 0,
+                endIndent: 0,
               ),
             ),
-
-          Container(
-            padding: EdgeInsets.only(left: 15, right: 15),
-            child:
-            const Divider(
-              height: 20,
-              thickness: 1,
-              indent: 0,
-              endIndent: 0,
+            Row(
+              children: [
+                SizedBox(width: 20),
+                Text("SNS 선택 ",
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                DropdownButton(
+                  value: _selectedMedia,
+                  items: _mediaList.map((value) {
+                    return DropdownMenuItem(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedMedia = value.toString();
+                    });
+                  },
+                ),
+              ],
             ),
-          ),
-          Container(
-            height: 100,
-            padding: EdgeInsets.only(left: 15, right: 15),
-            child: TextField(
-              controller: inquiryContentsController,
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              obscureText: false,
-              decoration: InputDecoration(
-                // border: OutlineInputBorder(),
-                hintText: '문의하실 내용을 입력해주세요:)',
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0x00000000)),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0x00000000)),
-                ),
+            Container(
+              padding: EdgeInsets.only(left: 15, right: 15),
+              child: const Divider(
+                height: 20,
+                thickness: 1,
+                indent: 0,
+                endIndent: 0,
               ),
             ),
-          ),
-        ],
+            Row(
+              children: [
+                SizedBox(width: 20),
+                Text("URL ",
+                    style:
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 15)
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

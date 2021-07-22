@@ -197,3 +197,11 @@ Future<List<String>?> getUserRoles() async {
 
   return res;
 }
+
+Future<String?> getNickname() async {
+  var response = await http_get(header: null, path: 'api/user');
+
+  print(response['data']['profile']['uspNickname']);
+
+  return response['data']['profile']['uspNickname'];
+}
