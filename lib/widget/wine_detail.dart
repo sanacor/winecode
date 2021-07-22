@@ -4,9 +4,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/rendering.dart';
 import 'package:wine/inquiry/manual_inquiry.dart';
 import 'package:wine/model/wine.dart';
+import 'package:wine/review/review_register.dart';
 import 'package:wine/util/http.dart';
 import 'package:wine/webview/webview_screen.dart';
-import 'package:wine/widget/model/review.dart';
+import '../model/review.dart';
 
 final List<String> imgList = [];
 
@@ -223,11 +224,11 @@ class _WineDetailState extends State<WineDetail>
     }
   }
 
-  void _viewReview(BuildContext context, Map review) {
+  void _viewReview(BuildContext context, Review review) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) =>
-            WebViewScreen(webTitle : review['prvAuthor'] + " - " + review['prvTitle'],
-                webUrl: review['prvUrl']))
+            WebViewScreen(webTitle : review.prvAuthor! + " - " + review.prvTitle!,
+                webUrl: review.prvUrl!))
     );
   }
 
@@ -239,18 +240,19 @@ class _WineDetailState extends State<WineDetail>
     if(response['code'] == 0) { //쿼리 결과가 있는 경우에만 수행
       List responseJson = response['list'];
       var responseList = responseJson;
-      for (Map review in responseList) {
+      for (var reviewJson in responseList) {
+        Review review = new Review.fromJson(reviewJson);
         setState(() {
           reviewList.add(
               new ListTile(
                 leading: CircleAvatar(
-                  backgroundImage: _getSNSIcon(review['prvMedia']),
+                  backgroundImage: _getSNSIcon(review.prvMedia!),
                   // no matter how big it is, it won't overflow
                   backgroundColor: Colors.white,
                 ),
-                title: Text(review['prvTitle']),
-                subtitle: Text(review['prvAuthor']),
-                trailing: review['prvRecommend'] == "Y" ? Text("추천") : Text(""),
+                title: Text(review.prvTitle!),
+                subtitle: Text(review.prvAuthor!),
+                trailing: review.prvRecommend! == "Y" ? Text("추천") : Text(""),
                 onTap: () => _viewReview(context, review),
               )
           );
@@ -371,8 +373,7 @@ class _WineDetailState extends State<WineDetail>
                                 recognizer: TapGestureRecognizer()..onTap = () {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) =>
-                                          WebViewScreen(webTitle : "개인정보처리방침",
-                                              webUrl: "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/privacy.html"))
+                                          ReviewRegister(wineItem: this.widget.wineItem))
                                   );
                             },
                           )
