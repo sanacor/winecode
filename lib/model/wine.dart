@@ -2,6 +2,7 @@ import 'package:wine/util/http.dart';
 
 
 class Wine {
+  int? wineId;
   String? wineName;
   String? inqContents;
   String? wineImageURL;
@@ -10,10 +11,11 @@ class Wine {
   String? wineCountry;
   String? wineRegion;
 
-  Wine({this.wineName ="", this.wineImageURL="", this.wineCompany="", this.wineType="", this.wineCountry="", this.wineRegion=""});
+  Wine({this.wineId=0,this.wineName ="", this.wineImageURL="", this.wineCompany="", this.wineType="", this.wineCountry="", this.wineRegion=""});
 
   factory Wine.fromJson(Map<String, dynamic> json) {
-    return Wine(wineName: json['wineName'],
+    return Wine(wineId: json['wineId'],
+        wineName: json['wineName'],
         wineImageURL: json['wineImage'],
         wineCompany : json['wineCompany'],
         wineType : json['wineType'],

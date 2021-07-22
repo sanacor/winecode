@@ -18,13 +18,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String thumbnailImgUrl = 'http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/image/view/53';//비어있는 유저 사진
   String userName = 'User';
   String _kakao_talk_open_chat_url = 'https://open.kakao.com/o/sSYaf0ld';
+  bool isRetailer = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getUserInfo();
+      _checkUserRole();
     });
+  }
+
+  void _checkUserRole() async {
+    List<String>? roles = await getUserRoles();
+
+    if(roles!.contains("ROLE_RETAILER")) {
+      setState(() {
+        isRetailer = true;
+      });
+    }
   }
 
   @override
@@ -39,12 +51,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     alignment: Alignment.bottomLeft,
                     child: RichText(
                       text: TextSpan(
-                      text: '설정',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+                        text: '설정',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
                       ),
                     ),
-                  height: MediaQuery.of(context).size.height / 25,
+                    height: MediaQuery.of(context).size.height / 25,
                   ),
                   SizedBox(height: 15),
                   SizedBox(
@@ -71,11 +83,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   Expanded(
                       child: ListView(
-                    physics: BouncingScrollPhysics(),
-                    children: LoadSettingTile(context),
-                  )
-                  )
-    ])));
+                        physics: BouncingScrollPhysics(),
+                        children: LoadSettingTile(context),
+                      )
+                  ),
+                  ListTile(
+                      leading: Icon(Icons.add_business_outlined),
+                      title: Text('사장님 메뉴'),
+                      onTap: () => _storeOwner(context))
+                ])));
   }
 
   List<Widget> LoadSettingTile(BuildContext context) {
@@ -111,25 +127,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ));
      */
     widgetList.add(ListTile(
-      leading: Icon(Icons.add_business_outlined),
-      title: Text('사장님 메뉴'),
-      onTap: () => _storeOwner(context),
-    ));
-    widgetList.add(ListTile(
       leading: Icon(Icons.batch_prediction),
       title: Text('Wine-Fi에 연락하기'),
       onTap: () => _helpCallback(context),
     ));
-    /*
-    widgetList.add(ListTile(
-      leading: Icon(Icons.add_business_outlined),
-      title: Text('이미지 업로드'),
-      onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => ImageUploadScreen()));
-      },
-    ));
-     */
     widgetList.add(ListTile(
       leading: Icon(Icons.logout),
       title: Text('로그아웃'),
@@ -155,11 +156,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(title: Text("Wine-Fi에 연락하기"), content: GestureDetector(
-          onTap: (){
-          print("Container clicked");
-          _launchKakaoTalkOpenChat();
-          },
-          child: Text("카카오톡 1:1 오픈 채팅방 연결")));
+              onTap: (){
+                print("Container clicked");
+                _launchKakaoTalkOpenChat();
+              },
+              child: Text("카카오톡 1:1 오픈 채팅방 연결")));
         });
   }
 
@@ -184,7 +185,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     setState(() {
       thumbnailImgUrl = response['data']['profile']['uspImage'];
-      userName = response['data']['user']['name'];
+      userName = response['data']['profile']['uspNickname'];
     });
   }
 }
