@@ -61,69 +61,20 @@ class _ReplyScreenState extends State<ReplyScreen> {
         ),
         // SizedBox(height: MediaQuery.of(context).size.height / 25),
         Container(
-          child: TextField(
-            onChanged: (value) => _runFilter(value),
-            decoration: InputDecoration(
-                labelText: '문의 내용 검색', suffixIcon: Icon(Icons.search)),
+          child: Theme(
+            data: new ThemeData(
+              primaryColor: Colors.red[900]!,
+              primaryColorDark: Colors.red[900]!,
+            ),
+            child: TextField(
+              onChanged: (value) => _runFilter(value),
+              decoration: InputDecoration(
+                  labelText: '문의 내용 검색', suffixIcon: Icon(Icons.search)),
+            ),
           ),
           padding: const EdgeInsets.all(20),
         ),
         Expanded(child: ReplyPage(searchKeyword: _searchKeyword))
-      ]))),
-    );
-    throw UnimplementedError();
-  }
-}
-
-class ReplyScreen2 extends StatelessWidget {
-  // This function is called whenever the text field changes
-  void _runFilter(String enteredKeyword) {
-    List<Map<String, dynamic>> results = [];
-    if (enteredKeyword.isEmpty) {
-// if the search field is empty or only contains white-space, we'll display all users
-//       results = _allUsers;
-      results = [];
-    } else {
-      // results = _allUsers
-      results
-          .where((user) =>
-              user["name"].toLowerCase().contains(enteredKeyword.toLowerCase()))
-          .toList();
-// we use the toLowerCase() method to make it case-insensitive
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Center(
-              child: Column(children: <Widget>[
-        Container(height: Platform.isAndroid ? 10 : 1),
-        Container(
-          padding: const EdgeInsets.only(left: 20),
-          alignment: Alignment.bottomLeft,
-          child: RichText(
-            text: TextSpan(
-              text: '답변 하기',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 20),
-            ),
-          ),
-          height: MediaQuery.of(context).size.height / 25,
-        ),
-        // SizedBox(height: MediaQuery.of(context).size.height / 25),
-        Container(
-          child: TextField(
-            onChanged: (value) => _runFilter(value),
-            decoration: InputDecoration(
-                labelText: '문의 내용 검색', suffixIcon: Icon(Icons.search)),
-          ),
-          padding: const EdgeInsets.all(20),
-        ),
-        Expanded(child: ReplyPage())
       ]))),
     );
     throw UnimplementedError();

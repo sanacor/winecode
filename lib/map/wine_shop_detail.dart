@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wine/map/model/wine_shop.dart';
+import 'package:wine/model/wine.dart';
+import 'package:wine/util/http.dart';
 import 'dart:io' show Platform;
 
 class WineShopDetail extends StatefulWidget {
@@ -70,7 +72,7 @@ class _WineShopDetailState extends State<WineShopDetail> {
                       " 입니다."
                   : widget.wineShopItem!.retail_exp!),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 20),
             Container(
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.only(left: 20),
@@ -80,49 +82,85 @@ class _WineShopDetailState extends State<WineShopDetail> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
-                            fontSize: 20))))
-            
+                            fontSize: 20)))),
+            ShopWineList(widget.wineShopItem!.retail_id!)
           ],
         ),
       ),
     );
   }
+}
 
-  List<Widget> LoadSettingTile(BuildContext context) {
-    List<ListTile> widgetList = [];
-    widgetList.add(ListTile(
-      leading: Icon(Icons.call),
-      title: Text("전화번호"),
-      subtitle: Text(widget.wineShopItem!.retail_phone!),
-      onTap: () => {launch("tel://" + widget.wineShopItem!.retail_phone!)},
-    ));
-    widgetList.add(ListTile(
-      leading: Icon(Icons.place),
-      title: Text("주소"),
-      subtitle: Text(widget.wineShopItem!.retail_address!),
-    ));
-    widgetList.add(ListTile(
-      leading: Icon(Icons.schedule),
-      title: Text("영업시간"),
-      subtitle: Text(widget.wineShopItem!.retail_bhours! == ""
-          ? "영업시간 정보없음"
-          : widget.wineShopItem!.retail_bhours!),
-    ));
-    widgetList.add(ListTile(
-      leading: Icon(Icons.description),
-      title: Text("가게 소개"),
-      subtitle: Text(widget.wineShopItem!.retail_exp! == ""
-          ? widget.wineShopItem!.retail_address! +
-              "에 위치한 " +
-              widget.wineShopItem!.retail_name! +
-              " 입니다."
-          : widget.wineShopItem!.retail_exp!),
-    ));
-    widgetList.add(ListTile(
-      leading: Icon(Icons.local_offer),
-      title: Text('할인 정보'),
-    ));
+class ShopWineList extends StatefulWidget {
+  ShopWineList(this._shopId);
 
-    return widgetList;
+  var _shopId;
+
+  @override
+  _ShopWineListState createState() => _ShopWineListState();
+}
+
+class _ShopWineListState extends State<ShopWineList> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: FutureBuilder(
+            initialData: [],
+            future: _fetchShopWineList(),
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData) {
+                return Expanded(
+                    child: ListView.separated(
+                    padding: const EdgeInsets.only(top: 10),
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Image.network(
+                            snapshot.data![index].wineImageURL!,
+                            fit: BoxFit.fill),
+                      ),
+
+                      title: Text('${snapshot.data![index].wineCompany}' +
+                          " " +
+                          '${snapshot.data![index].wineName}'),
+                      isThreeLine: false,
+                      subtitle: Text(snapshot.data![index].wineRegion == null ||
+                              snapshot.data![index].wineCountry == null
+                          ? '검색 결과에 와인이 없는 경우 여기 ✋'
+                          : '${snapshot.data![index].wineRegion}' +
+                              " in " +
+                              '${snapshot.data![index].wineCountry}'),
+                      // Text('${snapshot.data![index].wineRegion}' + " in " + '${snapshot.data![index].wineCountry}'),
+                      // onTap: () {
+                      //   Navigator.of(context).push(MaterialPageRoute(
+                      //       builder: (context) => (index == snapshot.data!.length - 1) || (index == 0) ?  ManualInquiry(wineItem: Wine()) : WineDetail(
+                      //           wineItem: snapshot.data![index])));
+                      // },
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return const Divider(thickness: 1);
+                  },
+                ));
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(
+                      valueColor:
+                          new AlwaysStoppedAnimation<Color>(Colors.red[900]!)),
+                );
+              }
+            }));
+  }
+
+  Future<List<dynamic>> _fetchShopWineList() async {
+    print("[fetchInquiryData] started fetch Inquiry data http request");
+    var response = await http_get(
+        header: null, path: 'api/retail/${widget._shopId}/product_list');
+    List responseJson = response['list'];
+
+    return responseJson.map((post) => new Wine.fromJson(post)).toList();
   }
 }
