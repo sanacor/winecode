@@ -53,12 +53,21 @@ class _ReviewRegisterState extends State<ReviewRegister> {
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
+  ImageProvider<Object> _getSNSIcon(String sns) {
+    switch(sns) {
+      case 'YOUTUBE':
+        return AssetImage("images/icon/youtube_icon.png");
+      case 'NAVER':
+        return AssetImage("images/icon/naver_icon.png");
+      case 'INSTAGRAM':
+        return AssetImage("images/icon/instagram_icon.png");
+      default:
+        return AssetImage("images/icon/youtube_icon.png");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (widget.wineItem!.wineName != "") {
-      wineNameController.text =
-          widget.wineItem!.wineCompany! + " " + widget.wineItem!.wineName!;
-    }
     // return Container(color: Colors.red,);
     return Scaffold(
       body: SafeArea(
@@ -159,7 +168,7 @@ class _ReviewRegisterState extends State<ReviewRegister> {
             Row(
               children: [
                 SizedBox(width: 20),
-                Text("작성자 " + reviewAuthor!,
+                Text("리뷰작성자 " + reviewAuthor!,
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
               ],
@@ -193,6 +202,12 @@ class _ReviewRegisterState extends State<ReviewRegister> {
                     });
                   },
                 ),
+                SizedBox(width: 20),
+                CircleAvatar(
+                  backgroundImage: _getSNSIcon(_selectedMedia),
+                  // no matter how big it is, it won't overflow
+                  backgroundColor: Colors.white,
+                )
               ],
             ),
             Container(
@@ -210,6 +225,22 @@ class _ReviewRegisterState extends State<ReviewRegister> {
                 Text("URL ",
                     style:
                     TextStyle(fontWeight: FontWeight.bold, fontSize: 15)
+                ),
+                Expanded(
+                  child: TextField(
+                    controller: wineNameController,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      // border: OutlineInputBorder(),
+                      hintText: '리뷰를 보여줄 수 있는 URL을 입력해주세요 : )',
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey[300]!),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey[300]!),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
