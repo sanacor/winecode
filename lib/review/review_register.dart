@@ -45,15 +45,15 @@ class _ReviewRegisterState extends State<ReviewRegister> {
     var review = Review(
       prvPdtId: this.widget.wineItem!.wineId,
       prvMedia: _selectedMedia,
-      prvUrl: prvUrlController.value.toString(),
+      prvUrl: prvUrlController.value.text,
       prvAuthor: reviewAuthor,
-      prvTitle: prvTitleController.value.toString(),
+      prvTitle: prvTitleController.value.text,
       prvRecommend: _selectedRecommend == "네" ? 'Y' : 'N'
     );
 
     var response = await http_post(
         header: null,
-        path: 'api/creator/review', body: review.toJson());
+        path: 'api/creator/review/' + this.widget.wineItem!.wineId.toString(), body: review.toJson());
 
     if (response['success'] == true) {
       final snackBar = SnackBar(content: Text("리뷰등록 완료!"));
