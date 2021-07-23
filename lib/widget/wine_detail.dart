@@ -251,7 +251,7 @@ class _WineDetailState extends State<WineDetail>
                   backgroundColor: Colors.white,
                 ),
                 title: Text(review.prvTitle!),
-                subtitle: Text(review.prvAuthor!),
+                subtitle: Text('by ' + review.prvAuthor!),
                 trailing: review.prvRecommend! == "Y" ? Text("추천") : Text(""),
                 onTap: () => _viewReview(context, review),
               )
