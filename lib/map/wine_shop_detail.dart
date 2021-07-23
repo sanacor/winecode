@@ -83,7 +83,9 @@ class _WineShopDetailState extends State<WineShopDetail> {
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                             fontSize: 20)))),
-            ShopWineList(widget.wineShopItem!.retail_id!)
+            widget.wineShopItem!.retail_partner!
+                ? ShopWineList(widget.wineShopItem!.retail_id!)
+                : PleaseJoinWineFi(widget.wineShopItem!.retail_name)
           ],
         ),
       ),
@@ -112,7 +114,7 @@ class _ShopWineListState extends State<ShopWineList> {
                   snapshot.hasData) {
                 return Expanded(
                     child: ListView.separated(
-                    padding: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 10),
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     return ListTile(
@@ -147,9 +149,7 @@ class _ShopWineListState extends State<ShopWineList> {
                 ));
               } else {
                 return Center(
-                  child: CircularProgressIndicator(
-                      valueColor:
-                          new AlwaysStoppedAnimation<Color>(Colors.red[900]!)),
+                  child: Container(),
                 );
               }
             }));
@@ -162,5 +162,43 @@ class _ShopWineListState extends State<ShopWineList> {
     List responseJson = response['list'];
 
     return responseJson.map((post) => new Wine.fromJson(post)).toList();
+  }
+}
+
+class PleaseJoinWineFi extends StatefulWidget {
+  PleaseJoinWineFi(this._shopName);
+
+  var _shopName;
+  String _snackBarSentence = "에게 곧 Wine-Fi 입점을 요청해볼게요!";
+  @override
+  _PleaseJoinWineFiState createState() => _PleaseJoinWineFiState();
+}
+
+class _PleaseJoinWineFiState extends State<PleaseJoinWineFi> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 150,
+        child: Column(children: [
+          SizedBox(height: 10,),
+          Container(child: Text("아직 Wine-Fi와 함께하지 못하고 있는 와인샵입니다")),
+          SizedBox(height: 10,),
+          Container(
+            height: 70,
+            child: Row(
+            children: [
+              Expanded(
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                          // fixedSize: Size.fromWidth(320),
+                          fixedSize: MaterialStateProperty.all<Size>(Size.fromHeight(60)),
+                          backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red[900]!)),
+                      onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('${widget._shopName}${widget._snackBarSentence}'))),
+                      child: Text('${widget._shopName}에게 Wine-Fi 입점을 요청하기')))
+            ],
+          ),)
+        ],));
   }
 }

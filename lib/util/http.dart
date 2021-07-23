@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart'
     hide Options;
 
-// var BACK_END_HOST = 'http://172.30.1.39:8080/';
 var BACK_END_HOST = 'https://api.winefi.site/';
+// var BACK_END_HOST = 'http://192.168.0.9:8080/';
 // var BACK_END_HOST =
 //     'http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/';
 
