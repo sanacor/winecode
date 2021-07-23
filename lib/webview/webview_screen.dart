@@ -24,22 +24,20 @@ class WebViewExampleState extends State<WebViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.red,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          title: Text(widget.webTitle),
-          centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red[900]!,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
         ),
-        body: SafeArea(
-          child: WebView(
-            initialUrl: widget.webUrl,
-            javascriptMode: JavascriptMode.unrestricted,
-          ),
+        title: Text(widget.webTitle),
+        centerTitle: true,
+      ),
+      body: SafeArea(
+        child: WebView(
+          initialUrl: widget.webUrl,
+          javascriptMode: JavascriptMode.unrestricted,
         ),
       ),
     );

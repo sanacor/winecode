@@ -263,9 +263,24 @@ class _WineDetailState extends State<WineDetail>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          body: SingleChildScrollView(
+    return Scaffold(
+      floatingActionButton: FadeTransition(
+        opacity: _hideFabAnimController!,
+        child: ScaleTransition(
+          scale: _hideFabAnimController!,
+          child: FloatingActionButton(
+            backgroundColor: Colors.red[900],
+            child: Text("문의"),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      ManualInquiry(wineItem: widget.wineItem)));
+            },
+          ),
+        ),
+      ),
+      body: SafeArea(
+          child: SingleChildScrollView(
             controller: _scrollController,
             child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -393,21 +408,7 @@ class _WineDetailState extends State<WineDetail>
               SizedBox(height: 300),
             ],
           ),),
-          floatingActionButton: FadeTransition(
-            opacity: _hideFabAnimController!,
-            child: ScaleTransition(
-              scale: _hideFabAnimController!,
-              child: FloatingActionButton(
-                backgroundColor: Colors.red[900],
-                child: Text("문의"),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          ManualInquiry(wineItem: widget.wineItem)));
-                },
-              ),
-            ),
-          )
+
 
         // floatingActionButton: Visibility(
         //   child: FloatingActionButton(
