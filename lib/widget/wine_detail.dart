@@ -404,33 +404,39 @@ class _WineDetailState extends State<WineDetail>
               SizedBox(
                 height: 30,
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 15),
+              Container(
+                color: Color(0xffF4F0DE),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text("와인 크리에이터 리뷰",
-                            style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold)
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                      ]
+                    Padding(
+                        padding: EdgeInsets.only(left: 15, top: 15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                                children: [
+                                  Expanded(
+                                    child: Text("와인 크리에이터 리뷰",
+                                        style: TextStyle(
+                                            fontSize: 20, fontWeight: FontWeight.bold)
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                ]
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: reviewList,
+                            )
+                          ],
+                        )
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: reviewList,
-                    )
+                    SizedBox(height: 300),
+                    SizedBox(height: 300),
                   ],
-                )
-              ),
-              SizedBox(height: 300),
-              SizedBox(height: 300),
+                ),)
             ],
           ),),
 
