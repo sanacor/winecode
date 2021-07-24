@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:wine/inquiry/model/InquiryTile.dart';
 import 'package:wine/model/notice.dart';
 import 'dart:io' show Platform;
@@ -85,7 +86,9 @@ class MyExpansionTileList extends StatelessWidget {
         new ExpansionTile(
             title: Text(element.ntcTitle!),
             children: [
-              Text(element.ntcContents!),
+              Html(
+                data: element.ntcContents!
+              ),
             ],
         ),
       );

@@ -70,7 +70,11 @@ dependencies:
   # url link
   url_launcher: ^6.0.8
 
+  #For country flag
   flutter_emoji: 2.2.1+1
+
+  #For Notice Screen
+  flutter_html: ^2.1.0
 
 
 dev_dependencies:
