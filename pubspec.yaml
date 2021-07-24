@@ -70,6 +70,8 @@ dependencies:
   # url link
   url_launcher: ^6.0.8
 
+  flutter_emoji: 2.2.1+1
+
 
 dev_dependencies:
   flutter_test:
