@@ -320,6 +320,7 @@ class _WineDetailState extends State<WineDetail>
       //   ),
       // ),
       body: SafeArea(
+          bottom: false,
           child: SingleChildScrollView(
             controller: _scrollController,
             child: Column(
