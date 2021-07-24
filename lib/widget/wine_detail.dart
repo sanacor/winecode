@@ -259,21 +259,66 @@ class _WineDetailState extends State<WineDetail>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FadeTransition(
-        opacity: _hideFabAnimController!,
-        child: ScaleTransition(
-          scale: _hideFabAnimController!,
-          child: FloatingActionButton(
-            backgroundColor: Colors.red[900],
-            child: Text("문의"),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      ManualInquiry(wineItem: widget.wineItem)));
-            },
+      floatingActionButton: Stack(
+        fit: StackFit.expand,
+        children: [
+          isCreator == true ? Positioned(
+            right: 10,
+            bottom: 90,
+            child: FadeTransition(
+              opacity: _hideFabAnimController!,
+              child: ScaleTransition(
+                scale: _hideFabAnimController!,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red[900],
+                  child: Icon(Icons.rate_review_outlined),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            ReviewRegister(wineItem: this.widget.wineItem)));
+                  },
+                ),
+              ),
+            ),
+          ) : Container(),
+          Positioned(
+            bottom: 20,
+            right: 10,
+            child: FadeTransition(
+              opacity: _hideFabAnimController!,
+              child: ScaleTransition(
+                scale: _hideFabAnimController!,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red[900],
+                  child: Text("문의"),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            ManualInquiry(wineItem: widget.wineItem)));
+                  },
+                ),
+              ),
+            ),
           ),
-        ),
+          // Add more floating buttons if you want
+          // There is no limit
+        ],
       ),
+      // floatingActionButton: FadeTransition(
+      //   opacity: _hideFabAnimController!,
+      //   child: ScaleTransition(
+      //     scale: _hideFabAnimController!,
+      //     child: FloatingActionButton(
+      //       backgroundColor: Colors.red[900],
+      //       child: Text("문의"),
+      //       onPressed: () {
+      //         Navigator.of(context).push(MaterialPageRoute(
+      //             builder: (context) =>
+      //                 ManualInquiry(wineItem: widget.wineItem)));
+      //       },
+      //     ),
+      //   ),
+      // ),
       body: SafeArea(
           child: SingleChildScrollView(
             controller: _scrollController,
@@ -373,23 +418,6 @@ class _WineDetailState extends State<WineDetail>
                               fontSize: 20, fontWeight: FontWeight.bold)
                           ),
                         ),
-                        isCreator == true ?
-                        RichText(
-                            text: TextSpan(
-                                text:"나의 리뷰 등록",
-                                style: TextStyle(
-                                  //decoration: TextDecoration.underline,
-                                  //decorationColor: Colors.blue,
-                                  color: Colors.black,
-                                ),
-                                recognizer: TapGestureRecognizer()..onTap = () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          ReviewRegister(wineItem: this.widget.wineItem))
-                                  );
-                            },
-                          )
-                        ) : Text(""),
                         SizedBox(width: 10),
                       ]
                     ),
