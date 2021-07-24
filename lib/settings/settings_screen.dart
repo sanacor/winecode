@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wine/image/image_upload.dart';
 import 'package:wine/main.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:wine/notice/notice_screen.dart';
 import 'package:wine/reply/reply_screen.dart';
 import 'package:wine/util/http.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -114,7 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     widgetList.add(ListTile(
       leading: Icon(Icons.batch_prediction),
       title: Text('공지사항'),
-      onTap: () => _tapCallback(context),
+      onTap: () => _noticeScreen(context),
     ));
     widgetList.add(ListTile(
       leading: Icon(Icons.question_answer),
@@ -162,6 +163,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               },
               child: Text("카카오톡 1:1 오픈 채팅방 연결")));
         });
+  }
+
+  void _noticeScreen(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => NoticeScreen()));
   }
 
   void _tapLogout(BuildContext context) async {
