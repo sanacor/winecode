@@ -169,7 +169,7 @@ class PleaseJoinWineFi extends StatefulWidget {
   PleaseJoinWineFi(this._shopName);
 
   var _shopName;
-  String _snackBarSentence = "에게 곧 Wine-Fi 입점을 요청해볼게요!";
+  String _snackBarSentence = "에게 Wine-Fi 입점을 요청해볼게요!";
   @override
   _PleaseJoinWineFiState createState() => _PleaseJoinWineFiState();
 }
@@ -195,7 +195,7 @@ class _PleaseJoinWineFiState extends State<PleaseJoinWineFi> {
                           backgroundColor:
                           MaterialStateProperty.all<Color>(Colors.red[900]!)),
                       onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('${widget._shopName}${widget._snackBarSentence}'))),
+                          SnackBar(content: Text('곧 ${widget._shopName}${widget._snackBarSentence}'))),
                       child: Text('${widget._shopName}에게 Wine-Fi 입점을 요청하기')))
             ],
           ),)

@@ -8,6 +8,44 @@ import 'package:wine/review/review_register.dart';
 import 'package:wine/util/http.dart';
 import 'package:wine/webview/webview_screen.dart';
 import '../model/review.dart';
+import 'package:flutter_emoji/flutter_emoji.dart';
+import 'package:flag/flag.dart';
+
+
+Widget getCountryIcon(String country_name) {
+  switch(country_name) {
+    case "United States":
+      return Flag.fromCode(FlagsCode.US, height: 20, width: 20);
+    case "Canada":
+      return Flag.fromCode(FlagsCode.CA, height: 20, width: 20);
+    case "Spain":
+      return Flag.fromCode(FlagsCode.ES, height: 20, width: 20);
+    case "Chile":
+      return Flag.fromCode(FlagsCode.CL, height: 20, width: 20);
+    case "France":
+      return Flag.fromCode(FlagsCode.FR, height: 20, width: 20);
+    case "Austria":
+      return Flag.fromCode(FlagsCode.AT, height: 20, width: 20);
+    case "Portugal":
+      return Flag.fromCode(FlagsCode.PT, height: 20, width: 20);
+    case "Germany":
+      return Flag.fromCode(FlagsCode.DE, height: 20, width: 20);
+    case "Hungary":
+      return Flag.fromCode(FlagsCode.HU, height: 20, width: 20);
+    case "Italy":
+      return Flag.fromCode(FlagsCode.IT, height: 20, width: 20);
+    case "Argentina":
+      return Flag.fromCode(FlagsCode.AR, height: 20, width: 20);
+    case "Switzerland":
+      return Flag.fromCode(FlagsCode.US, height: 20, width: 20);
+    case "New Zealand":
+      return Flag.fromCode(FlagsCode.CH, height: 20, width: 20);
+    case "South Africa":
+      return Flag.fromCode(FlagsCode.ZA, height: 20, width: 20);
+  }
+  return Flag.fromCode(FlagsCode.US, height: 20, width: 20);
+}
+
 
 final List<String> imgList = [];
 
@@ -54,12 +92,6 @@ final List<Widget> imageSliders = imgList
         ))
     .toList();
 
-class CarouselWithIndicatorDemo extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _CarouselWithIndicatorState();
-  }
-}
 
 class FullscreenSliderDemo extends StatelessWidget {
   final Wine? wineItem;
@@ -103,46 +135,6 @@ class FullscreenSliderDemo extends StatelessWidget {
   }
 }
 
-class _CarouselWithIndicatorState extends State<CarouselWithIndicatorDemo> {
-  int _current = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(children: [
-        CarouselSlider(
-          items: imageSliders,
-          options: CarouselOptions(
-              autoPlay: true,
-              enlargeCenterPage: true,
-              aspectRatio: 2.0,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _current = index;
-                });
-              }),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: imgList.map((url) {
-            int index = imgList.indexOf(url);
-            return Container(
-              width: 8.0,
-              height: 8.0,
-              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _current == index
-                    ? Color.fromRGBO(0, 0, 0, 0.9)
-                    : Color.fromRGBO(0, 0, 0, 0.4),
-              ),
-            );
-          }).toList(),
-        ),
-      ]),
-    );
-  }
-}
 
 class WineDetail extends StatefulWidget {
   final Wine? wineItem;
@@ -153,6 +145,7 @@ class WineDetail extends StatefulWidget {
   _WineDetailState createState() => _WineDetailState();
 }
 
+
 class _WineDetailState extends State<WineDetail>
     with SingleTickerProviderStateMixin {
   ScrollController? _scrollController;
@@ -161,6 +154,7 @@ class _WineDetailState extends State<WineDetail>
   List<Widget> reviewList = [];
 
   bool isCreator = false;
+
 
   @override
   void dispose() {
@@ -202,6 +196,7 @@ class _WineDetailState extends State<WineDetail>
   }
 
   void _checkUserRole() async {
+
     List<String>? roles = await getUserRoles();
 
     if(roles!.contains("ROLE_CREATOR")) {
@@ -286,7 +281,6 @@ class _WineDetailState extends State<WineDetail>
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              //SizedBox(height: 40),
               Container(
                   child: IconButton(
                     icon: Icon(Icons.arrow_back, color: Colors.black),
@@ -323,7 +317,7 @@ class _WineDetailState extends State<WineDetail>
                             style: TextStyle(
                                 fontWeight: FontWeight.w400, fontSize: 18)),
                         SizedBox(
-                          height: 2,
+                          height: 5,
                         ),
                         Text(widget.wineItem!.wineName!,
                             style: TextStyle(
@@ -331,29 +325,32 @@ class _WineDetailState extends State<WineDetail>
                         SizedBox(
                           height: 5,
                         ),
-                        RichText(
-                          text: TextSpan(
-                              text: widget.wineItem!.wineType!,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  fontSize: 15),
-                              children: [
-                                TextSpan(
-                                    text: " From ",
-                                    style:
-                                    TextStyle(fontWeight: FontWeight.normal)),
-                                TextSpan(
-                                  text: widget.wineItem!.wineRegion!,
-                                ),
-                                TextSpan(
-                                  text: " · ",
-                                ),
-                                TextSpan(
-                                  text: widget.wineItem!.wineCountry!,
-                                ),
-                              ]),
-                        ),
+                        Row(children: [
+                          Container(child: getCountryIcon(widget.wineItem!.wineCountry!), margin: EdgeInsets.fromLTRB(0,5,5,5)),
+                          RichText(
+                            text: TextSpan(
+                                text: widget.wineItem!.wineType!,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                    fontSize: 15),
+                                children: [
+                                  TextSpan(
+                                      text: " From ",
+                                      style:
+                                      TextStyle(fontWeight: FontWeight.normal)),
+                                  TextSpan(
+                                    text: widget.wineItem!.wineRegion!,
+                                  ),
+                                  // TextSpan(
+                                  //   text: " · ",
+                                  // ),
+                                  // TextSpan(
+                                  //   text: widget.wineItem!.wineCountry!,
+                                  // ),
+                                ]),
+                          )
+                        ],),
                       ],
                     ),
                   )
