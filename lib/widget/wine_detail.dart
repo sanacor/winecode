@@ -8,7 +8,6 @@ import 'package:wine/review/review_register.dart';
 import 'package:wine/util/http.dart';
 import 'package:wine/webview/webview_screen.dart';
 import '../model/review.dart';
-import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:flag/flag.dart';
 
 
@@ -403,10 +402,12 @@ class _WineDetailState extends State<WineDetail>
                 ],
               ),
               SizedBox(
-                height: 30,
+                height: 20,
               ),
+              Divider(height: 2, thickness: 1, color: Colors.grey, ),
               Container(
-                color: Color(0xffF4F0DE),
+
+                // color: Color(0xffF4F0DE),
                 child: Column(
                   children: [
                     Padding(
