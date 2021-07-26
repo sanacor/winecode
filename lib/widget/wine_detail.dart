@@ -8,7 +8,10 @@ import 'package:wine/review/review_register.dart';
 import 'package:wine/util/http.dart';
 import 'package:wine/webview/webview_screen.dart';
 import '../model/review.dart';
+import '../model/comment.dart';
+import 'package:flutter_emoji/flutter_emoji.dart';
 import 'package:flag/flag.dart';
+import 'package:wine/main.dart';
 
 
 Widget getCountryIcon(String country_name) {
@@ -151,9 +154,11 @@ class _WineDetailState extends State<WineDetail>
   AnimationController? _hideFabAnimController;
 
   List<Widget> reviewList = [];
-
+  List<Widget> commentList = [];
   bool isCreator = false;
 
+  String thumbnailImgUrl = 'http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/api/image/view/53';//비어있는 유저 사진
+  String userName = 'User';
 
   @override
   void dispose() {
@@ -190,6 +195,8 @@ class _WineDetailState extends State<WineDetail>
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getReviewList();
+      _getUserInfo();
+      _getCommentList();
       _checkUserRole();
     });
   }
@@ -225,7 +232,12 @@ class _WineDetailState extends State<WineDetail>
                 webUrl: review.prvUrl!))
     );
   }
-
+  void _viewComment(BuildContext context, Comment comment) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            WebViewScreen(webTitle : comment.pucUserId! + " - " + comment.pucUserComment!))
+    );
+  }
   Future<void> _getReviewList() async {
     var response = await http_get(header: null, path: 'api/product/review/' + widget.wineItem!.wineId!.toString());
 
@@ -255,6 +267,45 @@ class _WineDetailState extends State<WineDetail>
     }
   }
 
+  Future<void> _getUserInfo() async {
+    var response = await http_get(header: null, path: 'api/user');
+
+    print(response);
+
+    List responseJson = response['list'];
+
+    setState(() {
+      thumbnailImgUrl = response['data']['profile']['uspImage'];
+      userName = response['data']['profile']['uspNickname'];
+    });
+  }
+  Future<void> _getCommentList() async {
+    var response = await http_get(header: null, path: 'api/product/comment/' + widget.wineItem!.wineId!.toString());
+
+    print(response);
+
+    if(response['code'] == 0) { //쿼리 결과가 있는 경우에만 수행
+      List responseJson = response['list'];
+      var responseList = responseJson;
+      for (var commentJson in responseList) {
+        Comment comment = new Comment.fromJson(commentJson);
+        setState(() {
+          commentList.add(
+              new ListTile(
+                leading: CircleAvatar(
+                  backgroundImage:
+                  NetworkImage(_getUserInfo()thumbnailImgUrl),
+                  backgroundColor: Colors.transparent,
+                ),
+                title: Text(comment.pucUserComment!),
+                subtitle: Text('by ' + userName!),
+                onTap: () => _viewComment(context, comment),
+              )
+          );
+        });
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -441,9 +492,38 @@ class _WineDetailState extends State<WineDetail>
                         )
                     ),
                     SizedBox(height: 300),
+                    Padding(
+                        padding: EdgeInsets.only(left: 15, top: 15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                                children: [
+                                  Expanded(
+                                    child: Text("유저 한줄 평",
+                                        style: TextStyle(
+                                            fontSize: 20, fontWeight: FontWeight.bold)
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                ]
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: commentList,
+                            )
+                          ],
+                        )
+                    ),
                     SizedBox(height: 300),
                   ],
-                ),)
+                ),),
+              SizedBox(
+                height: 30,
+              ),
+
             ],
           ),),
 
