@@ -385,6 +385,7 @@ class _WineDetailState extends State<WineDetail>
                                       style:
                                       TextStyle(fontWeight: FontWeight.normal)),
                                   TextSpan(
+                                    style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w300),
                                     text: widget.wineItem!.wineRegion!,
                                   ),
                                   // TextSpan(
@@ -404,7 +405,8 @@ class _WineDetailState extends State<WineDetail>
               SizedBox(
                 height: 20,
               ),
-              Divider(height: 2, thickness: 1, color: Colors.grey, ),
+              // Divider(height: 2, thickness: 1, color: Colors.grey, ),
+              SizedBox(height: 11, child: Container(color: Colors.grey[200],),),
               Container(
 
                 // color: Color(0xffF4F0DE),
@@ -421,7 +423,10 @@ class _WineDetailState extends State<WineDetail>
                                   Expanded(
                                     child: Text("와인 크리에이터 리뷰",
                                         style: TextStyle(
-                                            fontSize: 20, fontWeight: FontWeight.bold)
+                                            color: Colors.grey,
+                                            // fontWeight: FontWeight.normal,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 20 )
                                     ),
                                   ),
                                   SizedBox(width: 10),
@@ -442,133 +447,8 @@ class _WineDetailState extends State<WineDetail>
             ],
           ),),
 
-
-        // floatingActionButton: Visibility(
-        //   child: FloatingActionButton(
-        //     backgroundColor: Colors.red[900],
-        //     child: Text("문의"),
-        //     onPressed: () {
-        //       Navigator.of(context).push(MaterialPageRoute(
-        //           builder: (context) =>
-        //               ManualInquiry(wineItem: widget.wineItem)));
-        //     },
-        //   ),
-        //   // visible: false,
-        //   visible: true,
-        // ),
-
       ),
     );
-    // return SingleChildScrollView(controller: _scrollController, child: Scaffold(
-    //     body: Column(
-    //       mainAxisAlignment: MainAxisAlignment.start,
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: <Widget>[
-    //         SizedBox(height: 40),
-    //         Container(
-    //             child: IconButton(
-    //               icon: Icon(Icons.arrow_back, color: Colors.black),
-    //               onPressed: () => Navigator.of(context).pop(),
-    //             )),
-    //         Container(
-    //             height: (MediaQuery.of(context).size.height / 10) * 4,
-    //             child: FullscreenSliderDemo(wineItem: widget.wineItem)),
-    //         SizedBox(
-    //           height: 3,
-    //         ),
-    //         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-    //           Text("Image from ", style: TextStyle(fontSize: 9)),
-    //           Text("VIVINO",
-    //               style: TextStyle(
-    //                   fontWeight: FontWeight.bold,
-    //                   fontSize: 9,
-    //                   color: Colors.red[900])),
-    //         ]),
-    //         SizedBox(
-    //           height: 15,
-    //         ),
-    //         Row(
-    //           children: [
-    //             SizedBox(
-    //               width: 15,
-    //             ),
-    //             Expanded(
-    //               child: Column(
-    //                 mainAxisAlignment: MainAxisAlignment.start,
-    //                 crossAxisAlignment: CrossAxisAlignment.start,
-    //                 children: [
-    //                   Text(widget.wineItem!.wineCompany!,
-    //                       style: TextStyle(
-    //                           fontWeight: FontWeight.w400, fontSize: 18)),
-    //                   SizedBox(
-    //                     height: 2,
-    //                   ),
-    //                   Text(widget.wineItem!.wineName!,
-    //                       style: TextStyle(
-    //                           fontWeight: FontWeight.bold, fontSize: 24)),
-    //                   SizedBox(
-    //                     height: 5,
-    //                   ),
-    //                   RichText(
-    //                     text: TextSpan(
-    //                         text: widget.wineItem!.wineType!,
-    //                         style: TextStyle(
-    //                             fontWeight: FontWeight.bold,
-    //                             color: Colors.black,
-    //                             fontSize: 15),
-    //                         children: [
-    //                           TextSpan(
-    //                               text: " From ",
-    //                               style:
-    //                               TextStyle(fontWeight: FontWeight.normal)),
-    //                           TextSpan(
-    //                             text: widget.wineItem!.wineRegion!,
-    //                           ),
-    //                           TextSpan(
-    //                             text: " · ",
-    //                           ),
-    //                           TextSpan(
-    //                             text: widget.wineItem!.wineCountry!,
-    //                           ),
-    //                         ]),
-    //                   ),
-    //                 ],
-    //               ),
-    //             )
-    //           ],
-    //         ),
-    //       ],
-    //     ),
-    //     floatingActionButton: FadeTransition(
-    //       opacity: _hideFabAnimController!,
-    //       child: ScaleTransition(
-    //         scale: _hideFabAnimController!,
-    //         child: FloatingActionButton(
-    //           backgroundColor: Colors.red[900],
-    //           child: Text("문의"),
-    //           onPressed: () {
-    //             Navigator.of(context).push(MaterialPageRoute(
-    //                 builder: (context) =>
-    //                     ManualInquiry(wineItem: widget.wineItem)));
-    //           },
-    //         ),
-    //       ),
-    //     )
-    //
-    //   // floatingActionButton: Visibility(
-    //   //   child: FloatingActionButton(
-    //   //     backgroundColor: Colors.red[900],
-    //   //     child: Text("문의"),
-    //   //     onPressed: () {
-    //   //       Navigator.of(context).push(MaterialPageRoute(
-    //   //           builder: (context) =>
-    //   //               ManualInquiry(wineItem: widget.wineItem)));
-    //   //     },
-    //   //   ),
-    //   //   // visible: false,
-    //   //   visible: true,
-    //   // ),
-    //
-    // ),);
+
   }
 }
