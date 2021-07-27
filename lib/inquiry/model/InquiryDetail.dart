@@ -17,9 +17,49 @@ class InquiryDetail extends StatefulWidget {
 }
 
 class _InquiryDetailState extends State<InquiryDetail> {
+
+  List<Widget> _replyList() {
+    List <Widget> replyTiles = [];
+    widget.replyInfo!.forEach((element) {
+      replyTiles.add(
+        Container(
+          height: 100,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.grey,
+              width: 2,
+              //color: Colors.red[500],
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 3,
+                offset: Offset(0, 0), // changes position of shadow
+              ),
+            ],
+            color: Colors.white70,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              children: [
+                Flexible(
+                    child: Text(element['rlyContents'])
+                ),
+              ],
+            ),
+          ),
+        )
+      );
+      replyTiles.add(SizedBox(height:10));
+    });
+    return replyTiles;
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -53,9 +93,7 @@ class _InquiryDetailState extends State<InquiryDetail> {
               children: [
                 Container(
                   height: 150,
-                  child: Expanded(
-                      child: Image.network(widget.inquiryInfo!.inqPdtImage!, fit: BoxFit.fill)
-                  ),
+                  child: Image.network(widget.inquiryInfo!.inqPdtImage!, fit: BoxFit.fill)
                 ),
               ],
             ),
@@ -87,7 +125,6 @@ class _InquiryDetailState extends State<InquiryDetail> {
                 )
               ],
             ),
-
             SizedBox(height: 40),
             Row(
               children: [
@@ -104,13 +141,37 @@ class _InquiryDetailState extends State<InquiryDetail> {
               ],
             ),
             SizedBox(height: 10),
-            Row(
-              children: [
-                SizedBox(width: 20),
-                Flexible(
-                    child: Text(widget.inquiryInfo!.inqContents!)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 2,
+                    //color: Colors.red[500],
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 3,
+                      offset: Offset(0, 0), // changes position of shadow
+                    ),
+                  ],
+                  color: Colors.white70,
                 ),
-              ],
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    children: [
+                      Flexible(
+                          child: Text(widget.inquiryInfo!.inqContents!)
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
             SizedBox(height: 40),
             Row(
@@ -127,6 +188,13 @@ class _InquiryDetailState extends State<InquiryDetail> {
                 ),
               ],
             ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: _replyList(),
+              ),
+            )
+            /*
             Expanded(
               child: ListView.separated(
                 itemCount: widget.replyInfo!.length,
@@ -138,7 +206,7 @@ class _InquiryDetailState extends State<InquiryDetail> {
                 },
               ),
             )
-
+             */
           ],
         )
       ),
