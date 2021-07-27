@@ -38,7 +38,7 @@ class _InquiryDetailState extends State<InquiryDetail> {
                 SizedBox(width: 10),
                 RichText(
                   text: TextSpan(
-                    text: "내가 문의한 와인 정보",
+                    text: "내가 문의한 와인",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -70,14 +70,12 @@ class _InquiryDetailState extends State<InquiryDetail> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      /*
                       Text(widget.inquiryInfo!.inqPdtCompany!,
                           style: TextStyle(
                               fontWeight: FontWeight.w400, fontSize: 18)),
                       SizedBox(
                         height: 2,
                       ),
-                       */
                       Text(widget.inquiryInfo!.inqPdtName!,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 24)),

@@ -36,7 +36,8 @@ class _ManualInquiryState extends State<ManualInquiry> {
   Widget build(BuildContext context) {
     if(widget.wineItem!.wineName != "") {
       wineNameController.text =
-          widget.wineItem!.wineCompany! + " " + widget.wineItem!.wineName!;
+          //widget.wineItem!.wineCompany! + " " + widget.wineItem!.wineName!;
+      widget.wineItem!.wineName!;
     }
     // return Container(color: Colors.red,);
     return Scaffold(
