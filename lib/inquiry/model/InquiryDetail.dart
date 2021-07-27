@@ -23,6 +23,8 @@ class _InquiryDetailState extends State<InquiryDetail> {
     return Scaffold(
       body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
                 alignment: Alignment.bottomLeft,
@@ -31,11 +33,102 @@ class _InquiryDetailState extends State<InquiryDetail> {
                   onPressed: () => Navigator.of(context).pop(),
                 )
             ),
-            Container(
-              child: Text(widget.inqPdtName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            Row(
+              children: [
+                SizedBox(width: 10),
+                RichText(
+                  text: TextSpan(
+                    text: "내가 문의한 와인 정보",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 25),
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 20),
-            Container(child: Text(widget.inquiryInfo!.inqContents!),),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: 150,
+                  child: Expanded(
+                      child: Image.network(widget.inquiryInfo!.inqPdtImage!, fit: BoxFit.fill)
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              children: [
+                SizedBox(
+                  width: 15,
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      /*
+                      Text(widget.inquiryInfo!.inqPdtCompany!,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 18)),
+                      SizedBox(
+                        height: 2,
+                      ),
+                       */
+                      Text(widget.inquiryInfo!.inqPdtName!,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24)),
+                      SizedBox(
+                        height: 5,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+
+            SizedBox(height: 40),
+            Row(
+              children: [
+                SizedBox(width: 10),
+                RichText(
+                  text: TextSpan(
+                    text: "문의 내용",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 25),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                SizedBox(width: 20),
+                Flexible(
+                    child: Text(widget.inquiryInfo!.inqContents!)
+                ),
+              ],
+            ),
+            SizedBox(height: 40),
+            Row(
+              children: [
+                SizedBox(width: 10),
+                RichText(
+                  text: TextSpan(
+                    text: "답변 내역",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 25),
+                  ),
+                ),
+              ],
+            ),
             Expanded(
               child: ListView.separated(
                 itemCount: widget.replyInfo!.length,
