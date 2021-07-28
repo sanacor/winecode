@@ -1,3 +1,5 @@
+import 'package:dotted_line/dotted_line.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wine/map/model/wine_shop.dart';
 import 'package:wine/map/wine_shop_detail.dart';
@@ -23,7 +25,6 @@ class _InquiryDetailState extends State<InquiryDetail> {
     widget.replyInfo!.forEach((element) {
       replyTiles.add(
         Container(
-          height: 100,
           decoration: BoxDecoration(
             border: Border.all(
               color: Colors.grey,
@@ -46,14 +47,111 @@ class _InquiryDetailState extends State<InquiryDetail> {
             child: Row(
               children: [
                 Flexible(
-                    child: Text(element['rlyContents'])
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Wine-Fi 추천 가맹점", style: TextStyle(fontSize: 12)),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: RichText(
+                                text: TextSpan(
+                                  text: element['rlyRtlName'] + "  >",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: 20),
+                                ),
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                text: "정보확인",
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 15),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(
+                          height: 20,
+                          thickness: 1,
+                          indent: 0,
+                          endIndent: 0,
+                        ),
+                        if(element['rlyStatus'] == 'Waiting') ...[
+                          Text('답변을 기다리는 중'),
+                        ] else ...[
+                          Text(element['rlyContents']),
+                          SizedBox(height: 10),
+                          DottedLine(
+                            direction: Axis.horizontal,
+                            lineLength: double.infinity,
+                            lineThickness: 1.0,
+                            dashLength: 3.0,
+                            dashColor: Colors.grey,
+                            dashRadius: 0.0,
+                            dashGapLength: 4.0,
+                            dashGapColor: Colors.transparent,
+                            dashGapRadius: 0.0,
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              TextButton(
+                                  child: Text(
+                                      "예약 요청하기",
+                                      style: TextStyle(fontSize: 14)
+                                  ),
+                                  style: ButtonStyle(
+                                      padding: MaterialStateProperty.all<EdgeInsets>(
+                                        EdgeInsets.fromLTRB(30, 15, 30, 15)),
+                                      foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(12.0),
+                                              side: BorderSide(color: Colors.black)
+                                          )
+                                      )
+                                  ),
+                                  onPressed: () => null
+                              ),
+                              TextButton(
+                                  child: Text(
+                                      "전화 상담하기",
+                                      style: TextStyle(fontSize: 14)
+                                  ),
+                                  style: ButtonStyle(
+                                      padding: MaterialStateProperty.all<EdgeInsets>(
+                                          EdgeInsets.fromLTRB(30, 15, 30, 15)),
+                                      foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                      backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(12.0),
+                                              side: BorderSide(color: Colors.black)
+                                          )
+                                      )
+                                  ),
+                                  onPressed: () => null
+                              ),
+                            ],
+                          ),
+                        ],
+                        SizedBox(height:10),
+                      ]
+                    )
                 ),
               ],
             ),
           ),
         )
       );
-      replyTiles.add(SizedBox(height:10));
+      replyTiles.add(SizedBox(height:20));
     });
     return replyTiles;
   }

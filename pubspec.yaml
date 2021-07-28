@@ -76,6 +76,9 @@ dependencies:
   #For Notice Screen
   flutter_html: ^2.1.0
 
+  #for Dotted Line
+  dotted_line: ^3.0.0
+
 
 dev_dependencies:
   flutter_test:
