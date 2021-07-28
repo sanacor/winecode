@@ -26,11 +26,13 @@ class _InquiryDetailState extends State<InquiryDetail> {
       replyTiles.add(
         Container(
           decoration: BoxDecoration(
+            /*
             border: Border.all(
               color: Colors.grey,
               width: 2,
               //color: Colors.red[500],
             ),
+             */
             borderRadius: BorderRadius.all(Radius.circular(20)),
             boxShadow: [
               BoxShadow(
@@ -244,20 +246,23 @@ class _InquiryDetailState extends State<InquiryDetail> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 2,
-                      //color: Colors.red[500],
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 3,
-                        offset: Offset(0, 0), // changes position of shadow
+                  decoration:
+                    BoxDecoration(
+                      /*
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 2,
+                        //color: Colors.red[500],
                       ),
+                       */
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 3,
+                          offset: Offset(0, 0), // changes position of shadow
+                        ),
                     ],
                     color: Colors.white70,
                   ),
