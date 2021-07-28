@@ -61,153 +61,158 @@ class _InquiryDetailState extends State<InquiryDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-                alignment: Alignment.bottomLeft,
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.black),
-                  onPressed: () => Navigator.of(context).pop(),
-                )
-            ),
-            Row(
-              children: [
-                SizedBox(width: 10),
-                RichText(
-                  text: TextSpan(
-                    text: "내가 문의한 와인",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: 25),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 150,
-                  child: Image.network(widget.inquiryInfo!.inqPdtImage!, fit: BoxFit.fill)
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              children: [
-                SizedBox(
-                  width: 15,
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(widget.inquiryInfo!.inqPdtCompany!,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 18)),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Text(widget.inquiryInfo!.inqPdtName!,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24)),
-                      SizedBox(
-                        height: 5,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 40),
-            Row(
-              children: [
-                SizedBox(width: 10),
-                RichText(
-                  text: TextSpan(
-                    text: "문의 내용",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: 25),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 2,
-                    //color: Colors.red[500],
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 2,
-                      blurRadius: 3,
-                      offset: Offset(0, 0), // changes position of shadow
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                  alignment: Alignment.bottomLeft,
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.black),
+                    onPressed: () => Navigator.of(context).pop(),
+                  )
+              ),
+              Row(
+                children: [
+                  SizedBox(width: 10),
+                  RichText(
+                    text: TextSpan(
+                      text: "내가 문의한 와인",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 25),
                     ),
-                  ],
-                  color: Colors.white70,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
-                    children: [
-                      Flexible(
-                          child: Text(widget.inquiryInfo!.inqContents!)
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 150,
+                    child: Image.network(widget.inquiryInfo!.inqPdtImage!, fit: BoxFit.fill)
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(widget.inquiryInfo!.inqPdtCompany!,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400, fontSize: 18)),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Text(widget.inquiryInfo!.inqPdtName!,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 24)),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 40),
+              Row(
+                children: [
+                  SizedBox(width: 10),
+                  RichText(
+                    text: TextSpan(
+                      text: "문의 내용",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 25),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 2,
+                      //color: Colors.red[500],
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 3,
+                        offset: Offset(0, 0), // changes position of shadow
                       ),
                     ],
+                    color: Colors.white70,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                      children: [
+                        Flexible(
+                            child: Text(widget.inquiryInfo!.inqContents!)
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: 40),
-            Row(
-              children: [
-                SizedBox(width: 10),
-                RichText(
-                  text: TextSpan(
-                    text: "답변 내역",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontSize: 25),
+              SizedBox(height: 40),
+              Row(
+                children: [
+                  SizedBox(width: 10),
+                  RichText(
+                    text: TextSpan(
+                      text: "답변 내역",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 25),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Expanded(
+                  child: Column(
+                    children: _replyList(),
                   ),
                 ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: _replyList(),
-              ),
-            )
-            /*
-            Expanded(
-              child: ListView.separated(
-                itemCount: widget.replyInfo!.length,
-                itemBuilder: (context, index) {
-                  return ReplyTile(widget.replyInfo![index]);
-                },
-                separatorBuilder: (context, index) {
-                  return const Divider(thickness: 1);
-                },
-              ),
-            )
-             */
-          ],
+              )
+              /*
+              Expanded(
+                child: ListView.separated(
+                  itemCount: widget.replyInfo!.length,
+                  itemBuilder: (context, index) {
+                    return ReplyTile(widget.replyInfo![index]);
+                  },
+                  separatorBuilder: (context, index) {
+                    return const Divider(thickness: 1);
+                  },
+                ),
+              )
+               */
+            ],
+          ),
         )
       ),
     );
