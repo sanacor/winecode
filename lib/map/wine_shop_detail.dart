@@ -3,6 +3,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:wine/map/model/wine_shop.dart';
 import 'package:wine/model/wine.dart';
 import 'package:wine/util/http.dart';
+import 'package:flutter/services.dart';
+
 import 'dart:io' show Platform;
 
 class WineShopDetail extends StatefulWidget {
@@ -54,6 +56,11 @@ class _WineShopDetailState extends State<WineShopDetail> {
               leading: Icon(Icons.place),
               title: Text("주소"),
               subtitle: Text(widget.wineShopItem!.retail_address!),
+              trailing: Icon(Icons.copy_all),
+              onTap: () { Clipboard.setData(new ClipboardData(text: widget.wineShopItem!.retail_address!)); final snackBar = SnackBar(content: Text("복사 완료!"));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar); },
+
+
             ),
             ListTile(
               leading: Icon(Icons.schedule),
@@ -72,7 +79,11 @@ class _WineShopDetailState extends State<WineShopDetail> {
                       " 입니다."
                   : widget.wineShopItem!.retail_exp!),
             ),
+
             SizedBox(height: 20),
+            SizedBox(height: 11, child: Container(color: Colors.grey[200],),),
+            SizedBox(height: 20),
+
             Container(
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.only(left: 20),
@@ -188,15 +199,19 @@ class _PleaseJoinWineFiState extends State<PleaseJoinWineFi> {
             child: Row(
             children: [
               Expanded(
-                  child: ElevatedButton(
-                      style: ButtonStyle(
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    child: ElevatedButton(
+
+                        style: ButtonStyle(
                           // fixedSize: Size.fromWidth(320),
-                          fixedSize: MaterialStateProperty.all<Size>(Size.fromHeight(60)),
-                          backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.red[900]!)),
-                      onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('곧 ${widget._shopName}${widget._snackBarSentence}'))),
-                      child: Text('${widget._shopName}에게 Wine-Fi 입점을 요청하기')))
+                            fixedSize: MaterialStateProperty.all<Size>(Size.fromHeight(60)),
+                            backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red[900]!)),
+                        onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('곧 ${widget._shopName}${widget._snackBarSentence}'))),
+                        child: Text('${widget._shopName}에게 Wine-Fi 입점을 요청하기')),
+                  ))
             ],
           ),)
         ],));
