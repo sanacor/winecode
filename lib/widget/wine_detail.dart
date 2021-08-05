@@ -153,6 +153,8 @@ class _WineDetailState extends State<WineDetail>
   List<Widget> reviewList = [];
 
   bool isCreator = false;
+  bool isRetailer = false;
+  int? userId = null;
 
 
   @override
@@ -198,11 +200,26 @@ class _WineDetailState extends State<WineDetail>
 
     List<String>? roles = await getUserRoles();
 
-    if(roles!.contains("ROLE_CREATOR")) {
+    if(roles!.contains("ROLE_CREATOR")  ) {
       setState(() {
         isCreator = true;
       });
     }
+
+    if(roles!.contains("ROLE_RETAILER") ) {
+
+      var response = await http_get(header: null, path: 'api/user');
+
+      print(response);
+
+      int user_id = response['data']['user']['msrl'];
+
+      setState(() {
+        isRetailer = true;
+        userId = user_id;
+      });
+    }
+
   }
   
   ImageProvider<Object> _getSNSIcon(String sns) {
@@ -255,12 +272,43 @@ class _WineDetailState extends State<WineDetail>
     }
   }
 
+  Future<void> registerWineByRetailId(int wineId) async {
+
+
+    var response = await http_post(header: null, path: 'api/retail/$userId/register/$wineId');
+
+    if (response['success'] == true) {
+      final snackBar = SnackBar(content: Text("와인샵에 와인등록 완료!"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      final snackBar = SnackBar(content: Text("와인샵에 와인등록 실패!"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: Stack(
         fit: StackFit.expand,
         children: [
+          isRetailer == true ? Positioned(
+            right: 10,
+            bottom: 160,
+            child: FadeTransition(
+              opacity: _hideFabAnimController!,
+              child: ScaleTransition(
+                scale: _hideFabAnimController!,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.red[900],
+                  child: Icon(Icons.add_business_outlined),
+                  onPressed: () {registerWineByRetailId(this.widget.wineItem!.wineId!);},
+                ),
+              ),
+            ),
+          ) : Container(),
           isCreator == true ? Positioned(
             right: 10,
             bottom: 90,
