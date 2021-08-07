@@ -8,7 +8,6 @@ import 'package:wine/util/http.dart';
 import 'package:flutter/gestures.dart';
 import 'package:wine/webview/webview_screen.dart';
 
-
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -52,32 +51,44 @@ class _MyLoginPageState extends State<LoginScreen> {
                               ),
                             ),
                           ]),
-                      InkWell(
-                        onTap: () => _loginWithTalk(), // needed
-                        child: Image.asset(
-                          "images/kakao_login_medium_narrow.png",
-                          //width: 100,
-                          //fit: BoxFit.cover,
-                        ),
-                      ),
-                      Container(child: SignInWithAppleButton(
-                        text: "Apple로 로그인",
-                        onPressed: () async {
-                          final credential =
-                          await SignInWithApple.getAppleIDCredential(
-                            scopes: [
-                              AppleIDAuthorizationScopes.email,
-                              AppleIDAuthorizationScopes.fullName,
-                            ],
-                          );
-                          print("=========== Apple Apple Apple Apple ============");
-                          print(credential);
-                          // _issueJWTandLogin("appleToken");
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          InkWell(
+                            onTap: () => _loginWithTalk(), // needed
+                            child: Image.asset(
+                              "images/kakao_login_medium_narrow.png",
+                              //width: 100,
+                              //fit: BoxFit.cover,
+                            ),
+                          ),
+                          Container(
+                            child: SignInWithAppleButton(
+                              text: "Apple로 로그인",
+                              onPressed: () async {
+                                final credential =
+                                    await SignInWithApple.getAppleIDCredential(
+                                  scopes: [
+                                    AppleIDAuthorizationScopes.email,
+                                    AppleIDAuthorizationScopes.fullName,
+                                  ],
+                                );
+                                print(
+                                    "=========== Apple Apple Apple Apple ============");
+                                print(credential);
+                                // _issueJWTandLogin("appleToken");
 
-                          // Now send the credential (especially `credential.authorizationCode`) to your server to create a session
-                          // after they have been validated with Apple (see `Integration` section for more information on how to do this)
-                        },
-                      ), width: 100, height: 50, padding: const EdgeInsets.only(left: 95, right: 95),),
+                                // Now send the credential (especially `credential.authorizationCode`) to your server to create a session
+                                // after they have been validated with Apple (see `Integration` section for more information on how to do this)
+                              },
+                            ),
+                            width: 100,
+                            height: 43,
+                            padding: const EdgeInsets.only(left: 95, right: 95),
+                          ),
+                        ],
+                      ),
                       Container(
                         padding: EdgeInsets.all(15),
                         child: RichText(
