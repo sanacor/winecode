@@ -60,10 +60,11 @@ class _MyLoginPageState extends State<LoginScreen> {
                           //fit: BoxFit.cover,
                         ),
                       ),
-                      SignInWithAppleButton(
+                      Container(child: SignInWithAppleButton(
+                        text: "Apple로 로그인",
                         onPressed: () async {
                           final credential =
-                              await SignInWithApple.getAppleIDCredential(
+                          await SignInWithApple.getAppleIDCredential(
                             scopes: [
                               AppleIDAuthorizationScopes.email,
                               AppleIDAuthorizationScopes.fullName,
@@ -71,12 +72,12 @@ class _MyLoginPageState extends State<LoginScreen> {
                           );
                           print("=========== Apple Apple Apple Apple ============");
                           print(credential);
-                          _issueJWTandLogin("appleToken");
+                          // _issueJWTandLogin("appleToken");
 
                           // Now send the credential (especially `credential.authorizationCode`) to your server to create a session
                           // after they have been validated with Apple (see `Integration` section for more information on how to do this)
                         },
-                      ),
+                      ), width: 100, height: 50, padding: const EdgeInsets.only(left: 95, right: 95),),
                       Container(
                         padding: EdgeInsets.all(15),
                         child: RichText(
