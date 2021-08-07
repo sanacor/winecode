@@ -57,6 +57,10 @@ dependencies:
   platform: ^3.0.0
   package_info: ^2.0.0
 
+  #Apple
+  sign_in_with_apple: ^3.0.0
+
+
   #Secure Storage
   flutter_secure_storage: ^4.1.0
 

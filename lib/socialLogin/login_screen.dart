@@ -9,6 +9,8 @@ import 'package:flutter/gestures.dart';
 import 'package:wine/webview/webview_screen.dart';
 
 
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
 // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 //
 
@@ -37,17 +39,19 @@ class _MyLoginPageState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                        RichText(
-                          text: TextSpan(
-                            text: '로그인',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 40),
-                          ),
-                        ),
-                      ]),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                text: '로그인',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                    fontSize: 40),
+                              ),
+                            ),
+                          ]),
                       InkWell(
                         onTap: () => _loginWithTalk(), // needed
                         child: Image.asset(
@@ -55,6 +59,23 @@ class _MyLoginPageState extends State<LoginScreen> {
                           //width: 100,
                           //fit: BoxFit.cover,
                         ),
+                      ),
+                      SignInWithAppleButton(
+                        onPressed: () async {
+                          final credential =
+                              await SignInWithApple.getAppleIDCredential(
+                            scopes: [
+                              AppleIDAuthorizationScopes.email,
+                              AppleIDAuthorizationScopes.fullName,
+                            ],
+                          );
+                          print("=========== Apple Apple Apple Apple ============");
+                          print(credential);
+                          _issueJWTandLogin("appleToken");
+
+                          // Now send the credential (especially `credential.authorizationCode`) to your server to create a session
+                          // after they have been validated with Apple (see `Integration` section for more information on how to do this)
+                        },
                       ),
                       Container(
                         padding: EdgeInsets.all(15),
@@ -65,24 +86,25 @@ class _MyLoginPageState extends State<LoginScreen> {
                                 //fontWeight: FontWeight.bold,
                                 color: Colors.grey,
                                 fontSize: 13),
-                            children: <TextSpan> [
+                            children: <TextSpan>[
                               TextSpan(
-                                  text: '개인정보처리방침',
-                                  style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: Colors.blue,
-                                    decorationStyle: TextDecorationStyle.wavy,
-                                  ),
-                                  recognizer: TapGestureRecognizer()..onTap = () {
+                                text: '개인정보처리방침',
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: Colors.blue,
+                                  decorationStyle: TextDecorationStyle.wavy,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
                                     Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) =>
-                                            WebViewScreen(webTitle : "개인정보처리방침",
-                                                webUrl: "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/privacy.html"))
-                                    );
+                                        builder: (context) => WebViewScreen(
+                                            webTitle: "개인정보처리방침",
+                                            webUrl:
+                                                "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/privacy.html")));
                                   },
                               ),
                               TextSpan(
-                                  text: ' 동의로 간주됩니다.',
+                                text: ' 동의로 간주됩니다.',
                               ),
                             ],
                           ),
@@ -121,15 +143,17 @@ class _MyLoginPageState extends State<LoginScreen> {
 
   _issueAccessToken(String authCode) async {
     try {
-      AccessTokenResponse? token = await AuthApi.instance.issueAccessToken(authCode);
+      AccessTokenResponse? token =
+          await AuthApi.instance.issueAccessToken(authCode);
       AccessTokenStore.instance.toStore(token);
       //print("AccessToken : " + token.accessToken);
       try {
         User user = await UserApi.instance.me();
 
-        final snackBar = SnackBar(content: Text(user.properties!['nickname']! + "님 반갑습니다."));
+        final snackBar =
+            SnackBar(content: Text(user.properties!['nickname']! + "님 반갑습니다."));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        if(!(await _registerUserInfoWithKakao(token.accessToken))){
+        if (!(await _registerUserInfoWithKakao(token.accessToken))) {
           final snackBar = SnackBar(content: Text("회원가입 실패"));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
           return;
@@ -165,8 +189,10 @@ class _MyLoginPageState extends State<LoginScreen> {
 
   Future<bool> _registerUserInfoWithKakao(String? accessToken) async {
     try {
-      var response = await http_post(header: null, path: 'v1/signup/kakao?accessToken='+accessToken!);
-      if(response['code'] == 0 || response['code'] == -9999)//정상 가입 또는 이미 가입한 회원
+      var response = await http_post(
+          header: null, path: 'v1/signup/kakao?accessToken=' + accessToken!);
+      if (response['code'] == 0 ||
+          response['code'] == -9999) //정상 가입 또는 이미 가입한 회원
         return true;
       else
         return false;
@@ -189,11 +215,16 @@ class _MyLoginPageState extends State<LoginScreen> {
       print(fcm_token);
       var signUpBody = {'fcmToken': fcm_token};
 
-      var response = await http_post(header: null, path: 'v1/signin/kakao?accessToken='+accessToken, body: signUpBody);
+      var response = await http_post(
+          header: null,
+          path: 'v1/signin/kakao?accessToken=' + accessToken,
+          body: signUpBody);
 
       print("access_token : " + response['data']['access_token']);
-      await storage.write(key: "access_token", value: response['data']['access_token']);
-      await storage.write(key: "refresh_token", value: response['data']['refresh_token']);
+      await storage.write(
+          key: "access_token", value: response['data']['access_token']);
+      await storage.write(
+          key: "refresh_token", value: response['data']['refresh_token']);
       // Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
       Navigator.of(context).pop();
     } catch (e) {
