@@ -1,6 +1,7 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wine/map/model/wine_shop.dart';
 import 'package:wine/map/wine_shop_detail.dart';
 import 'package:wine/util/http.dart';
@@ -19,10 +20,26 @@ class InquiryDetail extends StatefulWidget {
 }
 
 class _InquiryDetailState extends State<InquiryDetail> {
+  List<Widget> replyTiles = [];
 
-  List<Widget> _replyList() {
-    List <Widget> replyTiles = [];
-    widget.replyInfo!.forEach((element) {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _replyList();
+    });
+  }
+
+  Future<WineShop> _getShopDetail(String rtlId) async {
+    var response = await http_get(header: null, path: 'api/retail/${rtlId}');
+    var wineShopInfo = response['data'];
+
+    return new WineShop.fromJson(wineShopInfo);
+  }
+
+  _replyList() {
+    widget.replyInfo!.forEach((element) async {
+      WineShop thisWineShop = await _getShopDetail(element['rlyRtlId'].toString());
       replyTiles.add(
         Container(
           decoration: BoxDecoration(
@@ -60,7 +77,7 @@ class _InquiryDetailState extends State<InquiryDetail> {
                             Expanded(
                               child: RichText(
                                 text: TextSpan(
-                                  text: element['rlyRtlName'] + "  >",
+                                  text: thisWineShop.retail_name! + "  >",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black,
@@ -77,6 +94,15 @@ class _InquiryDetailState extends State<InquiryDetail> {
                               ),
                             ),
                           ],
+                        ),
+                        SizedBox(height: 3),
+                        RichText(
+                          text: TextSpan(
+                            text: thisWineShop.retail_address!,
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12),
+                          ),
                         ),
                         const Divider(
                           height: 20,
@@ -139,7 +165,8 @@ class _InquiryDetailState extends State<InquiryDetail> {
                                           )
                                       )
                                   ),
-                                  onPressed: () => null
+                                  onPressed: () =>
+                                    { launch("tel://" + thisWineShop.retail_phone!) },
                               ),
                             ],
                           ),
@@ -154,8 +181,8 @@ class _InquiryDetailState extends State<InquiryDetail> {
         )
       );
       replyTiles.add(SizedBox(height:20));
+      setState(() {});
     });
-    return replyTiles;
   }
 
   @override
@@ -295,12 +322,10 @@ class _InquiryDetailState extends State<InquiryDetail> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Expanded(
-                  child: Column(
-                    children: _replyList(),
-                  ),
+                child: Column(
+                  children: replyTiles,
                 ),
-              )
+              ),
               /*
               Expanded(
                 child: ListView.separated(
