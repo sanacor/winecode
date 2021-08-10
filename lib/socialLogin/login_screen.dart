@@ -56,7 +56,7 @@ class _MyLoginPageState extends State<LoginScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           InkWell(
-                            onTap: () => _loginWithTalk(), // needed
+                            onTap: () => _loginWithKakaoTalk(), // needed
                             child: Image.asset(
                               "images/kakao_login_medium_narrow.png",
                               //width: 100,
@@ -77,6 +77,7 @@ class _MyLoginPageState extends State<LoginScreen> {
                                 print(
                                     "=========== Apple Apple Apple Apple ============");
                                 print(credential);
+                                _loginWithApple(credential);
                                 // _issueJWTandLogin("appleToken");
 
                                 // Now send the credential (especially `credential.authorizationCode`) to your server to create a session
@@ -153,7 +154,7 @@ class _MyLoginPageState extends State<LoginScreen> {
     });
   }
 
-  _issueAccessToken(String authCode) async {
+  _issueKakaoAccessToken(String authCode) async {
     try {
       AccessTokenResponse? token =
           await AuthApi.instance.issueAccessToken(authCode);
@@ -177,11 +178,11 @@ class _MyLoginPageState extends State<LoginScreen> {
     }
   }
 
-  _loginWithTalk() async {
+  _loginWithKakaoTalk() async {
     if (_isKakaoTalkInstalled) {
       try {
         var code = await AuthCodeClient.instance.requestWithTalk();
-        await _issueAccessToken(code);
+        await _issueKakaoAccessToken(code);
       } catch (e) {
         print(e);
       }
@@ -192,17 +193,46 @@ class _MyLoginPageState extends State<LoginScreen> {
       try {
         //Not Working
         var code = await AuthCodeClient.instance.request();
-        await _issueAccessToken(code);
+        await _issueKakaoAccessToken(code);
       } catch (e) {
         print(e);
       }
     }
   }
 
+  _loginWithApple(AuthorizationCredentialAppleID credential) async {
+    if (!(await _registerUserInfoWithApple(credential))) {
+      final snackBar = SnackBar(content: Text("회원가입 실패"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
+
+    await _issueJWTandLoginByApple(credential);
+  }
+
   Future<bool> _registerUserInfoWithKakao(String? accessToken) async {
     try {
       var response = await http_post(
           header: null, path: 'v1/signup/kakao?accessToken=' + accessToken!);
+      if (response['code'] == 0 ||
+          response['code'] == -9999) //정상 가입 또는 이미 가입한 회원
+        return true;
+      else
+        return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> _registerUserInfoWithApple(
+      AuthorizationCredentialAppleID credential) async {
+    try {
+      var signUpBody = {'userIdentifier': credential.userIdentifier};
+      var response = await http_post(
+          header: null,
+          path: 'v1/signup/apple?accessToken=' + 'trash_token'!,
+          body: signUpBody);
       if (response['code'] == 0 ||
           response['code'] == -9999) //정상 가입 또는 이미 가입한 회원
         return true;
@@ -231,6 +261,34 @@ class _MyLoginPageState extends State<LoginScreen> {
           header: null,
           path: 'v1/signin/kakao?accessToken=' + accessToken,
           body: signUpBody);
+
+      print("access_token : " + response['data']['access_token']);
+      await storage.write(
+          key: "access_token", value: response['data']['access_token']);
+      await storage.write(
+          key: "refresh_token", value: response['data']['refresh_token']);
+      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
+      Navigator.of(context).pop();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  _issueJWTandLoginByApple(AuthorizationCredentialAppleID credential) async {
+    // var url =
+    //     "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/v1/signin/kakao?accessToken=" +
+    //         accessToken;
+    try {
+      // var response = await http.post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+      // var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
+
+      print('toooken');
+      var fcm_token = await FirebaseMessaging.instance.getToken();
+      print(fcm_token);
+      var signUpBody = {'fcmToken': fcm_token, 'userIdentifier': credential.userIdentifier};
+
+      var response = await http_post(
+          header: null, path: 'v1/signin/apple?accessToken=fake_token', body: signUpBody);
 
       print("access_token : " + response['data']['access_token']);
       await storage.write(
