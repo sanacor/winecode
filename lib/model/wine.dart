@@ -10,8 +10,11 @@ class Wine {
   String? wineType;
   String? wineCountry;
   String? wineRegion;
+  String? wineNameKo;
+  String? wineCompanyKo;
 
-  Wine({this.wineId=0,this.wineName ="", this.wineImageURL="", this.wineCompany="", this.wineType="", this.wineCountry="", this.wineRegion=""});
+  Wine({this.wineId=0,this.wineName ="", this.wineImageURL="", this.wineCompany="", this.wineType="", this.wineCountry="", this.wineRegion="",
+        this.wineNameKo="",this.wineCompanyKo=""});
 
   factory Wine.fromJson(Map<String, dynamic> json) {
     return Wine(wineId: json['wineId'],
@@ -20,7 +23,9 @@ class Wine {
         wineCompany : json['wineCompany'],
         wineType : json['wineType'],
         wineCountry: json['wineCountry'],
-        wineRegion: json['wineRegion']
+        wineRegion: json['wineRegion'],
+        wineNameKo: json['wineNameKo'] == null ? "" : json['wineNameKo'],
+        wineCompanyKo: json['wineCompanyKo'] == null ? "" : json['wineCompanyKo'],
     );
   }
 }

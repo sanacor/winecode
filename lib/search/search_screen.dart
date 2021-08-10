@@ -112,7 +112,9 @@ class _SearchScreenState extends State<SearchScreen> with AutomaticKeepAliveClie
                                     child: Image.network(snapshot.data![index].wineImageURL!, fit: BoxFit.fill),
                                   ),
 
-                                  title: Text('${snapshot.data![index].wineCompany}' + " " + '${snapshot.data![index].wineName}'),
+                                  title: snapshot.data![index].wineNameKo != "" && snapshot.data![index].wineCompanyKo != ""?
+                                      Text('${snapshot.data![index].wineCompany}' + "(" + '${snapshot.data![index].wineCompanyKo}' + ") " + '${snapshot.data![index].wineName}' + "(" + '${snapshot.data![index].wineNameKo}' + ")")
+                                      : Text('${snapshot.data![index].wineCompany}' + " " + '${snapshot.data![index].wineName}'),
                                   isThreeLine: false,
                                   subtitle:
                                   Text(snapshot.data![index].wineRegion == null || snapshot.data![index].wineCountry == null ? '검색 결과에 와인이 없는 경우 여기 ✋' : '${snapshot.data![index].wineRegion}' + " in " + '${snapshot.data![index].wineCountry}'),
