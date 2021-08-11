@@ -55,7 +55,7 @@ Future<dynamic> http_get({header, String? path}) async {
         //TODO 만료된 Refresh Token(아예 로그아웃 처리)
         return responseJson;
       } else if (responseCode == -1008) {
-        //쿼리 결과가 없는 경우
+        print("No Result!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         return responseJson;
       }
       else {

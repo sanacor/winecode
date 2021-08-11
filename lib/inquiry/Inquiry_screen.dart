@@ -68,8 +68,16 @@ class _InquiryPageState extends State<InquiryPage> {
   Future<List<dynamic>> _fetchInquiryData() async {
     print("[fetchInquiryData] started fetch Inquiry data http request");
     var response = await http_get(header: null, path: 'api/inquiry/list');
-    var inquiryList = response['list'];
-    inquiryList = inquiryList.map((inquiryInfo) => new InquiryInfo.fromJson(inquiryInfo)).toList();
-    return inquiryList;
+    print(response);
+    if (response['success'] == true) {
+      var inquiryList = response['list'];
+      inquiryList = inquiryList.map((inquiryInfo) => new InquiryInfo.fromJson(inquiryInfo)).toList();
+      return inquiryList;
+    } else {
+      final snackBar = SnackBar(content: Text("문의내역이 없습니다."));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      var inquiryList = [];
+      return inquiryList;
+    }
   }
 }
