@@ -83,6 +83,9 @@ dependencies:
   #for Dotted Line
   dotted_line: ^3.0.0
 
+  # Device
+  device_info: ^2.0.2
+
 
 dev_dependencies:
   flutter_test:

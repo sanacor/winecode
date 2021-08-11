@@ -9,10 +9,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart'
 var BACK_END_HOST = 'https://api.winefi.site/';
 // var BACK_END_HOST = 'http://192.168.0.9:8080/';
 
-
 // var BACK_END_HOST =
 //     'http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/';
-
 
 Future<dynamic> http_get({header, String? path}) async {
   final storage = FlutterSecureStorage();
@@ -38,8 +36,7 @@ Future<dynamic> http_get({header, String? path}) async {
       return responseJson;
     } else {
       var responseCode = _getResponseCode(responseJson);
-      if (responseCode == null)
-        throw Exception("Failed to HTTP GET");
+      if (responseCode == null) throw Exception("Failed to HTTP GET");
 
       if (responseCode == -9999) {
         //이미 가입된 회원
@@ -47,8 +44,8 @@ Future<dynamic> http_get({header, String? path}) async {
       } else if (responseCode == -9998) {
         //만료된 Access Token
         print("만료된 Access Token");
-        if(await _reissueAccessToken())
-          return await http_get(header : header, path : path);
+        if (await _reissueAccessToken())
+          return await http_get(header: header, path: path);
         else
           return responseJson;
       } else if (responseCode == -9997) {
@@ -57,8 +54,7 @@ Future<dynamic> http_get({header, String? path}) async {
       } else if (responseCode == -1008) {
         print("No Result!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         return responseJson;
-      }
-      else {
+      } else {
         throw Exception('Failed to HTTP GET(2)');
       }
     }
@@ -111,19 +107,20 @@ Future<dynamic> http_post(
       print(responseJson);
       return responseJson;
     } else if (!response.body.isNotEmpty &&
-                response.statusCode == 302 &&
-                response.headers['location'].toString() == expiredTokenUrl) {
+        response.statusCode == 302 &&
+        response.headers['location'].toString() == expiredTokenUrl) {
       // HTTP 라이브러리에서 HTTP POST가 redirect 되는 경우 302 응답을 받음(Postman이나 Swagger에서는 발생하지 않는 문제)
       // 302 응답을 받는 경우 response body는 비어있어서 URL과 응답코드로 액세스 토큰 만료 여부를 판단
-      if(await _reissueAccessToken()) { //AccessToken 재발급
-        return await http_post(header: header, path: path, body: body); //HTTP POST 재시도
+      if (await _reissueAccessToken()) {
+        //AccessToken 재발급
+        return await http_post(
+            header: header, path: path, body: body); //HTTP POST 재시도
       }
     } else {
       var responseJson = json.decode(utf8.decode(response.bodyBytes));
       print(responseJson);
       var responseCode = _getResponseCode(responseJson);
-      if (responseCode == null)
-        throw Exception("Failed to HTTP POST");
+      if (responseCode == null) throw Exception("Failed to HTTP POST");
       if (responseCode == -9999) {
         //이미 가입된 회원
         return responseJson;
@@ -148,7 +145,7 @@ dynamic _getResponseCode(dynamic responseJson) {
   }
 }
 
-Future<bool> _reissueAccessToken() async{
+Future<bool> _reissueAccessToken() async {
   final storage = FlutterSecureStorage();
   String? accessToken = await storage.read(key: 'access_token');
   String? refreshToken = await storage.read(key: 'refresh_token');
@@ -160,18 +157,20 @@ Future<bool> _reissueAccessToken() async{
   var response;
 
   try {
-    response = await http.get(Uri.parse(Uri.encodeFull(url)),
-        headers: {
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + accessToken!
+    response = await http.get(
+      Uri.parse(Uri.encodeFull(url)),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + accessToken!
       },
     );
 
     var responseJson = json.decode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
       print(responseJson);
-      await storage.write(key: "access_token", value: responseJson['data']['access_token']);
+      await storage.write(
+          key: "access_token", value: responseJson['data']['access_token']);
       return true;
     } else {
       return false;
@@ -195,7 +194,9 @@ Future<List<String>?> getUserRoles() async {
 
   print(response);
 
-  final res = (response['data']['user']['roles'] as List)?.map((e) => e as String)?.toList();
+  final res = (response['data']['user']['roles'] as List)
+      ?.map((e) => e as String)
+      ?.toList();
 
   return res;
 }

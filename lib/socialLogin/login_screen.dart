@@ -7,7 +7,7 @@ import 'dart:io' show Platform;
 import 'package:wine/util/http.dart';
 import 'package:flutter/gestures.dart';
 import 'package:wine/webview/webview_screen.dart';
-
+import 'package:device_info/device_info.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -88,6 +88,20 @@ class _MyLoginPageState extends State<LoginScreen> {
                             height: 43,
                             padding: const EdgeInsets.only(left: 95, right: 95),
                           ),
+                          Container(
+                            width: 100,
+                            height: 60,
+
+                            padding: const EdgeInsets.only(top: 10, bottom: 10, left: 95, right: 95),
+                            child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red[900],
+                                // padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                            child: Text('비회원으로 시작하기', style: TextStyle(fontSize: 18),),
+                            onPressed: () => _startByGuest(),
+                          ),)
                         ],
                       ),
                       Container(
@@ -199,6 +213,15 @@ class _MyLoginPageState extends State<LoginScreen> {
       }
     }
   }
+  _startByGuest() async {
+    if (!(await _registerGuest())) {
+      final snackBar = SnackBar(content: Text("회원가입 실패"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
+
+    await _issueJWTandLoginByGuest();
+  }
 
   _loginWithApple(AuthorizationCredentialAppleID credential) async {
     if (!(await _registerUserInfoWithApple(credential))) {
@@ -217,6 +240,25 @@ class _MyLoginPageState extends State<LoginScreen> {
           header: null, path: 'v1/signup/kakao?accessToken=' + accessToken!,
           body:signUpBody
       );
+      if (response['code'] == 0 ||
+          response['code'] == -9999) //정상 가입 또는 이미 가입한 회원
+        return true;
+      else
+        return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> _registerGuest() async {
+    try {
+      String? userIdentifier = await getDeviceId();
+      var signUpBody = {'userIdentifier': userIdentifier};
+      var response = await http_post(
+          header: null,
+          path: 'v1/signup/guest?accessToken=' + 'trash_token'!,
+          body: signUpBody);
       if (response['code'] == 0 ||
           response['code'] == -9999) //정상 가입 또는 이미 가입한 회원
         return true;
@@ -303,5 +345,46 @@ class _MyLoginPageState extends State<LoginScreen> {
     } catch (e) {
       print(e);
     }
+  }
+
+  _issueJWTandLoginByGuest() async {
+    // var url =
+    //     "http://ec2-13-124-23-131.ap-northeast-2.compute.amazonaws.com:8080/v1/signin/kakao?accessToken=" +
+    //         accessToken;
+    try {
+      // var response = await http.post(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+      // var JsonResponse = convert.jsonDecode(utf8.decode(response.bodyBytes));
+
+      print('toooken');
+      var fcm_token = await FirebaseMessaging.instance.getToken();
+      print(fcm_token);
+      String? userIdentifier = await getDeviceId();
+      var signUpBody = {'fcmToken': fcm_token, 'userIdentifier': userIdentifier};
+
+      var response = await http_post(
+          header: null, path: 'v1/signin/guest?accessToken=fake_token', body: signUpBody);
+
+      print("access_token : " + response['data']['access_token']);
+      await storage.write(
+          key: "access_token", value: response['data']['access_token']);
+      await storage.write(
+          key: "refresh_token", value: response['data']['refresh_token']);
+      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage()));
+      Navigator.of(context).pop();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<String?> getDeviceId () async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      return androidInfo.androidId;
+    } else if (Platform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      return iosInfo.identifierForVendor;
+    }
+
   }
 }
