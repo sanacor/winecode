@@ -88,10 +88,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         children: LoadSettingTile(context),
                       )
                   ),
+                  isRetailer ?
                   ListTile(
                       leading: Icon(Icons.add_business_outlined),
                       title: Text('사장님 메뉴'),
                       onTap: () => _storeOwner(context))
+                      : SizedBox(height: 1)
                 ])));
   }
 
