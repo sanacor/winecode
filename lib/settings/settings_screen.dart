@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
+import 'package:wine/faq/faq_screen.dart';
 import 'package:wine/image/image_upload.dart';
 import 'package:wine/main.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -122,6 +123,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     widgetList.add(ListTile(
       leading: Icon(Icons.question_answer),
       title: Text('자주 묻는 질문'),
+      onTap: () => _faqScreen(context),
     ));
     /*
     widgetList.add(ListTile(
@@ -170,6 +172,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _noticeScreen(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => NoticeScreen()));
+  }
+
+  void _faqScreen(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => FaqScreen()));
   }
 
   void _tapLogout(BuildContext context) async {
