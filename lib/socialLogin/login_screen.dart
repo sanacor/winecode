@@ -211,9 +211,12 @@ class _MyLoginPageState extends State<LoginScreen> {
   }
 
   Future<bool> _registerUserInfoWithKakao(String? accessToken) async {
+    var signUpBody = {'userIdentifier': 'compatibleForApple'};//애플로그인과 호환성을 위해 Body 담음
     try {
       var response = await http_post(
-          header: null, path: 'v1/signup/kakao?accessToken=' + accessToken!);
+          header: null, path: 'v1/signup/kakao?accessToken=' + accessToken!,
+          body:signUpBody
+      );
       if (response['code'] == 0 ||
           response['code'] == -9999) //정상 가입 또는 이미 가입한 회원
         return true;
