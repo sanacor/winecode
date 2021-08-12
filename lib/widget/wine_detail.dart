@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/rendering.dart';
 import 'package:wine/inquiry/manual_inquiry.dart';
+import 'package:wine/model/comment.dart';
 import 'package:wine/model/wine.dart';
 import 'package:wine/review/review_register.dart';
 import 'package:wine/util/http.dart';
@@ -151,6 +152,7 @@ class _WineDetailState extends State<WineDetail>
   AnimationController? _hideFabAnimController;
 
   List<Widget> reviewList = [];
+  List<Widget> commentList = [];
 
   bool isCreator = false;
   bool isRetailer = false;
@@ -192,6 +194,7 @@ class _WineDetailState extends State<WineDetail>
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _getReviewList();
+      _getCommentList();
       _checkUserRole();
     });
   }
@@ -265,6 +268,37 @@ class _WineDetailState extends State<WineDetail>
                 subtitle: Text('by ' + review.prvAuthor!),
                 trailing: review.prvRecommend! == "Y" ? Text("추천") : Text(""),
                 onTap: () => _viewReview(context, review),
+              )
+          );
+        });
+      }
+    }
+  }
+
+  Future<void> _getCommentList() async {
+    var response = await http_get(header: null, path: 'api/product/comment/' + widget.wineItem!.wineId!.toString());
+
+    print(response);
+
+    if(response['code'] == 0) { //쿼리 결과가 있는 경우에만 수행
+      List responseJson = response['list'];
+      var responseList = responseJson;
+      for (var commentJson in responseList) {
+        Comment comment = new Comment.fromJson(commentJson);
+        setState(() {
+          commentList.add(
+              new ListTile(
+                /* 사용자 사진이 보이는게 맞나?? 익명성 보장이 너무 안될듯
+                leading: CircleAvatar(
+                  backgroundImage: _getSNSIcon(review.prvMedia!),
+                  // no matter how big it is, it won't overflow
+                  backgroundColor: Colors.white,
+                ),
+                 */
+                title: Text(comment.pucUserComment!),
+                subtitle: Text('by ' + comment.pucUsrNickname!),
+                //trailing: comment.prvRecommend! == "Y" ? Text("추천") : Text(""),
+                //onTap: () => _viewReview(context, review),
               )
           );
         });
@@ -456,7 +490,6 @@ class _WineDetailState extends State<WineDetail>
               // Divider(height: 2, thickness: 1, color: Colors.grey, ),
               SizedBox(height: 11, child: Container(color: Colors.grey[200],),),
               Container(
-
                 // color: Color(0xffF4F0DE),
                 child: Column(
                   children: [
@@ -488,10 +521,47 @@ class _WineDetailState extends State<WineDetail>
                           ],
                         )
                     ),
-                    SizedBox(height: 300),
-                    SizedBox(height: 300),
                   ],
-                ),)
+                ),
+              ),
+              SizedBox(height: 11, child: Container(color: Colors.grey[200],),),
+              Container(
+                // color: Color(0xffF4F0DE),
+                child: Column(
+                  children: [
+                    Padding(
+                        padding: EdgeInsets.only(left: 15, top: 15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                                children: [
+                                  Expanded(
+                                    child: Text("유저 코멘트",
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            // fontWeight: FontWeight.normal,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 20 )
+                                    ),
+                                  ),
+                                  SizedBox(width: 10),
+                                ]
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: commentList,
+                            )
+                          ],
+                        )
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 300),
+              SizedBox(height: 300),
             ],
           ),),
 
