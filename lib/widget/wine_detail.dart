@@ -150,6 +150,7 @@ class _WineDetailState extends State<WineDetail>
     with SingleTickerProviderStateMixin {
   ScrollController? _scrollController;
   AnimationController? _hideFabAnimController;
+  TextEditingController _textEditingController = TextEditingController();
 
   List<Widget> reviewList = [];
   List<Widget> commentList = [];
@@ -163,6 +164,7 @@ class _WineDetailState extends State<WineDetail>
   void dispose() {
     _scrollController!.dispose();
     _hideFabAnimController!.dispose();
+    _textEditingController.dispose();
     super.dispose();
   }
 
@@ -276,6 +278,7 @@ class _WineDetailState extends State<WineDetail>
   }
 
   Future<void> _getCommentList() async {
+    commentList = [];
     var response = await http_get(header: null, path: 'api/product/comment/' + widget.wineItem!.wineId!.toString());
 
     print(response);
@@ -307,8 +310,6 @@ class _WineDetailState extends State<WineDetail>
   }
 
   Future<void> registerWineByRetailId(int wineId) async {
-
-
     var response = await http_post(header: null, path: 'api/retail/$userId/register/$wineId');
 
     if (response['success'] == true) {
@@ -318,8 +319,25 @@ class _WineDetailState extends State<WineDetail>
       final snackBar = SnackBar(content: Text("와인샵에 와인등록 실패!"));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
+  }
 
+  Future<void> _registerComment(int wineId) async {
+    Map<String, dynamic>? reqBody =
+    {
+      'pucUserComment': _textEditingController.text
+    };
+    _textEditingController.text = "";
+    var response = await http_post(header: null, path: 'api/user/comment/$wineId', body:reqBody);
 
+    if (response['success'] == true) {
+      final snackBar = SnackBar(content: Text("평가 등록 완료! 소중한 의견 감사합니다 :)"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      final snackBar = SnackBar(content: Text("평가 등록 실패!"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
+    _getCommentList();
   }
 
   @override
@@ -559,6 +577,30 @@ class _WineDetailState extends State<WineDetail>
                     ),
                   ],
                 ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(20,0,20,0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _textEditingController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: '이 와인에 대한 평가를 남겨주세요.',
+                        )
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        primary: Colors.black, // foreground
+                      ),
+                      onPressed: () => _registerComment(widget.wineItem!.wineId!),
+                      child: Text('등록'),
+                    )
+                  ],
+                )
               ),
               SizedBox(height: 300),
               SizedBox(height: 300),
