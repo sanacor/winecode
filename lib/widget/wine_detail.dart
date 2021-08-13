@@ -322,6 +322,11 @@ class _WineDetailState extends State<WineDetail>
   }
 
   Future<void> _registerComment(int wineId) async {
+    if(_textEditingController.text == "") {
+      final snackBar = SnackBar(content: Text("내용 입력 후 등록 부탁드립니다."));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
     Map<String, dynamic>? reqBody =
     {
       'pucUserComment': _textEditingController.text
