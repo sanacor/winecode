@@ -201,10 +201,6 @@ class _ShopWineListState extends State<ShopWineList> {
 
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('${wine_name}을 삭제하였습니다')));
-
-    // List responseJson = response['list'];
-    //
-    // return responseJson.map((post) => new Wine.fromJson(post)).toList();
   }
 
 }
