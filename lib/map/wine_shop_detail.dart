@@ -5,7 +5,7 @@ import 'package:wine/model/wine.dart';
 import 'package:wine/util/http.dart';
 import 'package:flutter/services.dart';
 
-import 'dart:io' show Platform;
+import 'dart:io' show Platform, sleep;
 
 class WineShopDetail extends StatefulWidget {
   final WineShop? wineShopItem;
@@ -128,30 +128,49 @@ class _ShopWineListState extends State<ShopWineList> {
                   padding: const EdgeInsets.only(top: 10),
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image.network(
-                            snapshot.data![index].wineImageURL!,
-                            fit: BoxFit.fill),
-                      ),
+                    return Dismissible(
+                      // Each Dismissible must contain a Key. Keys allow Flutter to
+                      // uniquely identify widgets.
+                      key: Key(snapshot.data![index].wineId.toString()),
+                      // Provide a function that tells the app
+                      // what to do after an item has been swiped away.
+                      onDismissed: (direction) {
+                        _deleteWineFromShop(snapshot.data![index].wineId.toString(), snapshot.data![index].wineName);
+                        snapshot.data!.removeAt(index);
+                        // sleep(const Duration(seconds: 1));
+                        // Remove the item from the data source.
+                        // setState(() {
+                        //   // snapshot.data!.removeAt(index);
+                        // });
 
-                      title: Text('${snapshot.data![index].wineCompany}' +
-                          " " +
-                          '${snapshot.data![index].wineName}'),
-                      isThreeLine: false,
-                      subtitle: Text(snapshot.data![index].wineRegion == null ||
-                              snapshot.data![index].wineCountry == null
-                          ? '검색 결과에 와인이 없는 경우 여기 ✋'
-                          : '${snapshot.data![index].wineRegion}' +
-                              " in " +
-                              '${snapshot.data![index].wineCountry}'),
-                      // Text('${snapshot.data![index].wineRegion}' + " in " + '${snapshot.data![index].wineCountry}'),
-                      // onTap: () {
-                      //   Navigator.of(context).push(MaterialPageRoute(
-                      //       builder: (context) => (index == snapshot.data!.length - 1) || (index == 0) ?  ManualInquiry(wineItem: Wine()) : WineDetail(
-                      //           wineItem: snapshot.data![index])));
-                      // },
+
+                      },
+                      child: ListTile(
+                        onLongPress: () {},
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Image.network(
+                              snapshot.data![index].wineImageURL!,
+                              fit: BoxFit.fill),
+                        ),
+
+                        title: Text('${snapshot.data![index].wineCompany}' +
+                            " " +
+                            '${snapshot.data![index].wineName}'),
+                        isThreeLine: false,
+                        subtitle: Text(snapshot.data![index].wineRegion == null ||
+                            snapshot.data![index].wineCountry == null
+                            ? '검색 결과에 와인이 없는 경우 여기 ✋'
+                            : '${snapshot.data![index].wineRegion}' +
+                            " in " +
+                            '${snapshot.data![index].wineCountry}'),
+                        // Text('${snapshot.data![index].wineRegion}' + " in " + '${snapshot.data![index].wineCountry}'),
+                        // onTap: () {
+                        //   Navigator.of(context).push(MaterialPageRoute(
+                        //       builder: (context) => (index == snapshot.data!.length - 1) || (index == 0) ?  ManualInquiry(wineItem: Wine()) : WineDetail(
+                        //           wineItem: snapshot.data![index])));
+                        // },
+                      )
                     );
                   },
                   separatorBuilder: (context, index) {
@@ -174,6 +193,20 @@ class _ShopWineListState extends State<ShopWineList> {
 
     return responseJson.map((post) => new Wine.fromJson(post)).toList();
   }
+
+  void _deleteWineFromShop(String wine_id, wine_name) async {
+    print("[_deleteWineFromShop]");
+    var response = await http_get(
+        header: null, path: 'api/retail/${widget._shopId}/delete/${wine_id}');
+
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('${wine_name}을 삭제하였습니다')));
+
+    // List responseJson = response['list'];
+    //
+    // return responseJson.map((post) => new Wine.fromJson(post)).toList();
+  }
+
 }
 
 class PleaseJoinWineFi extends StatefulWidget {
