@@ -195,8 +195,8 @@ Future<List<String>?> getUserRoles() async {
   print(response);
 
   final res = (response['data']['user']['roles'] as List)
-      ?.map((e) => e as String)
-      ?.toList();
+      .map((e) => e as String)
+      .toList();
 
   return res;
 }
