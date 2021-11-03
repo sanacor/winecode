@@ -295,39 +295,40 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
         controller: controller,
         children: _pages,
       ),
-      bottomNavigationBar: Container(
-        // decoration: bottomNavi elevation 효과
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
+      bottomNavigationBar: Material(
+        child:  Container(
+          // decoration: bottomNavi elevation 효과
+          decoration: BoxDecoration(
+            color: Colors.red[900],
+            borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
               // bottomLeft: Radius.circular(10),
               // bottomRight: Radius.circular(10)
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 9), // changes position of shadow
             ),
-          ],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 9), // changes position of shadow
+              ),
+            ],
+          ),
+          child: TabBar(
+            controller: controller,
+            unselectedLabelColor: Colors.white,
+            labelColor: Colors.black54,
+            // labelColor: Colors.black,
+            tabs: <Widget> [
+              Tab(icon: Icon(Icons.search), text: "검색"),
+              Tab(icon: Icon(Icons.room_outlined), text: "지도"),
+              Tab(icon: Icon(Icons.chat_outlined), text: "문의"),
+              Tab(icon: Icon(Icons.settings_outlined), text: "설정"),
+            ],
+          ),
         ),
-        child: TabBar(
-          controller: controller,
-          tabs: [
-            Tab(icon: Icon(Icons.search, color: Colors.black),
-                child: Text('검색', style: TextStyle(color: Colors.black))),
-            Tab(icon: Icon(Icons.room_outlined, color: Colors.black),
-                child: Text('지도', style: TextStyle(color: Colors.black))),
-            Tab(icon: Icon(Icons.chat_outlined, color: Colors.black),
-                child: Text('문의', style: TextStyle(color: Colors.black))),
-            Tab(icon: Icon(Icons.settings_outlined, color: Colors.black),
-                child: Text('설정', style: TextStyle(color: Colors.black))),
-          ],
-        ),
-      ),
+      )
     );
   }
 }
