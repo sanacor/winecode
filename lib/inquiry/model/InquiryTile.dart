@@ -16,7 +16,7 @@ class InquiryTile extends StatelessWidget {
         child: Image.network(_inquiryInfo!.inqPdtImage!, fit: BoxFit.fill),
       ),
       title: Text(_inquiryInfo!.inqPdtName.toString()),
-      subtitle: Text(_inquiryInfo!.inqTime.toString()),
+      subtitle: Text(_inquiryInfo!.inqTime.toString().substring(0, _inquiryInfo!.inqTime.toString().length - 3)),
       trailing: Text(_inquiryInfo!.getCnt()),
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
@@ -60,9 +60,9 @@ class InquiryInfo {
         repliedCnt += 1;
     });
     if(repliedCnt == 0)
-      return "답변대기중";
+      return "답변 대기중";
     else if(repliedCnt == totCnt)
-      return "답변완료";
+      return "답변 완료";
     else
       return repliedCnt.toString() + "/" + totCnt.toString();
   }
