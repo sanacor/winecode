@@ -77,9 +77,9 @@ class _MarkerMapPageState extends State<InquiryMapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(height: Platform.isAndroid ? 10 : 1),
@@ -113,16 +113,17 @@ class _MarkerMapPageState extends State<InquiryMapScreen> {
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-            backgroundColor: Colors.red[900],
-          child: Text("문의"),
-          onPressed: _onInquiryTap,
-        ),
+
         // bottomNavigationBar: BottomAppBar(
         //     child: Container(
         //   height: 40.0,
         //   child: Text("선택된 와인샵 : " + _selectCnt.toString()),
         // )),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.red[900],
+        child: Text("문의"),
+        onPressed: _onInquiryTap,
       ),
     );
   }
